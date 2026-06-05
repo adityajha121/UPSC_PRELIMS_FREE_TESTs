@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC Prelims Elite Mock Portal</title>
+    <style>
+        /* CSS Reset & Clean Light Variables */
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --ad-bg: #f1f5f9;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Notice Button Highlight */
+        .notice-btn {
+            background-color: #fee2e2;
+            color: #ef4444 !important;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #fca5a5;
+            transition: all 0.3s ease;
+        }
+
+        .notice-btn:hover {
+            background-color: #fca5a5;
+            color: #991b1b !important;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            font-weight: 800;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Advertisement Sections */
+        .ad-banner {
+            width: 100%;
+            padding: 30px 20px;
+            margin: 30px 0;
+            background: var(--ad-bg);
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Clean Card Styling */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            align-self: start;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        /* Dropdown/Accordion Styling */
+        details { width: 100%; }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            font-weight: 700;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: '▼';
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(180deg);
+            color: var(--accent);
+        }
+
+        details[open] summary {
+            color: var(--accent);
+            border-bottom: 2px solid #e0e7ff;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        /* Strict Scrollable Area */
+        .dropdown-content {
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-top: 10px;
+        }
+
+        /* Sleek Scrollbar */
+        .dropdown-content::-webkit-scrollbar { width: 5px; }
+        .dropdown-content::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 10px; }
+        .dropdown-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dropdown-content::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Clean Tree-like Chapter List */
+        .tree-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 0 5px;
+            border-left: 2px solid #e2e8f0;
+        }
+
+        .tree-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .tree-list li::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 0;
+            width: 12px;
+            height: 2px;
+            background-color: #e2e8f0;
+        }
+
+        .tree-list a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .tree-list a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* FLOATING MODAL (CARD) STYLING */
+        .modal-overlay {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            line-height: 1;
+        }
+
+        .modal-close-btn:hover {
+            color: #ef4444;
+        }
+
+        .modal-title {
+            margin: 0 0 10px 0;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .modal-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-action-btn {
+            display: block;
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            text-align: center;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .modal-action-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-muted);
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">UPSC Elite</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Donation</a></li>
+            <li><a href="#" id="openModalBtn" class="notice-btn">Notice 🔔</a></li>
+        </ul>
+    </nav>
+
+    <!-- Floating Modal Overlay -->
+    <div class="modal-overlay" id="infoModal">
+        <div class="modal-box">
+            <span class="modal-close-btn" id="closeModalIcon">&times;</span>
+            <h2 class="modal-title">Welcome Aspirant! 🎯</h2>
+            <p class="modal-text">
+                The new Polity & Modern History mock tests have been updated according to the latest UPSC syllabus. Attempting 100 questions per chapter will solidify your preparation. Best of luck!
+            </p>
+            <button class="modal-action-btn" id="closeModalBtn">Got it, Thanks!</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>UPSC Prelims Test Series</h1>
+        <p>100 Questions Per Chapter • Comprehensive Coverage</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="ad-banner">
+            Premium Ad Space - Leaderboard (728x90)
+        </div>
+
+        <div class="grid-container">
+
+            <!-- Subject 1 -->
+            <div class="glass-card">
+                <details>
+                    <summary>1. Polity</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Polity\Preamble_of_the_Constitution.html">Preamble</a></li>
+                            <li><a href="Polity\Salient_Features_of_the_Constitution.html">Salient Features of the Constitution</a></li>
+                            <li><a href="Polity\Union_and_its_Territory.html">Union and its territory</a></li>
+                            <li><a href="Polity/chapter_2.html">chapter_2.html</a></li>
+                            <li><a href="Polity/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Polity/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 2 -->
+            <div class="glass-card">
+                <details>
+                    <summary>2. Modern History</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Modern_History/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Modern_History/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 3 -->
+            <div class="glass-card">
+                <details>
+                    <summary>3. Ancient History</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Ancient_History/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Ancient_History/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 4 -->
+            <div class="glass-card">
+                <details>
+                    <summary>4. Medieval History</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Medieval_History/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Medieval_History/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 5 -->
+            <div class="glass-card">
+                <details>
+                    <summary>5. Post Independence</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Post_Independence/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Post_Independence/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 6 -->
+            <div class="glass-card">
+                <details>
+                    <summary>6. Art & Culture</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Art_Culture/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Art_Culture/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 7 -->
+            <div class="glass-card">
+                <details>
+                    <summary>7. Geography</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Geography/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Geography/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 8 -->
+            <div class="glass-card">
+                <details>
+                    <summary>8. Economy</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Economy/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Economy/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 9 -->
+            <div class="glass-card">
+                <details>
+                    <summary>9. Environment</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Environment/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Environment/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 10 -->
+            <div class="glass-card">
+                <details>
+                    <summary>10. Science & Tech</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Sci_Tech/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Sci_Tech/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 11 -->
+            <div class="glass-card">
+                <details>
+                    <summary>11. Internal Security</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Internal_Security/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Internal_Security/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 12 -->
+            <div class="glass-card">
+                <details>
+                    <summary>12. Disaster Mgmt</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Disaster_Mgmt/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Disaster_Mgmt/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 13 -->
+            <div class="glass-card">
+                <details>
+                    <summary>13. Ethics</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Ethics/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Ethics/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 14 -->
+            <div class="glass-card">
+                <details>
+                    <summary>14. Society</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Society/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Society/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 15 -->
+            <div class="glass-card">
+                <details>
+                    <summary>15. Social Justice</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Social_Justice/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Social_Justice/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 16 -->
+            <div class="glass-card">
+                <details>
+                    <summary>16. Governance</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Governance/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Governance/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 17 -->
+            <div class="glass-card">
+                <details>
+                    <summary>17. IR</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="IR/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="IR/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 18 -->
+            <div class="glass-card">
+                <details>
+                    <summary>18. Agriculture</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Agriculture/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Agriculture/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 19 -->
+            <div class="glass-card">
+                <details>
+                    <summary>19. Schemes</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Schemes/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Schemes/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 20 -->
+            <div class="glass-card">
+                <details>
+                    <summary>20. Reports</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Reports/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Reports/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- In-Article Ad (Spans Full Width) -->
+            <div class="glass-card" style="grid-column: 1 / -1; padding: 0; box-shadow: none; border: none; background: transparent;">
+                <div class="ad-banner" style="margin: 0;">
+                    In-Article Ad Space - Responsive
+                </div>
+            </div>
+
+            <!-- Subject 21 -->
+            <div class="glass-card">
+                <details>
+                    <summary>21. Judgements</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Judgements/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Judgements/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 22 -->
+            <div class="glass-card">
+                <details>
+                    <summary>22. Committees</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Committees/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Committees/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 23 -->
+            <div class="glass-card">
+                <details>
+                    <summary>23. Organizations</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Organizations/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Organizations/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 24 -->
+            <div class="glass-card">
+                <details>
+                    <summary>24. Conventions</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Conventions/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Conventions/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 25 -->
+            <div class="glass-card">
+                <details>
+                    <summary>25. Current Affairs</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Current_Affairs/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Current_Affairs/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+            <!-- Subject 26 -->
+            <div class="glass-card">
+                <details>
+                    <summary>26. Essay</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Essay/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Essay/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 27 -->
+            <div class="glass-card">
+                <details>
+                    <summary>27. CSAT</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="CSAT/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="CSAT/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 28 -->
+            <div class="glass-card">
+                <details>
+                    <summary>28. Yearbook</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Yearbook/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Yearbook/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 29 -->
+            <div class="glass-card">
+                <details>
+                    <summary>29. Eco Survey</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Eco_Survey/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Eco_Survey/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 30 -->
+            <div class="glass-card">
+                <details>
+                    <summary>30. Budget</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Budget/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Budget/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 31 -->
+            <div class="glass-card">
+                <details>
+                    <summary>31. Mapping</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Mapping/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Mapping/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 32 -->
+            <div class="glass-card">
+                <details>
+                    <summary>32. Census</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Census/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Census/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 33 -->
+            <div class="glass-card">
+                <details>
+                    <summary>33. Acts</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Acts/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Acts/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 34 -->
+            <div class="glass-card">
+                <details>
+                    <summary>34. Bodies</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Bodies/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Bodies/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 35 -->
+            <div class="glass-card">
+                <details>
+                    <summary>35. Institutions</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Institutions/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Institutions/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 36 -->
+            <div class="glass-card">
+                <details>
+                    <summary>36. Awards</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Awards/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Awards/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 37 -->
+            <div class="glass-card">
+                <details>
+                    <summary>37. Sports</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Sports/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Sports/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 38 -->
+            <div class="glass-card">
+                <details>
+                    <summary>38. Defence</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Defence/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Defence/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 39 -->
+            <div class="glass-card">
+                <details>
+                    <summary>39. Space</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Space/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Space/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 40 -->
+            <div class="glass-card">
+                <details>
+                    <summary>40. Biotech</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Biotech/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Biotech/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 41 -->
+            <div class="glass-card">
+                <details>
+                    <summary>41. Emerging Tech</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Emerging_Tech/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Emerging_Tech/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 42 -->
+            <div class="glass-card">
+                <details>
+                    <summary>42. Gov Reports</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Gov_Reports/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Gov_Reports/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 43 -->
+            <div class="glass-card">
+                <details>
+                    <summary>43. Personalities</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Personalities/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Personalities/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 44 -->
+            <div class="glass-card">
+                <details>
+                    <summary>44. Tribes</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Tribes/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Tribes/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 45 -->
+            <div class="glass-card">
+                <details>
+                    <summary>45. State Culture</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="State_Culture/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="State_Culture/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 46 -->
+            <div class="glass-card">
+                <details>
+                    <summary>46. Places News</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Places_News/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Places_News/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 47 -->
+            <div class="glass-card">
+                <details>
+                    <summary>47. Species</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Species/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Species/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 48 -->
+            <div class="glass-card">
+                <details>
+                    <summary>48. Env News</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Env_News/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Env_News/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 49 -->
+            <div class="glass-card">
+                <details>
+                    <summary>49. Eco News</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Eco_News/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Eco_News/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Subject 50 -->
+            <div class="glass-card">
+                <details>
+                    <summary>50. Tech News</summary>
+                    <div class="dropdown-content">
+                        <ul class="tree-list">
+                            <li><a href="Tech_News/chapter_1.html">chapter_1.html</a></li>
+                            <li><a href="Tech_News/chapter_2.html">chapter_2.html</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+        </div>
+
+        <!-- Bottom Ad Section -->
+        <div class="ad-banner">
+            Footer Ad Space - Sponsored Links
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 UPSC Mock Tests Portal. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Modal Functionality -->
+    <script>
+        const modal = document.getElementById('infoModal');
+        const openBtn = document.getElementById('openModalBtn');
+        const closeModalIcon = document.getElementById('closeModalIcon');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Function to open modal
+        const openModal = (e) => {
+            if(e) e.preventDefault();
+            modal.classList.add('show');
+        }
+
+        // Function to close modal
+        const closeModal = () => {
+            modal.classList.remove('show');
+        }
+
+        // Event Listeners
+        openBtn.addEventListener('click', openModal);
+        closeModalIcon.addEventListener('click', closeModal);
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Close modal if user clicks anywhere outside the white box
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Auto Pop-up after 1 second of loading the page
+        window.onload = () => {
+            setTimeout(openModal, 1000);
+        };
+    </script>
+
+</body>
+</html>

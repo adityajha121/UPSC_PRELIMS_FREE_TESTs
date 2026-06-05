@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UPSC Polity - Preamble Mega Quiz (100 Questions)</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+header{
+background:#001f54;
+color:white;
+padding:15px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+}
+
+.container{
+display:flex;
+height:calc(100vh - 70px);
+}
+
+.left{
+width:75%;
+padding:20px;
+overflow:auto;
+}
+
+.right{
+width:25%;
+background:white;
+border-left:2px solid #ddd;
+padding:10px;
+overflow:auto;
+}
+
+.timer{
+font-size:24px;
+font-weight:bold;
+color:#b00020;
+margin-bottom:15px;
+}
+
+.question-box{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+.question{
+font-size:20px;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.option{
+display:block;
+margin:10px 0;
+padding:12px;
+background:#f1f1f1;
+border-radius:8px;
+cursor:pointer;
+}
+
+.option:hover{
+background:#dfe9ff;
+}
+
+.navigation{
+margin-top:20px;
+display:flex;
+gap:10px;
+}
+
+button{
+padding:10px 18px;
+border:none;
+cursor:pointer;
+border-radius:6px;
+font-weight:bold;
+}
+
+.prev{
+background:#666;
+color:white;
+}
+
+.next{
+background:#0056d2;
+color:white;
+}
+
+.review{
+background:orange;
+color:white;
+}
+
+.submit{
+background:green;
+color:white;
+}
+
+.palette{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:8px;
+}
+
+.palette button{
+padding:10px;
+}
+
+.explanation{
+margin-top:20px;
+padding:15px;
+background:#fff8dc;
+border-left:5px solid orange;
+display:none;
+}
+
+.correct{
+background:#4caf50!important;
+color:white;
+}
+
+.reviewed{
+background:orange!important;
+color:white;
+}
+
+.answered{
+background:#0056d2!important;
+color:white;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+UPSC POLITY - PREAMBLE MEGA QUIZ (100 QUESTIONS)
+</header>
+
+<div class="container">
+
+<div class="left">
+
+<div class="timer" id="timer">
+02:00:00
+</div>
+
+<div class="question-box">
+
+<div id="questionNumber"></div>
+
+<div class="question" id="questionText"></div>
+
+<div id="optionsContainer"></div>
+
+<div class="navigation">
+
+<button class="prev" onclick="prevQuestion()">Previous</button>
+
+<button class="next" onclick="nextQuestion()">Next</button>
+
+<button class="review" onclick="markReview()">Mark Review</button>
+
+<button class="submit" onclick="submitQuiz()">Submit</button>
+
+</div>
+
+<div class="explanation" id="explanation"></div>
+
+</div>
+</div>
+
+<div class="right">
+
+<h3>Question Palette</h3>
+<br>
+
+<div class="palette" id="palette"></div>
+
+</div>
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"Which one of the following ideals was NOT originally present in the Preamble as adopted in 1949?",
+options:[
+"Justice",
+"Liberty",
+"Socialist",
+"Fraternity"
+],
+answer:2,
+exp:"The words Socialist and Secular were inserted through the 42nd Constitutional Amendment Act, 1976."
+},
+
+{
+q:"The Preamble has been amended how many times since the commencement of the Constitution?",
+options:[
+"Never",
+"Once",
+"Twice",
+"Thrice"
+],
+answer:1,
+exp:"Only the 42nd Constitutional Amendment Act, 1976 amended the Preamble."
+},
+
+{
+q:"The expression 'We, the People of India' signifies:",
+options:[
+"Parliamentary Supremacy",
+"Popular Sovereignty",
+"Federal Supremacy",
+"Judicial Sovereignty"
+],
+answer:1,
+exp:"It indicates that the Constitution derives authority from the people."
+},
+
+{
+q:"Which of the following is NOT one of the forms of Justice mentioned in the Preamble?",
+options:[
+"Social",
+"Economic",
+"Political",
+"Administrative"
+],
+answer:3,
+exp:"Administrative Justice is not mentioned in the Preamble."
+},
+
+{
+q:"Liberty in the Preamble includes all EXCEPT:",
+options:[
+"Thought",
+"Expression",
+"Belief",
+"Occupation"
+],
+answer:3,
+exp:"Occupation is not included under liberty in the Preamble."
+},
+
+{
+q:"The term 'Republic' in the Preamble implies:",
+options:[
+"Absence of hereditary ruler",
+"Federal polity",
+"Written Constitution",
+"Adult suffrage"
+],
+answer:0,
+exp:"Republic means the head of the state is elected directly or indirectly."
+},
+
+{
+q:"Which case held that the Preamble is part of the Constitution?",
+options:[
+"Berubari Union Case",
+"Keshavananda Bharati Case",
+"Minerva Mills Case",
+"Golaknath Case"
+],
+answer:1,
+exp:"Keshavananda Bharati (1973) held that the Preamble is part of the Constitution."
+},
+
+{
+q:"According to the Preamble, India is a:",
+options:[
+"Sovereign Socialist Secular Democratic Republic",
+"Sovereign Democratic Republic",
+"Federal Socialist Republic",
+"Union of States"
+],
+answer:0,
+exp:"The present wording after the 42nd Amendment."
+},
+
+{
+q:"Which concept in the Preamble promotes dignity of the individual?",
+options:[
+"Justice",
+"Equality",
+"Fraternity",
+"Liberty"
+],
+answer:2,
+exp:"Fraternity assures dignity of the individual and unity of the nation."
+},
+
+{
+q:"Which amendment inserted the words Socialist, Secular and Integrity?",
+options:[
+"24th",
+"42nd",
+"44th",
+"52nd"
+],
+answer:1,
+exp:"42nd Constitutional Amendment Act, 1976."
+},
+
+{
+q:"The source of the idea of Liberty in the Preamble is:",
+options:[
+"Russian Revolution",
+"French Revolution",
+"British Constitution",
+"US Constitution"
+],
+answer:1,
+exp:"Liberty, Equality and Fraternity originate from the French Revolution."
+},
+
+{
+q:"Which of the following best describes Sovereignty?",
+options:[
+"Freedom from external control",
+"Parliamentary supremacy",
+"Rule of law",
+"Judicial review"
+],
+answer:0,
+exp:"Sovereignty means India is internally and externally supreme."
+},
+
+{
+q:"The objective resolution which inspired the Preamble was moved by:",
+options:[
+"Dr. B.R. Ambedkar",
+"Jawaharlal Nehru",
+"Sardar Patel",
+"Rajendra Prasad"
+],
+answer:1,
+exp:"Jawaharlal Nehru introduced the Objective Resolution in 1946."
+},
+
+{
+q:"In which year did the Constituent Assembly adopt the Preamble?",
+options:[
+"1947",
+"1948",
+"1949",
+"1950"
+],
+answer:2,
+exp:"Adopted on 26 November 1949."
+},
+
+{
+q:"Which feature is NOT reflected in the Preamble?",
+options:[
+"Secularism",
+"Judicial Review",
+"Democracy",
+"Republic"
+],
+answer:1,
+exp:"Judicial Review is a constitutional feature but not mentioned in the Preamble."
+},
+
+{
+q:"The word 'Integrity' primarily refers to:",
+options:[
+"Economic unity",
+"Political stability",
+"Territorial unity",
+"Cultural equality"
+],
+answer:2,
+exp:"Integrity refers to the territorial and national unity of India."
+},
+
+{
+q:"Which case initially held that the Preamble is not part of the Constitution?",
+options:[
+"Berubari Case",
+"Keshavananda",
+"Minerva Mills",
+"SR Bommai"
+],
+answer:0,
+exp:"Berubari Union Case (1960)."
+},
+
+{
+q:"The democratic system envisaged in the Preamble is based upon:",
+options:[
+"Direct Democracy",
+"Representative Democracy",
+"Presidential Democracy",
+"Social Democracy"
+],
+answer:1,
+exp:"India follows representative parliamentary democracy."
+},
+
+{
+q:"The authority of the Constitution is derived from:",
+options:[
+"Parliament",
+"People of India",
+"Supreme Court",
+"Constituent Assembly"
+],
+answer:1,
+exp:"We, the People of India."
+},
+
+{
+q:"The ideals of Liberty, Equality and Fraternity are borrowed from:",
+options:[
+"US Revolution",
+"French Revolution",
+"Russian Revolution",
+"Irish Constitution"
+],
+answer:1,
+exp:"Directly inspired by the French Revolution."
+},
+
+{
+q:"Which of the following is correctly matched with the Preamble objective?",
+options:[
+"Justice - Religious",
+"Liberty - Occupation",
+"Equality - Opportunity",
+"Fraternity - Federalism"
+],
+answer:2,
+exp:"Equality of status and opportunity is explicitly mentioned in the Preamble."
+},
+
+{
+q:"The Preamble serves as:",
+options:[
+"A source of Fundamental Rights",
+"A limitation on Parliament",
+"A key to the minds of Constitution-makers",
+"A substitute for constitutional provisions"
+],
+answer:2,
+exp:"It reflects the philosophy and objectives of the Constitution-makers."
+},
+
+{
+q:"The phrase 'Unity and Integrity of the Nation' appears due to:",
+options:[
+"44th Amendment",
+"42nd Amendment",
+"24th Amendment",
+"1st Amendment"
+],
+answer:1,
+exp:"The word Integrity was added by the 42nd Amendment."
+},
+
+{
+q:"Which principle is most closely associated with the word 'Socialist'?",
+options:[
+"Absolute equality of income",
+"Democratic socialism",
+"State ownership of all property",
+"Dictatorship of proletariat"
+],
+answer:1,
+exp:"Indian socialism is democratic socialism, not Marxist socialism."
+},
+
+{
+q:"Secularism in the Indian context means:",
+options:[
+"State religion",
+"Equal respect for all religions",
+"Complete separation of religion and state",
+"Preference for majority religion"
+],
+answer:1,
+exp:"Indian secularism provides equal treatment to all religions."
+},
+
+{
+q:"Which of the following objectives is NOT directly mentioned in the Preamble?",
+options:[
+"Justice",
+"Liberty",
+"Federalism",
+"Fraternity"
+],
+answer:2,
+exp:"Federalism is part of the Constitution but not expressly mentioned in the Preamble."
+},
+
+{
+q:"The Preamble can be used by courts to:",
+options:[
+"Override Fundamental Rights",
+"Interpret constitutional provisions",
+"Invalidate constitutional amendments automatically",
+"Enact legislation"
+],
+answer:1,
+exp:"Courts use the Preamble as an interpretative aid."
+},
+
+{
+q:"Which of the following best reflects Popular Sovereignty?",
+options:[
+"Parliament creates Constitution",
+"We the People of India",
+"President appoints judges",
+"Judicial Review"
+],
+answer:1,
+exp:"Popular sovereignty means authority originates from the people."
+},
+
+{
+q:"The Preamble embodies the philosophy of:",
+options:[
+"Constitution alone",
+"Objective Resolution",
+"Cabinet Mission Plan",
+"Government of India Act 1935"
+],
+answer:1,
+exp:"The Preamble is based on Nehru's Objective Resolution."
+},
+
+{
+q:"The term 'Democratic' in the Preamble implies:",
+options:[
+"Political equality",
+"Economic equality",
+"Religious equality",
+"Cultural equality"
+],
+answer:0,
+exp:"Democracy primarily implies political equality and participation."
+},
+
+{
+q:"Which judgment evolved the Basic Structure Doctrine?",
+options:[
+"Golaknath",
+"Berubari",
+"Keshavananda Bharati",
+"Bommai"
+],
+answer:2,
+exp:"Keshavananda Bharati (1973) established the Basic Structure Doctrine."
+},
+
+{
+q:"The Preamble was enacted by:",
+options:[
+"Parliament",
+"President",
+"Constituent Assembly",
+"Supreme Court"
+],
+answer:2,
+exp:"The Constituent Assembly adopted it on 26 November 1949."
+},
+
+{
+q:"Which value in the Preamble directly opposes discrimination?",
+options:[
+"Justice",
+"Liberty",
+"Equality",
+"Fraternity"
+],
+answer:2,
+exp:"Equality aims to eliminate discrimination."
+},
+
+{
+q:"The word 'Secular' was added in:",
+options:[
+"1951",
+"1967",
+"1976",
+"1978"
+],
+answer:2,
+exp:"Inserted through the 42nd Constitutional Amendment Act, 1976."
+},
+
+{
+q:"Which one is NOT among the objectives stated in the Preamble?",
+options:[
+"Justice",
+"Liberty",
+"Equality",
+"Directive Principles"
+],
+answer:3,
+exp:"Directive Principles are contained in Part IV, not in the Preamble."
+},
+
+{
+q:"The term 'Republic' ensures:",
+options:[
+"Universal Adult Franchise",
+"Elective Head of State",
+"Federalism",
+"Judicial Independence"
+],
+answer:1,
+exp:"Republic means the head of state is elected."
+},
+
+{
+q:"The Preamble secures Justice in how many dimensions?",
+options:[
+"2",
+"3",
+"4",
+"5"
+],
+answer:1,
+exp:"Social, Economic and Political Justice."
+},
+
+{
+q:"Who described the Preamble as the 'Identity Card of the Constitution'?",
+options:[
+"N.A. Palkhivala",
+"K.M. Munshi",
+"Thakurdas Bhargava",
+"B.R. Ambedkar"
+],
+answer:2,
+exp:"Thakurdas Bhargava famously called it the Identity Card of the Constitution."
+},
+
+{
+q:"The ideals of justice in the Preamble seek to establish:",
+options:[
+"Rule by majority",
+"Welfare State",
+"Police State",
+"Theocracy"
+],
+answer:1,
+exp:"Justice aims at establishing a welfare-oriented social order."
+},
+
+{
+q:"The word 'Sovereign' implies that India can:",
+options:[
+"Be controlled by UN",
+"Make independent decisions",
+"Ignore international law completely",
+"Follow colonial policies"
+],
+answer:1,
+exp:"India is free from external control."
+},
+
+{
+q:"The expression 'Equality of Status' mainly refers to:",
+options:[
+"Social equality",
+"Political equality",
+"Economic equality",
+"Religious equality"
+],
+answer:0,
+exp:"It seeks elimination of social inequalities."
+},
+
+{
+q:"Which doctrine protects the Preamble from destruction through amendments?",
+options:[
+"Rule of Law",
+"Basic Structure Doctrine",
+"Separation of Powers",
+"Judicial Activism"
+],
+answer:1,
+exp:"Basic Structure Doctrine prevents destruction of core constitutional values."
+},
+
+{
+q:"Fraternity in the Preamble promotes:",
+options:[
+"Individual dignity",
+"Regionalism",
+"Majoritarianism",
+"Monarchy"
+],
+answer:0,
+exp:"Fraternity ensures dignity of the individual."
+},
+
+{
+q:"The Preamble reflects which type of democracy?",
+options:[
+"Political Democracy",
+"Economic Democracy",
+"Social Democracy",
+"All of the above"
+],
+answer:3,
+exp:"The Constitution aims to achieve all dimensions of democracy."
+},
+
+{
+q:"Which constitutional amendment is often called the 'Mini Constitution'?",
+options:[
+"24th",
+"42nd",
+"44th",
+"52nd"
+],
+answer:1,
+exp:"The 42nd Amendment is known as the Mini Constitution."
+},
+
+{
+q:"The ideals in the Preamble are enforceable by:",
+options:[
+"Courts directly",
+"Parliament",
+"No authority directly",
+"President"
+],
+answer:2,
+exp:"The Preamble is not enforceable by itself."
+},
+
+{
+q:"The Preamble can be amended under:",
+options:[
+"Article 368",
+"Article 32",
+"Article 13",
+"Article 356"
+],
+answer:0,
+exp:"Amendment of the Constitution including the Preamble is under Article 368."
+},
+
+{
+q:"Which of the following best represents Constitutional Morality?",
+options:[
+"Blind obedience to government",
+"Respect for constitutional values",
+"Judicial supremacy",
+"Majority rule only"
+],
+answer:1,
+exp:"Constitutional morality requires adherence to constitutional principles."
+},
+
+{
+q:"The term 'Liberty' in the Preamble is inspired by:",
+options:[
+"French Revolution",
+"Russian Revolution",
+"American Civil War",
+"Industrial Revolution"
+],
+answer:0,
+exp:"Liberty, Equality and Fraternity originated from the French Revolution."
+},
+
+{
+q:"Which feature is common to both the Preamble and Fundamental Rights?",
+options:[
+"Judicial Review",
+"Liberty",
+"Emergency Provisions",
+"Federalism"
+],
+answer:1,
+exp:"Liberty is guaranteed both as a Preamble objective and through Fundamental Rights."
+},
+
+{
+q:"Consider the following statements regarding the Preamble: 1. It is a part of the Constitution. 2. It can be amended under Article 368. 3. It is enforceable in a court of law. Which of the statements given above are correct?",
+options:[
+"1 and 2 only",
+"2 and 3 only",
+"1 and 3 only",
+"1, 2 and 3"
+],
+answer:0,
+exp:"Keshavananda Bharati held that the Preamble is part of the Constitution and can be amended. However, it is not enforceable."
+},
+
+{
+q:"Which among the following was NOT discussed in the Objective Resolution?",
+options:[
+"Sovereignty of the people",
+"Justice",
+"Liberty",
+"Judicial Review"
+],
+answer:3,
+exp:"Judicial Review was not specifically mentioned in the Objective Resolution."
+},
+
+{
+q:"The term 'Democratic Republic' implies which of the following? 1. Elected Head of State 2. Universal Adult Franchise 3. Responsible Government",
+options:[
+"1 and 2 only",
+"2 and 3 only",
+"1 and 3 only",
+"1, 2 and 3"
+],
+answer:3,
+exp:"All three are essential implications of a Democratic Republic."
+},
+
+{
+q:"Which one of the following statements is correct?",
+options:[
+"Preamble grants powers to Parliament",
+"Preamble is a source of Fundamental Rights",
+"Preamble is neither a source of power nor a limitation upon power",
+"Preamble overrides Fundamental Rights"
+],
+answer:2,
+exp:"The Preamble is not a source of power nor a limitation; it serves as a guiding principle."
+},
+
+{
+q:"The words 'Justice, Liberty, Equality and Fraternity' collectively indicate:",
+options:[
+"Political Democracy only",
+"Social Democracy",
+"Economic Democracy only",
+"Federal Democracy"
+],
+answer:1,
+exp:"Dr. Ambedkar considered these pillars essential for Social Democracy."
+},
+
+{
+q:"Who called the Preamble the 'Horoscope of the Constitution'?",
+options:[
+"K.M. Munshi",
+"N.A. Palkhivala",
+"K.T. Shah",
+"Ernest Barker"
+],
+answer:3,
+exp:"Ernest Barker described the Preamble as the Horoscope of the Constitution."
+},
+
+{
+q:"The concept of 'Secularism' in India allows:",
+options:[
+"State religion",
+"Religious neutrality with equal respect",
+"Religious domination by majority",
+"Complete exclusion of religion from public life"
+],
+answer:1,
+exp:"Indian secularism is based on equal respect for all religions."
+},
+
+{
+q:"Assertion (A): The Preamble is useful in constitutional interpretation. Reason (R): The Preamble contains the philosophy and objectives of the Constitution.",
+options:[
+"A and R both true, R explains A",
+"A and R both true, but R does not explain A",
+"A true, R false",
+"A false, R true"
+],
+answer:0,
+exp:"The philosophy contained in the Preamble helps courts interpret constitutional provisions."
+},
+
+{
+q:"Which feature of the Preamble reflects opposition to hereditary political authority?",
+options:[
+"Sovereign",
+"Democratic",
+"Republic",
+"Secular"
+],
+answer:2,
+exp:"A Republic rejects hereditary rulers."
+},
+
+{
+q:"Which among the following was added by the 42nd Constitutional Amendment?",
+options:[
+"Democratic",
+"Republic",
+"Integrity",
+"Justice"
+],
+answer:2,
+exp:"Integrity was added in 1976."
+},
+
+{
+q:"The Preamble seeks to secure 'Liberty of' which of the following? 1. Thought 2. Expression 3. Belief 4. Faith 5. Worship",
+options:[
+"1,2,3 only",
+"1,2,3,4 only",
+"1,2,4,5 only",
+"1,2,3,4,5"
+],
+answer:3,
+exp:"All five forms of liberty are explicitly mentioned."
+},
+
+{
+q:"The expression 'People of India' in the Preamble signifies:",
+options:[
+"Federal supremacy",
+"Popular sovereignty",
+"Parliamentary supremacy",
+"Executive supremacy"
+],
+answer:1,
+exp:"Authority flows from the people."
+},
+
+{
+q:"Which of the following objectives are secured through Fraternity? 1. Dignity of the Individual 2. Unity of the Nation 3. Integrity of the Nation",
+options:[
+"1 only",
+"1 and 2 only",
+"2 and 3 only",
+"1, 2 and 3"
+],
+answer:3,
+exp:"The Preamble explicitly links fraternity with dignity, unity and integrity."
+},
+
+{
+q:"Which constitutional body adopted the Preamble?",
+options:[
+"Interim Government",
+"Constituent Assembly",
+"Parliament",
+"Cabinet Mission"
+],
+answer:1,
+exp:"The Constituent Assembly adopted it on 26 November 1949."
+},
+
+{
+q:"Which of the following statements regarding the Preamble is incorrect?",
+options:[
+"It is part of the Constitution",
+"It can be amended",
+"It is enforceable in courts",
+"It reflects constitutional philosophy"
+],
+answer:2,
+exp:"The Preamble is not enforceable."
+},
+
+{
+q:"The Preamble's commitment to Equality primarily seeks to eliminate:",
+options:[
+"Political participation",
+"Social discrimination",
+"Federal imbalance",
+"Judicial review"
+],
+answer:1,
+exp:"Equality aims at removing social and legal discrimination."
+},
+
+{
+q:"The philosophy underlying the Preamble is closest to:",
+options:[
+"Constitutionalism",
+"Absolute Monarchy",
+"Military Rule",
+"Theocracy"
+],
+answer:0,
+exp:"The Preamble embodies constitutionalism and limited government."
+},
+
+{
+q:"Which case reaffirmed the Basic Structure Doctrine after Keshavananda Bharati?",
+options:[
+"Berubari",
+"Minerva Mills",
+"AK Gopalan",
+"Shankari Prasad"
+],
+answer:1,
+exp:"Minerva Mills strengthened the Basic Structure Doctrine."
+},
+
+{
+q:"The Preamble was finally adopted on:",
+options:[
+"26 January 1950",
+"15 August 1947",
+"26 November 1949",
+"24 January 1950"
+],
+answer:2,
+exp:"The Constitution including the Preamble was adopted on 26 November 1949."
+},
+
+{
+q:"The word 'Socialist' in the Preamble implies:",
+options:[
+"Marxist State",
+"Welfare State",
+"Communist State",
+"Capitalist State"
+],
+answer:1,
+exp:"Indian socialism aims at welfare and reduction of inequalities."
+},
+
+{
+q:"Which of the following pairs is correctly matched? 1. Liberty - French Revolution 2. Socialist - 42nd Amendment 3. Republic - Elected Head of State",
+options:[
+"1 only",
+"1 and 2 only",
+"2 and 3 only",
+"1, 2 and 3"
+],
+answer:3,
+exp:"All three pairs are correctly matched."
+},
+
+{
+q:"The Preamble's objectives are ultimately intended to establish:",
+options:[
+"Police State",
+"Welfare State",
+"Authoritarian State",
+"Unitary State"
+],
+answer:1,
+exp:"The Constitution seeks to establish a Welfare State."
+},
+
+{
+q:"Which among the following is NOT a keyword in the Preamble?",
+options:[
+"Integrity",
+"Secular",
+"Federal",
+"Socialist"
+],
+answer:2,
+exp:"Federal is not explicitly mentioned in the Preamble."
+},
+
+{
+q:"The concept of fraternity becomes most relevant in addressing:",
+options:[
+"National integration",
+"Budget deficit",
+"Judicial vacancies",
+"Parliamentary privileges"
+],
+answer:0,
+exp:"Fraternity promotes national unity and integration."
+},
+
+{
+q:"Which one of the following correctly describes the relationship between the Preamble and the Constitution?",
+options:[
+"Preamble is superior to the Constitution",
+"Preamble is inferior and irrelevant",
+"Preamble is part of the Constitution and aids interpretation",
+"Preamble can override constitutional provisions"
+],
+answer:2,
+exp:"The Supreme Court treats the Preamble as part of the Constitution and an interpretative guide."
+},
+
+{
+q:"Which feature of the Preamble reflects the idea that all citizens have equal political rights?",
+options:[
+"Justice",
+"Equality",
+"Democracy",
+"Liberty"
+],
+answer:2,
+exp:"Democracy ensures political equality through universal adult franchise."
+},
+
+{
+q:"The term 'Secular' in the Preamble primarily aims at:",
+options:[
+"Promoting one religion",
+"Religious neutrality of the State",
+"Eliminating religion",
+"Religious taxation"
+],
+answer:1,
+exp:"The State treats all religions equally."
+},
+
+{
+q:"Which of the following is NOT secured by the Preamble?",
+options:[
+"Justice",
+"Liberty",
+"Equality",
+"Right to Property"
+],
+answer:3,
+exp:"Right to Property is a legal/constitutional right, not a Preamble objective."
+},
+
+{
+q:"The ideals of the Preamble are most closely linked with:",
+options:[
+"Directive Principles only",
+"Fundamental Rights only",
+"Entire Constitutional Philosophy",
+"Emergency Provisions"
+],
+answer:2,
+exp:"The Preamble reflects the entire constitutional philosophy."
+},
+
+{
+q:"Who introduced the Objective Resolution in the Constituent Assembly?",
+options:[
+"B.R. Ambedkar",
+"Rajendra Prasad",
+"Jawaharlal Nehru",
+"Sardar Patel"
+],
+answer:2,
+exp:"Jawaharlal Nehru introduced it on 13 December 1946."
+},
+
+{
+q:"The Preamble's reference to 'Justice' includes:",
+options:[
+"Social only",
+"Economic only",
+"Political only",
+"Social, Economic and Political"
+],
+answer:3,
+exp:"All three dimensions are explicitly mentioned."
+},
+
+{
+q:"Which statement is correct regarding the Preamble?",
+options:[
+"It can be amended but not destroyed",
+"It cannot be amended",
+"It is enforceable",
+"It is above the Constitution"
+],
+answer:0,
+exp:"Amendments are allowed subject to the Basic Structure Doctrine."
+},
+
+{
+q:"The phrase 'Unity and Integrity of the Nation' is associated with:",
+options:[
+"Liberty",
+"Justice",
+"Fraternity",
+"Equality"
+],
+answer:2,
+exp:"Fraternity assures unity and integrity."
+},
+
+{
+q:"Which case is famous for holding that Parliament cannot destroy the basic structure?",
+options:[
+"Berubari",
+"Keshavananda Bharati",
+"AK Gopalan",
+"Champakam Dorairajan"
+],
+answer:1,
+exp:"Keshavananda Bharati established the Basic Structure Doctrine."
+},
+
+{
+q:"The source of authority for the Constitution according to the Preamble is:",
+options:[
+"British Parliament",
+"Constituent Assembly",
+"People of India",
+"President"
+],
+answer:2,
+exp:"'We, the People of India' signifies this."
+},
+
+{
+q:"Assertion (A): The Preamble is not enforceable. Reason (R): It does not confer legal rights by itself.",
+options:[
+"A and R true, R explains A",
+"A and R true, R does not explain A",
+"A true, R false",
+"A false, R true"
+],
+answer:0,
+exp:"The Preamble guides interpretation but does not create enforceable rights."
+},
+
+{
+q:"Which among the following words were added by the 42nd Amendment? 1. Socialist 2. Secular 3. Integrity",
+options:[
+"1 only",
+"1 and 2 only",
+"2 and 3 only",
+"1,2 and 3"
+],
+answer:3,
+exp:"All three were added in 1976."
+},
+
+{
+q:"The concept of Republic is directly opposed to:",
+options:[
+"Democracy",
+"Monarchy",
+"Federalism",
+"Secularism"
+],
+answer:1,
+exp:"Republic rejects hereditary monarchy."
+},
+
+{
+q:"Which feature of the Preamble seeks to reduce socio-economic inequalities?",
+options:[
+"Republic",
+"Socialist",
+"Secular",
+"Liberty"
+],
+answer:1,
+exp:"Socialism in India aims at welfare and reduction of inequalities."
+},
+
+{
+q:"Which of the following best describes the nature of Indian Secularism?",
+options:[
+"Strict separation",
+"Equal respect for all religions",
+"State religion",
+"Religious dominance"
+],
+answer:1,
+exp:"India follows principled equidistance."
+},
+
+{
+q:"The ideals in the Preamble are enforceable through:",
+options:[
+"Direct legal action",
+"Constitutional mechanisms",
+"Presidential ordinances",
+"International law"
+],
+answer:1,
+exp:"Though not enforceable directly, they are realized through constitutional provisions."
+},
+
+{
+q:"Which one of the following is NOT among the forms of liberty mentioned in the Preamble?",
+options:[
+"Thought",
+"Expression",
+"Movement",
+"Worship"
+],
+answer:2,
+exp:"Movement is a Fundamental Right but not listed in the Preamble."
+},
+
+{
+q:"The Preamble emphasizes dignity of the individual through:",
+options:[
+"Justice",
+"Equality",
+"Fraternity",
+"Secularism"
+],
+answer:2,
+exp:"Fraternity explicitly ensures dignity of the individual."
+},
+
+{
+q:"Which constitutional amendment inserted the word 'Integrity'?",
+options:[
+"24th",
+"42nd",
+"44th",
+"52nd"
+],
+answer:1,
+exp:"Inserted through the 42nd Amendment Act, 1976."
+},
+
+{
+q:"The Preamble can be best described as:",
+options:[
+"Introduction to the Constitution",
+"Part III",
+"Part IV",
+"Schedule I"
+],
+answer:0,
+exp:"It is the introductory statement of constitutional philosophy."
+},
+
+{
+q:"Which among the following statements is correct? 1. Preamble is part of Constitution. 2. Preamble can be amended. 3. Preamble is enforceable.",
+options:[
+"1 only",
+"1 and 2 only",
+"2 and 3 only",
+"1,2 and 3"
+],
+answer:1,
+exp:"The Preamble is part of the Constitution and amendable, but not enforceable."
+},
+
+{
+q:"The ultimate objective of Justice, Liberty, Equality and Fraternity is:",
+options:[
+"Social Revolution",
+"Monarchy",
+"Police State",
+"Colonial Governance"
+],
+answer:0,
+exp:"These ideals were intended to bring social transformation."
+},
+
+{
+q:"The term 'Sovereign' means India:",
+options:[
+"Depends on external powers",
+"Is internally and externally supreme",
+"Is ruled by Parliament alone",
+"Cannot join international organizations"
+],
+answer:1,
+exp:"India is free to conduct its internal and external affairs."
+},
+
+{
+q:"Which one of the following is not explicitly mentioned in the Preamble?",
+options:[
+"Secular",
+"Socialist",
+"Federal",
+"Republic"
+],
+answer:2,
+exp:"Federal is not expressly mentioned though India is federal in structure."
+},
+
+{
+q:"The Preamble reflects the vision of:",
+options:[
+"British Parliament",
+"Constituent Assembly",
+"Supreme Court",
+"Election Commission"
+],
+answer:1,
+exp:"It embodies the ideals of the Constituent Assembly."
+}
+
+];
+
+let currentQuestion = 0;
+let userAnswers = new Array(questions.length).fill(null);
+let reviewMarked = new Array(questions.length).fill(false);
+
+function loadQuestion(index){
+
+let q = questions[index];
+
+document.getElementById("questionNumber").innerHTML =
+`Question ${index+1} of ${questions.length}`;
+
+document.getElementById("questionText").innerHTML = q.q;
+
+let optionsHTML = "";
+
+q.options.forEach((option,i)=>{
+
+optionsHTML += `
+<label class="option">
+<input type="radio"
+name="answer"
+value="${i}"
+${userAnswers[index]===i ? "checked" : ""}>
+${option}
+</label>
+`;
+
+});
+
+document.getElementById("optionsContainer").innerHTML =
+optionsHTML;
+
+updatePalette();
+
+document
+.querySelectorAll('input[name="answer"]')
+.forEach(input=>{
+
+input.addEventListener('change',function(){
+
+userAnswers[index]=parseInt(this.value);
+
+updatePalette();
+
+});
+
+});
+
+document.getElementById("explanation").style.display="none";
+
+}
+
+function nextQuestion(){
+
+if(currentQuestion<questions.length-1){
+
+currentQuestion++;
+
+loadQuestion(currentQuestion);
+
+}
+
+}
+
+function prevQuestion(){
+
+if(currentQuestion>0){
+
+currentQuestion--;
+
+loadQuestion(currentQuestion);
+
+}
+
+}
+
+function markReview(){
+
+reviewMarked[currentQuestion]=true;
+
+updatePalette();
+
+}
+
+function updatePalette(){
+
+const palette=document.getElementById("palette");
+
+palette.innerHTML="";
+
+questions.forEach((q,index)=>{
+
+let cls="";
+
+if(reviewMarked[index])
+cls="reviewed";
+
+else if(userAnswers[index]!==null)
+cls="answered";
+
+palette.innerHTML+=`
+<button class="${cls}"
+onclick="gotoQuestion(${index})">
+${index+1}
+</button>
+`;
+
+});
+
+}
+
+function gotoQuestion(index){
+
+currentQuestion=index;
+
+loadQuestion(index);
+
+}
+
+function submitQuiz(){
+
+let score=0;
+
+let correct=0;
+let wrong=0;
+
+questions.forEach((q,index)=>{
+
+if(userAnswers[index]===q.answer){
+
+score+=2;
+correct++;
+
+}
+
+else if(userAnswers[index]!==null){
+
+score-=0.66;
+wrong++;
+
+}
+
+});
+
+let unanswered=
+questions.length-correct-wrong;
+
+alert(
+`Quiz Submitted
+
+Correct : ${correct}
+
+Wrong : ${wrong}
+
+Unanswered : ${unanswered}
+
+Score : ${score.toFixed(2)} / 200`
+);
+
+showExplanation();
+
+}
+
+function showExplanation(){
+
+let expDiv=
+document.getElementById("explanation");
+
+expDiv.style.display="block";
+
+expDiv.innerHTML=
+`
+<b>Correct Answer:</b>
+${questions[currentQuestion]
+.options[
+questions[currentQuestion]
+.answer
+]}
+<br><br>
+
+<b>Explanation:</b><br>
+${questions[currentQuestion].exp}
+`;
+
+}
+
+let totalSeconds=7200;
+
+setInterval(()=>{
+
+let hrs=Math.floor(totalSeconds/3600);
+
+let mins=Math.floor(
+(totalSeconds%3600)/60
+);
+
+let secs=totalSeconds%60;
+
+document.getElementById("timer")
+.innerHTML=
+
+String(hrs).padStart(2,'0')
++":"
++String(mins).padStart(2,'0')
++":"
++String(secs).padStart(2,'0');
+
+if(totalSeconds>0){
+
+totalSeconds--;
+
+}else{
+
+submitQuiz();
+
+}
+
+},1000);
+
+loadQuestion(0);
+
+</script>
+
+</body>
+</html>

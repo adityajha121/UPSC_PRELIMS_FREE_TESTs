@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC CSE Prelims Mock: Indian Polity</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+            --answered: #10b981;
+            --marked: #f59e0b;
+            --unvisited: #d1d5db;
+            --visited: #ef4444;
+            --marked-answered: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .timer {
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .exam-area {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+        }
+
+        .question-header {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        .question-content {
+            padding: 2rem;
+            flex: 1;
+            overflow-y: auto;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option-label:hover {
+            background: #f3f4f6;
+        }
+
+        .option-label input {
+            margin-top: 0.3rem;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .action-bar {
+            padding: 1rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            background: #f9fafb;
+        }
+
+        button {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: opacity 0.2s;
+        }
+
+        button:hover { opacity: 0.9; }
+        .btn-prev { background: #6b7280; }
+        .btn-mark { background: var(--marked); color: black; }
+        .btn-next { background: var(--secondary); }
+        .btn-submit { background: var(--answered); }
+
+        .sidebar {
+            flex: 1;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .palette-header {
+            padding: 1rem;
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 1rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .palette-container {
+            padding: 1rem;
+            flex: 1;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 0.5rem;
+            align-content: start;
+        }
+
+        .palette-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            color: black;
+            background: var(--unvisited);
+        }
+
+        /* Status Colors */
+        .status-unvisited { background: var(--unvisited); }
+        .status-visited { background: var(--visited); color: white; }
+        .status-answered { background: var(--answered); color: white; }
+        .status-marked { background: var(--marked); }
+        .status-marked-answered { background: var(--marked-answered); color: white; }
+
+        /* Result Screen */
+        #result-screen {
+            display: none;
+            padding: 2rem;
+            background: var(--surface);
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .score-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+        }
+
+        .stat-box {
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            min-width: 150px;
+        }
+
+        .review-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .review-question {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .correct-ans { color: var(--answered); font-weight: bold; margin-top: 1rem; }
+        .user-ans { margin-top: 0.5rem; font-weight: bold; }
+        .user-correct { color: var(--answered); }
+        .user-wrong { color: var(--visited); }
+        .explanation-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #eff6ff;
+            border-left: 4px solid var(--secondary);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-interface" style="display: flex; flex-direction: column; height: 100%;">
+        <header>
+            <h2>UPSC CSE Mock - Indian Polity (Salient Features)</h2>
+            <div class="timer" id="timer">02:00:00</div>
+        </header>
+
+        <div class="main-container">
+            <div class="exam-area">
+                <div class="question-header">
+                    <span id="q-no">Question 1</span>
+                    <span>Negative Marks: -0.66</span>
+                </div>
+                
+                <div class="question-content">
+                    <div id="q-text"></div>
+                    <div class="options-container" id="options-box">
+                        </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn-prev" onclick="prevQuestion()">&larr; Previous</button>
+                    <button class="btn-mark" onclick="markForReview()">Mark for Review & Next</button>
+                    <button class="btn-next" onclick="nextQuestion()">Save & Next &rarr;</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="palette-header">Question Palette</div>
+                <div class="legend">
+                    <div class="legend-item"><span class="badge status-answered"></span> Answered</div>
+                    <div class="legend-item"><span class="badge status-visited"></span> Not Answered</div>
+                    <div class="legend-item"><span class="badge status-unvisited"></span> Not Visited</div>
+                    <div class="legend-item"><span class="badge status-marked"></span> Marked</div>
+                    <div class="legend-item"><span class="badge status-marked-answered"></span> Marked & Ans</div>
+                </div>
+                <div class="palette-container" id="palette">
+                    </div>
+                <div style="padding: 1rem; border-top: 1px solid #e5e7eb;">
+                    <button class="btn-submit" style="width: 100%; padding: 1rem;" onclick="submitExam()">SUBMIT EXAM</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-screen">
+        <div class="review-container">
+            <div class="score-card">
+                <h2>Examination Result</h2>
+                <div class="score-stats">
+                    <div class="stat-box">
+                        <h3>Total Score</h3>
+                        <h2 id="final-score" style="color: #1e3a8a; margin-top: 0.5rem;">0 / 200</h2>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Attempted</h3>
+                        <h2 id="final-attempted" style="margin-top: 0.5rem;">0</h2>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Accuracy</h3>
+                        <h2 id="final-accuracy" style="margin-top: 0.5rem;">0%</h2>
+                    </div>
+                </div>
+                <button class="btn-primary" style="margin-top: 2rem; background: var(--primary); padding: 0.75rem 2rem;" onclick="location.reload()">Take Exam Again</button>
+            </div>
+            
+            <h2 style="margin-bottom: 1rem; text-align: center;">Detailed Solutions & Explanations</h2>
+            <div id="review-content">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. QUESTION BANK (Add the remaining 90 questions here in this format) ---
+        const questions = [
+            {
+                q: "Consider the following statements regarding the 'Parliamentary System' as envisioned in the Indian Constitution:<br><br>1. The doctrine of ministerial responsibility is explicitly codified in the Constitution for both the Union and the States.<br>2. Unlike the British Parliamentary system, the Indian Parliament is not a sovereign body.<br>3. The provision for a 'Shadow Cabinet' is structurally integrated into the Rules of Procedure of the Lok Sabha.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is correct: Article 75 (Union) and Article 164 (States) explicitly codify the principle of collective ministerial responsibility to the lower house.<br>Statement 2 is correct: Indian Parliament is limited by a written Constitution, federal system, judicial review, and fundamental rights, unlike the sovereign British Parliament.<br>Statement 3 is incorrect: 'Shadow Cabinet' is a unique institution of the British cabinet system and has no structural integration or recognition in the Rules of Procedure of the Indian Parliament."
+            },
+            {
+                q: "With reference to the 'Synthesis of Parliamentary Sovereignty and Judicial Supremacy' in India, consider the following statements:<br><br>1. The scope of judicial review in India is narrower than that of what exists in the US.<br>2. The Indian Constitution originally preferred 'due process of law' over 'procedure established by law' to check arbitrary legislative actions.<br>3. The Supreme Court can declare parliamentary laws unconstitutional, while Parliament can amend the major portion of the Constitution through Article 368.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 2, // Index 2 = 1 and 3 only
+                exp: "Statement 1 is correct: The scope of judicial review in India is narrower than the US because the American Constitution provides for 'due process of law' whereas the Indian Constitution relies on 'procedure established by law' (Art 21).<br>Statement 2 is incorrect: The framers explicitly chose 'procedure established by law' (borrowed from Japan) and rejected the American 'due process of law' to prevent the judiciary from becoming a super-legislature.<br>Statement 3 is correct: This establishes the synthesis—judiciary has review powers, while Parliament has amending powers (subject to basic structure)."
+            },
+            {
+                q: "The Indian Constitution is described as a 'Federal System with Unitary Bias'. Which of the following features support this characterization?<br><br>1. Complete territorial integrity of the states against unilateral parliamentary action.<br>2. The presence of the All-India Services.<br>3. The appointment of the State Governor by the President.<br>4. The veto power of the President over certain state bills.<br><br>Select the correct answer using the code given below:",
+                options: ["1, 2 and 3 only", "2, 3 and 4 only", "1, 3 and 4 only", "1, 2, 3 and 4"],
+                answer: 1, // Index 1 = 2, 3 and 4 only
+                exp: "Statement 1 is incorrect: States in India do not have territorial integrity. Article 3 allows Parliament to alter the boundaries or names of states without their binding consent, an inherently unitary feature.<br>Statement 2, 3, and 4 are correct: All-India Services violate the strict federal principle of divided administration. The Governor's appointment (Canadian model) and the Presidential veto on state bills (reserved by the Governor) represent strong centralizing (unitary) tendencies."
+            },
+            {
+                q: "Consider the following statements regarding the 'Basic Structure Doctrine':<br><br>1. It was explicitly incorporated into the Constitution via the 42nd Amendment Act.<br>2. The doctrine implies that while fundamental rights can be amended, the underlying framework of the Constitution cannot be destroyed.<br>3. The 'Welfare State' and 'Effective access to justice' have been recognized as elements of the Basic Structure by the Supreme Court.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is incorrect: The Basic Structure Doctrine is a judicial innovation (Kesavananda Bharati case, 1973) and is nowhere mentioned or incorporated via any constitutional amendment.<br>Statement 2 is correct: The core ruling of Kesavananda Bharati was that Parliament can amend any part, including Fundamental Rights, provided the basic structure is not altered.<br>Statement 3 is correct: Over time, subsequent judgements have added both 'Welfare State' and 'Effective access to justice' to the non-exhaustive list of basic structure elements."
+            },
+            {
+                q: "Which of the following constitutional provisions reflect the 'Secular' nature of the Indian State?<br><br>1. The State shall not deny to any person equality before the law.<br>2. No religious instruction shall be provided in any educational institution wholly maintained out of State funds.<br>3. The State shall endeavor to secure for the citizens a Uniform Civil Code.<br>4. Any section of citizens with a distinct language, script, or culture shall have the right to conserve the same.<br><br>Select the correct answer using the code given below:",
+                options: ["1 and 2 only", "2 and 3 only", "1, 2 and 3 only", "1, 2, 3 and 4"],
+                answer: 3, // Index 3 = 1, 2, 3 and 4
+                exp: "All four reflect secularism. <br>1. Article 14 (Equality before law) ensures no religious discrimination.<br>2. Article 28 prohibits religious instruction in State-funded institutions, ensuring state neutrality.<br>3. Article 44 (UCC) attempts to divorce personal laws from religion.<br>4. Article 29 (Cultural rights) protects minorities, which is central to the Indian model of positive secularism."
+            },
+            {
+                q: "Assertion (A): The Indian Constitution is characterized as 'rigid' as well as 'flexible'.<br>Reason (R): Some provisions of the Constitution can be amended by a simple majority in Parliament, which does not fall under the purview of Article 368.<br><br>In the context of the above two statements, which one of the following is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0, // Index 0
+                exp: "Assertion is true. The Indian Constitution is a blend of rigidity and flexibility. Reason is also true and is the correct explanation. It is flexible because a large number of provisions can be amended by a simple majority (e.g., admitting new states, quorum in Parliament) outside Article 368. It is rigid because certain federal provisions require a special majority of Parliament plus ratification by half the state legislatures (under Art 368)."
+            },
+            {
+                q: "Consider the following statements about the 'Universal Adult Franchise' in India:<br><br>1. It was adopted directly in the original Constitution without being subjected to a gradual phased implementation.<br>2. The voting age was reduced from 21 years to 18 years by the 61st Constitutional Amendment Act.<br>3. The provision of Universal Adult Franchise is guaranteed under Article 326 as a constitutional right, not a fundamental right.<br><br>Which of the statements given above are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 3, // Index 3 = 1, 2 and 3
+                exp: "Statement 1 is correct: Despite vast illiteracy and poverty, the framers took a bold step to introduce it immediately for all adults without phases.<br>Statement 2 is correct: The 61st CAA (1988) reduced the voting age to 18.<br>Statement 3 is correct: Article 326 guarantees that elections to the Lok Sabha and State Assemblies shall be on the basis of adult suffrage. It is a constitutional right, distinct from Part III fundamental rights."
+            },
+            {
+                q: "With reference to the 'Independent Bodies' established by the Constitution to serve as bulwarks of the democratic system, consider the following:<br><br>1. The Comptroller and Auditor-General of India controls the issue of money from the Consolidated Fund of India.<br>2. The Election Commission is responsible for conducting elections to the Parliament, State Legislatures, and the offices of the President and Vice-President.<br>3. The expenses of the Union Public Service Commission are charged on the Consolidated Fund of India.<br><br>How many of the statements given above are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is incorrect: Unlike the CAG in Britain, the CAG of India does not control the issue of money. The CAG only audits accounts after the expenditure is made. Money can be drawn from the CFI without CAG approval.<br>Statement 2 is correct: Article 324 mandates the EC to conduct these specific elections (not local bodies).<br>Statement 3 is correct: To ensure independence, UPSC expenses are charged on the CFI and are not subject to parliamentary vote."
+            },
+            {
+                q: "Regarding 'Single Citizenship' in India, consider the following statements:<br><br>1. The Constitution of India provides for single citizenship but allows states to provide special residential rights for employment under Article 16.<br>2. Overseas Citizen of India (OCI) cardholders possess political rights equivalent to Indian citizens but are exempt from paying taxes in India.<br>3. Only citizens by birth are eligible for the office of the President of India.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 only", "1 and 2 only", "3 only", "None"],
+                answer: 0, // Index 0 = 1 only
+                exp: "Statement 1 is correct: While India has single citizenship, Article 16(3) empowers Parliament (not state legislatures) to prescribe residence within a state as a condition for certain employments.<br>Statement 2 is incorrect: OCI cardholders do NOT have political rights (cannot vote or hold public office) and their tax liability depends on their residential status under the IT Act.<br>Statement 3 is incorrect: In India, a citizen by birth as well as a naturalized citizen is eligible for the President's office. (In the USA, only a citizen by birth is eligible)."
+            },
+            {
+                q: "The Constitution of India balances the Fundamental Rights (FRs) and Directive Principles of State Policy (DPSPs). Which of the following judicial pronouncements established that the 'harmony and balance between FRs and DPSPs is an essential feature of the basic structure'?<br><br>1. Champakam Dorairajan Case (1951)<br>2. Golaknath Case (1967)<br>3. Kesavananda Bharati Case (1973)<br>4. Minerva Mills Case (1980)<br><br>Select the correct answer:",
+                options: ["1", "2", "3", "4"],
+                answer: 3, // Index 3 = 4 (Minerva Mills)
+                exp: "In the Minerva Mills case (1980), the Supreme Court held that the Indian Constitution is founded on the bedrock of the balance between Fundamental Rights and the Directive Principles. Destroying this balance would destroy the basic structure of the Constitution. The other cases dealt with primacy, but Minerva Mills explicitly enshrined the 'balance' as a Basic Structure element."
+            },
+            {
+                q: "Consider the following statements regarding the 'Objectives Resolution' adopted by the Constituent Assembly:<br><br>1. It explicitly contained the term 'Secular' to describe the future constitutional nature of the republic.<br>2. It guaranteed adequate safeguards for minorities, backward and tribal areas, and depressed and other backward classes.<br>3. It formed the philosophical bedrock upon which the Preamble of the Indian Constitution was drafted.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1,
+                exp: "Statement 1 is incorrect: The Objectives Resolution did not contain the term 'Secular'. The term was added to the Preamble much later by the 42nd Amendment Act in 1976. Statements 2 and 3 are correct: The resolution specifically mandated safeguards for minorities and backward classes, and its modified version ultimately became the Preamble."
+            },
+            {
+                q: "The Indian Constitution embodies the concept of 'Asymmetric Federalism'. Which of the following constitutional provisions logically reflect this principle?<br><br>1. Article 371-A granting special status and specific immunities to Nagaland.<br>2. The existence of the Sixth Schedule for tribal areas in Assam, Meghalaya, Tripura, and Mizoram.<br>3. The methodology of representation of states in the Rajya Sabha under the Fourth Schedule.<br><br>Select the correct answer using the code given below:",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 3,
+                exp: "All three reflect asymmetric federalism. Statements 1 and 2 are clear examples of differential treatment to protect specific regional or tribal identities. Statement 3 is also correct: Unlike the US Senate which gives symmetric (equal) representation to all states (2 seats each), the Rajya Sabha allocates seats asymmetrically based on population, leading to unequal political weight among states."
+            },
+            {
+                q: "Assertion (A): 'Constitutional Morality' requires strict adherence exclusively to the explicitly written text of the Constitution, leaving no room for subjective judicial interpretation.<br>Reason (R): The Supreme Court in the Sabarimala judgement invoked Constitutional Morality to strike down customary religious practices that violated fundamental rights.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 3,
+                exp: "Assertion is false: Constitutional Morality is not restricted to the literal text; it encompasses implied constitutional values like pluralism, inclusion, fraternity, and dignity. It checks arbitrary power even if not explicitly written. Reason is true: The SC heavily relied on the doctrine of Constitutional Morality in the Sabarimala case to prioritize equality over exclusionary religious customs."
+            },
+            {
+                q: "Consider the following statements regarding the 'Fundamental Duties' in the Indian Constitution:<br><br>1. They were added upon the recommendation of the Swaran Singh Committee, which originally suggested imposing penal provisions for their non-compliance.<br>2. The duty to 'strive towards excellence in all spheres of individual and collective activity' is applicable to citizens and resident aliens alike.<br>3. Parliament is constitutionally barred from enforcing any Fundamental Duty through direct legislation.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0,
+                exp: "Statement 1 is correct: The Swaran Singh Committee did suggest penal provisions, though the government of the time rejected that specific recommendation. Statement 2 is incorrect: Fundamental Duties (Part IVA) apply ONLY to Indian citizens, not aliens. Statement 3 is incorrect: The Supreme Court has clarified that Parliament CAN enforce duties through suitable legislation (e.g., Prevention of Insults to National Honour Act, 1971)."
+            },
+            {
+                q: "Which of the following mechanisms demonstrate the constitutional 'Checks and Balances' within the Indian model of Separation of Powers?<br><br>1. Promulgation of Ordinances by the President under Article 123.<br>2. Judicial review of legislative enactments by the higher judiciary.<br>3. Parliamentary control over the executive through Adjournment and No-Confidence Motions.<br>4. Appointment of Supreme Court judges via the Collegium system without executive veto.<br><br>Select the correct answer:",
+                options: ["1, 2 and 3 only", "2 and 3 only", "2, 3 and 4 only", "1, 2, 3 and 4"],
+                answer: 0,
+                exp: "Statements 1, 2, and 3 are correct examples of checks and balances (Executive exercising legislative power in emergencies, Judiciary checking Legislature, Legislature checking Executive). Statement 4 is incorrect: The Collegium system is a judicial innovation that minimizes the executive's check on the judiciary, skewing the intended constitutional balance rather than demonstrating a 'check and balance' designed by the framers."
+            },
+            {
+                q: "Consider the following provisions of the Constitution:<br><br>1. Abolition or creation of Legislative Councils in States.<br>2. Representation of States in Parliament.<br>3. Power of Parliament to amend the Constitution and its procedure (Article 368).<br><br>Which of the above requires an amendment by a special majority of Parliament combined with the consent of half of the state legislatures?",
+                options: ["1 and 2 only", "2 and 3 only", "3 only", "1, 2 and 3"],
+                answer: 1,
+                exp: "Statement 1 is incorrect: Article 169 (creation/abolition of legislative councils) requires only a simple majority in Parliament and is explicitly stated not to be deemed an amendment under Article 368. Statements 2 and 3 are correct: Altering state representation (Schedule 4) and amending Article 368 itself directly alter the federal balance and require state ratification."
+            },
+            {
+                q: "The concept of 'Rule of Law' as propounded by A.V. Dicey includes specific elements. How many of these original elements are fully applicable in the Indian legal system?<br><br>1. Absence of arbitrary power.<br>2. Equality before the law.<br>3. The primacy of the rights of the individual as the source of the Constitution.<br><br>Select the correct statement:",
+                options: [
+                    "All three elements are applicable in India.",
+                    "Only 1 and 2 are applicable in India.",
+                    "Only 2 and 3 are applicable in India.",
+                    "None of the elements apply due to immunities under Article 361."
+                ],
+                answer: 1,
+                exp: "Dicey's concept has three core elements. The first two (absence of arbitrary power and equality before the law) apply in India and form the basis of Article 14. The third element (the Constitution is the result of individual rights defined by courts) does NOT apply in India. In India, the written Constitution is the source of individual rights, not the outcome of judicial decisions as in the unwritten UK system."
+            },
+            {
+                q: "Consider the following statements regarding the Directive Principles of State Policy (DPSP):<br><br>1. The framers of the Indian Constitution borrowed this concept directly from the Spanish Constitution.<br>2. They conceptually resemble the 'Instrument of Instructions' enumerated in the Government of India Act of 1935.<br>3. The Supreme Court has established that DPSPs are subservient to Fundamental Rights in all cases of conflict without exception.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0,
+                exp: "Statement 1 is incorrect: India borrowed the concept from the Irish Constitution (which in turn had borrowed it from Spain). Statement 2 is correct: Dr. B.R. Ambedkar equated DPSPs with the Instrument of Instructions. Statement 3 is incorrect: Under Article 31C, laws implementing DPSPs 39(b) and 39(c) take precedence over Fundamental Rights 14 and 19. Hence, they are not subservient in *all* cases."
+            },
+            {
+                q: "With reference to the Preamble of the Indian Constitution, which of the following statements is/are factually accurate based on its exact text?<br><br>1. It secures five specific types of liberty and three distinct types of justice.<br>2. It was adopted, enacted, and given to themselves by the 'People of India' on 26th January 1950.<br>3. 'Fraternity' assures the dignity of the individual and the unity and integrity of the Nation.<br><br>Select the correct answer:",
+                options: ["1 and 3 only", "2 and 3 only", "3 only", "1, 2 and 3"],
+                answer: 0,
+                exp: "Statement 1 is correct: 5 liberties (thought, expression, belief, faith, worship) and 3 types of justice (social, economic, political). Statement 2 is incorrect: The date of adoption mentioned in the Preamble is 26th November 1949, not 1950. Statement 3 is correct: This is the exact phrasing currently in the Preamble ('and integrity' was added by the 42nd Amendment)."
+            },
+            {
+                q: "Match the following Schedules with their defining features regarding the Salient Features of the Constitution:<br><br>1. Third Schedule : Contains forms of Oaths, including that of the President of India.<br>2. Fifth Schedule : Deals with the administration of scheduled areas in states including Assam and Meghalaya.<br>3. Ninth Schedule : Originally created to protect agrarian land reform laws from judicial review.<br><br>How many pairs are correctly matched?",
+                options: ["Only one pair", "Only two pairs", "All three pairs", "None"],
+                answer: 0,
+                exp: "Pair 1 is incorrect: The Third Schedule contains oaths for Ministers, MPs, Judges, etc., but NOT the President (whose oath is specified in Article 60). Pair 2 is incorrect: The Fifth Schedule applies to scheduled areas EXCEPT those in Assam, Meghalaya, Tripura, and Mizoram (which fall under the Sixth Schedule). Pair 3 is correct: Added by the 1st Amendment Act, 1951, to protect land reforms from FR violation challenges."
+            },
+            {
+                q: "Assertion (A): The principle of 'Pith and Substance' is applied by the courts to resolve conflicts between entries in the Union List and State List.<br>Reason (R): It determines the true nature and character of a legislation to check if it falls within the legislative competence of the enacting legislature, despite incidental encroachments.<br><br>In the context of the above, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0,
+                exp: "Both A and R are true, and R is the correct explanation. When a law enacted by a State incidentally encroaches upon a subject in the Union List, courts apply the 'Pith and Substance' doctrine. If the core (pith) of the law legitimately belongs to the State's domain, the incidental encroachment into the Union domain does not render the law invalid."
+            },
+            {
+                q: "Consider the following statements regarding the Emergency provisions, which represent a unique feature converting the federal structure into a unitary one:<br><br>1. During a National Emergency, Parliament acquires concurrent power to legislate on subjects in the State List.<br>2. The suspension of Article 19 under Article 358 occurs automatically only if the emergency is declared on grounds of armed rebellion.<br>3. Financial Emergency (Article 360) has never been declared in India since the commencement of the Constitution.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1,
+                exp: "Statement 1 is correct (Article 250 allows Parliament to legislate on State List subjects, though State legislatures are not suspended). Statement 2 is incorrect: Article 19 is suspended automatically ONLY when the emergency is declared on grounds of war or external aggression, NOT armed rebellion (safeguard added by the 44th Amendment). Statement 3 is correct: Article 360 has never been invoked."
+            },
+            {
+                q: "Which of the following constitutional features are matched CORRECTLY with the foreign Constitutions they were borrowed from?<br><br>1. Joint sitting of the two houses of Parliament : Australian Constitution<br>2. Procedure established by Law : Japanese Constitution<br>3. Nomination of members to the Rajya Sabha : US Constitution<br>4. Ideals of liberty, equality, and fraternity in the Preamble : French Constitution<br><br>Select the correct code:",
+                options: ["1, 2 and 4 only", "2, 3 and 4 only", "1 and 4 only", "1, 2, 3 and 4"],
+                answer: 0,
+                exp: "Statements 1, 2, and 4 are correctly matched. Statement 3 is incorrect: The nomination of members to the Rajya Sabha (along with the Directive Principles) was borrowed from the Irish Constitution, not the US Constitution."
+            },
+            {
+                q: "K.C. Wheare described the Indian Constitution as 'Quasi-Federal'. Which of the following mechanisms best illustrate this 'unitary tilt' during normal (non-emergency) times?<br><br>1. The power of the Centre to deploy armed forces in a state without the state government's explicit consent.<br>2. The Centre's power to issue binding administrative directions to states under Article 256.<br>3. The power of the Rajya Sabha to unilaterally shift a State List subject to the concurrent domain.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 2,
+                exp: "Statement 1 is correct: Article 355 empowers the Union to protect states against internal disturbance, allowing central force deployment. Statement 2 is correct: Non-compliance with Article 256 directions can lead to President's Rule (Art 365). Statement 3 is correct: Article 249 allows the Rajya Sabha (by special majority) to authorize Parliament to legislate on a State List subject in the national interest. All three operate during normal times."
+            },
+            {
+                q: "Consider the following statements regarding the salient feature of 'Protection of Minorities' in the Constitution:<br><br>1. The Constitution defines the term 'Minority' strictly on numerical and demographic grounds based on the decadal census.<br>2. Article 30 grants both linguistic and religious minorities the fundamental right to establish and administer educational institutions.<br>3. The constitutional office of the Special Officer for Linguistic Minorities was an integral part of the original, unamended Constitution.<br><br>Which of the statements given above is/are correct?",
+                options: ["2 only", "1 and 2 only", "2 and 3 only", "None"],
+                answer: 0,
+                exp: "Statement 1 is incorrect: The Constitution explicitly uses the term 'minority' but does NOT define it anywhere in its text. Statement 2 is correct: Article 30 explicitly protects both religious and linguistic minorities. Statement 3 is incorrect: The Special Officer for Linguistic Minorities (Article 350B) was inserted later by the 7th Constitutional Amendment Act, 1956."
+            },
+            {
+                q: "Regarding the bicameral legislature at the Union level, consider the following statements:<br><br>1. The Rajya Sabha embodies the federal principle by representing the states, while the Lok Sabha represents the people directly.<br>2. The Constitution ensures absolute parity of powers between the two Houses concerning the passage of Ordinary Bills and Constitutional Amendment Bills.<br>3. The Chairman of the Rajya Sabha is elected directly by the members of both houses convening in a joint sitting.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1,
+                exp: "Statement 1 is correct. Statement 2 is correct: Both houses have equal powers regarding Ordinary Bills (though Lok Sabha dominates in a joint sitting due to size) and Constitutional Amendments (which must be passed separately by both houses). Statement 3 is incorrect: The Vice President is the ex-officio Chairman. The VP is elected by an electoral college of MPs, but not via a legislative 'joint sitting'."
+            },
+            {
+                q: "To ensure the absolute independence of the Judiciary, the Constitution of India provides for which of the following protective mechanisms?<br><br>1. Security of tenure for Supreme Court and High Court judges, removable only by impeachment.<br>2. A constitutional prohibition on the practice of law by any retired Supreme Court judge before any court in India.<br>3. The inherent power of the Supreme Court to punish for its contempt.<br>4. Complete financial autonomy, wherein the judiciary drafts and passes its own budget independent of Parliament.<br><br>Select the correct answer:",
+                options: ["1, 2 and 3 only", "1 and 3 only", "2, 3 and 4 only", "1, 2, 3 and 4"],
+                answer: 0,
+                exp: "Statements 1, 2, and 3 are correct constitutional provisions safeguarding independence (Article 124(7) bans practice after retirement for SC judges). Statement 4 is incorrect: While the salaries of judges are charged on the Consolidated Fund (meaning they are non-votable), the judiciary's budget is still presented to and passed as part of the overall Union Budget by Parliament."
+            },
+            {
+                q: "Assertion (A): The process of amending the Indian Constitution is conceptually simpler than that of the US Constitution but more rigid than that of the British Constitution.<br>Reason (R): The Indian Parliament cannot initiate a Constitutional Amendment Bill (under Article 368) on its own; it requires the prior recommendation of the President.<br><br>In the context of the above, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 2,
+                exp: "Assertion is true: India presents a unique synthesis of US rigidity and UK flexibility. Reason is false: A Constitutional Amendment Bill under Article 368 can be introduced in either House of Parliament by a minister or a private member WITHOUT requiring the prior permission or recommendation of the President."
+            },
+            {
+                q: "Consider the following statements regarding the Constitutional provisions on Citizenship (Part II):<br><br>1. The Constitution comprehensively outlines the detailed mechanisms for the acquisition and loss of citizenship subsequent to the commencement of the Constitution.<br>2. Article 11 empowers the Parliament to regulate the right of citizenship by law.<br>3. 'Citizenship' is listed in the Concurrent List, allowing states to pass citizenship laws provided there is no repugnancy with Central statutes.<br><br>Which of the statements given above is/are correct?",
+                options: ["2 only", "1 and 2 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 0,
+                exp: "Statement 1 is incorrect: Part II only identifies who became citizens on Jan 26, 1950. It left all post-commencement acquisition/loss mechanisms to Parliament (which subsequently enacted the Citizenship Act, 1955). Statement 2 is correct. Statement 3 is incorrect: Citizenship is an exclusive subject in the Union List (Entry 17, List I); states have zero legislative competence over it."
+            },
+            {
+                q: "The inclusion of the term 'Republic' in the Preamble of the Indian Constitution legally and politically indicates:<br><br>1. The vesting of political sovereignty in the people rather than a single individual or monarch.<br>2. The head of the state is always elected, either directly or indirectly, for a fixed tenure.<br>3. The absolute absence of any privileged class, ensuring all public offices are thrown open to every citizen without discrimination.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 2,
+                exp: "All three statements correctly decode the constitutional implications of a 'Republic'. It signifies an elected head of state (the President), popular sovereignty residing in the citizenry, and structural equality of opportunity by abolishing inherently privileged classes."
+            },
+            {
+                q: "Which of the following best describes the core constitutional rationale for the bold adoption of Universal Adult Franchise in India in 1950, despite rampant mass illiteracy and poverty?<br><br>1. To strictly comply with the conditional democratic demands placed by the British Parliament in the Indian Independence Act, 1947.<br>2. To operationalize the fundamental principle of 'One Person, One Vote, One Value', thereby ensuring total political equality.<br>3. To fulfill India's immediate legal commitments under the Universal Declaration of Human Rights (1948).<br><br>Select the correct answer:",
+                options: ["2 only", "1 and 2 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 0,
+                exp: "Statement 1 is absurd; the Constituent Assembly was a fully sovereign body post-independence. Statement 3, while contextually relevant internationally, was not the *domestic constitutional rationale* driving the framers. Statement 2 is correct: It was a conscious tool to ensure political equality and popular sovereignty, dismantling the colonial legacy of communal electorates and property/education-based voting qualifications."
+            },
+            {
+                q: "Consider the following features of the Indian constitutional design:<br><br>1. Integrated Judicial System<br>2. Division of Powers between two tiers of government<br>3. A Written Constitution<br>4. Supremacy of the Constitution<br><br>Which of the above are strictly essential features of the 'Federal' structure of India?",
+                options: ["1, 2 and 4 only", "2, 3 and 4 only", "1, 3 and 4 only", "1, 2, 3 and 4"],
+                answer: 1,
+                exp: "Division of powers, a written constitution, and supremacy of the constitution are indispensable federal features ensuring that states have protected, unalterable domains. An 'Integrated Judicial System' (with the Supreme Court at the top enforcing both central and state laws) is structurally a UNITARY/centralizing feature. True federations (like the US) have dual, parallel judicial systems."
+            },
+            {
+                q: "Assertion (A): The Constituent Assembly of India was a fully sovereign body from its very first session in December 1946.<br>Reason (R): It was constituted under the provisions of the Cabinet Mission Plan which granted it absolute sovereignty to draft any constitution without limitations.<br><br>In the context of the above, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "Both A and R are false"
+                ],
+                answer: 3,
+                exp: "Both statements are false. The Assembly was NOT fully sovereign initially; its powers and procedures were strictly subject to the limitations imposed by the Cabinet Mission Plan (e.g., compulsory grouping of provinces, limited central subjects). It only achieved full, unbridled sovereignty on August 15, 1947, following the passage of the Indian Independence Act."
+            },
+            {
+                q: "The concept of a 'Welfare State', as opposed to a mere police state, finds its most explicit, programmatic, and comprehensive expression in which part of the Indian Constitution?<br><br>1. The Preamble<br>2. Fundamental Rights (Part III)<br>3. Directive Principles of State Policy (Part IV)<br>4. Fundamental Duties (Part IVA)<br><br>Select the correct answer:",
+                options: ["1 and 3 only", "3 only", "2 and 3 only", "1, 2, 3 and 4"],
+                answer: 1,
+                exp: "While the Preamble states the noble goal of socio-economic justice, the actual operational architecture of the 'Welfare State' is most explicitly and comprehensively detailed in Part IV (Directive Principles). Specifically, Article 38 directs the State to secure a social order for the promotion of the welfare of the people."
+            },
+            {
+                q: "Which of the following procedural features strictly distinguish the Indian Parliamentary system from the American Presidential system?<br><br>1. Separation of the roles of Head of State and Head of Government.<br>2. The constitutional mechanism to dissolve the Lower House before the expiry of its term.<br>3. Collective responsibility of the Executive to the Lower House of the Legislature.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 2,
+                exp: "All three are classic distinguishing features. 1: India separates the President (State) and PM (Govt), whereas the US President holds both roles. 2: The Lok Sabha can be dissolved prematurely on the PM's advice; the US House of Representatives operates on a strict fixed term and cannot be dissolved. 3: The Indian executive survives only as long as it holds the confidence of the Lok Sabha; the US executive is structurally independent of congressional confidence."
+            },
+            {
+                q: "Consider the following statements regarding the principle of 'Constitutionalism' (Limited Government) as embodied in the Indian Constitution:<br><br>1. The enumeration of Fundamental Rights is the sole mechanism through which Constitutionalism is established in India.<br>2. A written constitution is a necessary but not a sufficient condition for Constitutionalism to exist.<br>3. The doctrine of Basic Structure is essentially a judicial tool to enforce Constitutionalism against the amending power of the Parliament.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is incorrect: Constitutionalism is established through multiple mechanisms including Separation of Powers, Judicial Review, Federalism, and Independent Bodies, not solely through Fundamental Rights.<br>Statement 2 is correct: A country can have a written constitution (like many authoritarian regimes) without having limited government (Constitutionalism).<br>Statement 3 is correct: The Basic Structure doctrine limits the absolute amending power of the legislature, thereby preserving the core limits on state power."
+            },
+            {
+                q: "The Indian Constitution contains a unique feature of a 'Three-tier Government', which was not present in the original draft. In this context, consider the following statements:<br><br>1. The 73rd and 74th Constitutional Amendment Acts completely deprived the State Legislatures of their power to legislate on local government matters.<br>2. The Constitution mandates a fixed five-year term for all local bodies and prohibits their premature dissolution under any circumstances.<br>3. State Election Commissions, which conduct local body elections, are entirely subordinate to the Election Commission of India.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 3, // Index 3 = None
+                exp: "Statement 1 is incorrect: Local government remains a State List subject (Entry 5). The amendments only provided a constitutional framework; the actual devolution of powers is left to the discretion of State Legislatures.<br>Statement 2 is incorrect: While a five-year term is mandated, they can be dissolved prematurely, provided fresh elections are held within six months.<br>Statement 3 is incorrect: The State Election Commission is an independent constitutional body under Article 243K and is NOT subordinate to the ECI."
+            },
+            {
+                q: "Regarding the 'Integrated but Independent Judiciary', a salient feature of the Indian Constitution, consider the following:<br><br>1. The Supreme Court and the High Courts enforce both Central and State laws, unlike the dual system of courts in the USA.<br>2. The salaries and allowances of High Court judges are charged on the Consolidated Fund of India to ensure financial independence.<br>3. Parliament has the exclusive power to alter the jurisdiction and powers of the Supreme Court, but it cannot curtail them.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 only", "1 and 3 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 1 and 3 only
+                exp: "Statement 1 is correct: India has a single integrated judicial system that administers both Union and State laws. In the US, federal laws are enforced by federal courts and state laws by state courts.<br>Statement 2 is incorrect: The salaries and allowances of HC judges are charged on the Consolidated Fund of the STATE (not India), though their pensions are charged on the Consolidated Fund of India.<br>Statement 3 is correct: Parliament can extend the SC's jurisdiction but is constitutionally barred from curtailing it."
+            },
+            {
+                q: "Assertion (A): The Indian Constitution permits the imposition of a fee on religious institutions, but strictly prohibits the levying of a tax for the promotion of any particular religion.<br>Reason (R): Article 27 of the Constitution ensures that public money collected through general taxation is not utilized for the maintenance of any specific religious denomination.<br><br>In the context of the above two statements, which one of the following is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0, // Index 0
+                exp: "Both A and R are true, and R is the correct explanation. Article 27 prohibits the State from compelling any person to pay taxes for the promotion of a particular religion. However, it does not prohibit the levy of a 'fee' (e.g., for providing secular administration to religious endowments or managing crowds at pilgrimage sites) because a fee is collected for a specific service rendered, not for religious promotion."
+            },
+            {
+                q: "Consider the following statements regarding the constitutional status of 'Co-operative Societies', which was added as a salient feature later:<br><br>1. The 97th Constitutional Amendment Act elevated the formation of co-operative societies to the status of a Fundamental Right under Article 19.<br>2. A new Directive Principle of State Policy (Article 43B) was inserted to promote voluntary formation of co-operative societies.<br>3. Part IX-B, dealing with co-operative societies, applies uniformly to all states without giving any discretionary power to state legislatures.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is correct: The 97th CAA (2011) amended Article 19(1)(c) to include the right to form co-operative societies.<br>Statement 2 is correct: Article 43B was added to Part IV.<br>Statement 3 is incorrect: Part IX-B provides a broad constitutional framework but explicitly leaves many crucial administrative and regulatory details to the discretion of the State Legislatures (as co-operatives are a State subject)."
+            },
+            {
+                q: "While the Indian Constitution heavily borrowed from various sources, it adapted them to suit Indian conditions. In this context, which of the following is/are fundamentally distinct from their original British source?<br><br>1. The doctrine of Parliamentary Sovereignty.<br>2. The mechanism of the Rule of Law.<br>3. The nature of the Head of the State.<br><br>Select the correct answer using the code given below:",
+                options: ["1 and 3 only", "2 only", "3 only", "1, 2 and 3"],
+                answer: 0, // Index 0 = 1 and 3 only
+                exp: "Statement 1 is distinct: British Parliament is fully sovereign; the Indian Parliament is constrained by a written Constitution, fundamental rights, and judicial review.<br>Statement 2 is NOT distinct: The concept of Rule of Law (equality before law) is fundamentally similar to the British concept (Dicey).<br>Statement 3 is distinct: Britain has a hereditary monarch as Head of State, while India is a Republic with an elected President."
+            },
+            {
+                q: "Consider the following constitutional authorities:<br><br>1. Chairman of the Union Public Service Commission<br>2. Chief Election Commissioner<br>3. Comptroller and Auditor General of India<br><br>For which of the above authorities does the Constitution prescribe a removal process identical to that of a Judge of the Supreme Court?",
+                options: ["2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 2 and 3 only
+                exp: "The Constitution provides identical removal procedures (impeachment-like process by Parliament) for Supreme Court judges, High Court judges, the Chief Election Commissioner (Article 324), and the CAG (Article 148). However, the Chairman and members of the UPSC are removed by the President based on an inquiry report submitted by the Supreme Court (Article 317), which is a completely different procedure."
+            },
+            {
+                q: "The Indian Constitution is the lengthiest written constitution in the world. Which of the following historical or structural factors directly contributed to its elephantine size?<br><br>1. The incorporation of both justiciable and non-justiciable rights.<br>2. The constitutional codification of detailed administrative provisions usually left to ordinary legislation in other democracies.<br>3. The adoption of the Government of India Act, 1935 as a structural blueprint.<br>4. The provision of separate constitutions for states within the Indian Union before 2019.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "Only three", "All four"],
+                answer: 2, // Index 2 = Only three
+                exp: "Statements 1, 2, and 3 are correct reasons. It includes both FRs (justiciable) and DPSPs (non-justiciable). It details administrative mechanisms (like UPSC, EC, services). It borrowed the bulky GoI Act 1935. Statement 4 is incorrect: The Constitution provided a SINGLE constitution for both the Centre and all States (except the temporary exception of J&K, but the bulkiness of the main text is due to Part VI detailing state administration, not because states had 'separate' constitutions)."
+            },
+            {
+                q: "Assertion (A): Despite having an emergency provision (Article 356) that allows the Centre to take over State governments, India is structurally a federation.<br>Reason (R): The Supreme Court, in the S.R. Bommai case, ruled that Federalism is a part of the Basic Structure of the Constitution and Article 356 is subject to judicial review.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0, // Index 0
+                exp: "Assertion is true. Reason is also true and is the correct explanation. The existence of centralizing features like Article 356 does not destroy the federal character because federalism is a Basic Structure element. The Supreme Court in the Bommai case (1994) restricted the arbitrary use of Article 356, making it subject to judicial review, thus safeguarding the federal structure."
+            },
+            {
+                q: "Consider the following statements regarding the 'Residuary Powers' in the Indian constitutional framework:<br><br>1. In India, residuary powers are vested in the Union Parliament, a feature borrowed from the Canadian Constitution.<br>2. Under the Government of India Act of 1935, residuary powers were vested in the Central Legislature.<br>3. In the United States, residuary powers are vested in the States.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is correct: Article 248 vests residuary powers in the Union, akin to the Canadian model. Statement 2 is incorrect: Under the GoI Act 1935, residuary powers were vested neither in the Central nor Provincial legislatures, but in the Governor-General, who could authorize either to enact laws on residuary subjects. Statement 3 is correct: The 10th Amendment of the US Constitution explicitly leaves residuary powers to the States."
+            },
+            {
+                q: "With reference to the evolution of the Right to Life and Personal Liberty (Article 21), how did the Maneka Gandhi Case (1978) fundamentally alter a salient feature of the Constitution?<br><br>1. It virtually introduced the American concept of 'Due Process of Law' into Article 21.<br>2. It held that a law depriving a person of personal liberty must not only be enacted by a competent legislature but must also be fair, just, and reasonable.<br>3. It removed the absolute protection previously enjoyed by the Executive against legislative actions.<br><br>Select the correct answer:",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 0, // Index 0 = 1 and 2 only
+                exp: "Statement 1 is correct: While the text still says 'procedure established by law', the SC creatively interpreted it to mean that the procedure itself must be fair, effectively reading 'due process' into it.<br>Statement 2 is correct: This was the core ruling of the case, ensuring judicial review over substantive aspects of laws, not just procedural.<br>Statement 3 is incorrect: It provided protection against arbitrary *legislative* actions, whereas earlier (Gopalan case), Art 21 only protected against arbitrary *executive* actions."
+            },
+            {
+                q: "Which of the following constitutional provisions can be altered by Parliament by a 'Simple Majority', reflecting the highly flexible nature of the Indian Constitution?<br><br>1. Admission or establishment of new States.<br>2. Changes in the boundaries of existing States.<br>3. Alteration of the provisions regarding the Supreme Court's original jurisdiction.<br>4. Reconstitution of the Delimitation Commission.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "Only three", "All four"],
+                answer: 2, // Index 2 = Only three
+                exp: "Provisions 1, 2, and 4 can be changed by a simple majority. Under Articles 2, 3, and 4, changes to state boundaries or names are explicitly stated not to be amendments under Article 368. Delimitation is governed by an ordinary Act of Parliament. However, provision 3 (Supreme Court's jurisdiction, Chapter IV of Part V) requires an Article 368 Special Majority, and some aspects require state ratification."
+            },
+            {
+                q: "Consider the following statements regarding the distinction between Fundamental Rights (FRs) and Directive Principles of State Policy (DPSPs):<br><br>1. FRs establish political democracy, whereas DPSPs establish social and economic democracy.<br>2. FRs are negative injunctions on the State, while DPSPs are positive obligations.<br>3. Any law enacted to give effect to any DPSP is automatically immune from being challenged on the grounds of violating Article 14 and Article 19.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 and 2 are correct conceptual distinctions universally recognized by the Supreme Court. Statement 3 is incorrect: Only laws enacted to implement specific DPSPs—namely Article 39(b) and 39(c)—are protected from challenges under Articles 14 and 19 (via Article 31C). A blanket immunity for *any* DPSP does not exist; the Supreme Court struck down such a blanket provision introduced by the 42nd Amendment in the Minerva Mills case."
+            },
+            {
+                q: "Match the following salient features with their primary objective as envisioned by the Constituent Assembly:<br><br>1. Directive Principles : To prevent the establishment of authoritarian rule and secure a welfare state.<br>2. Single Citizenship : To foster fraternization and overcome regional parochialism.<br>3. Emergency Provisions : To safeguard the sovereignty, unity, integrity, and security of the country.<br><br>How many pairs are correctly matched?",
+                options: ["Only one pair", "Only two pairs", "All three pairs", "None"],
+                answer: 2, // Index 2 = All three pairs
+                exp: "Pair 1 is correct: DPSPs lay down the socio-economic framework preventing a purely police state (authoritarian) and ushering a welfare state. Pair 2 is correct: Despite federalism, a single citizenship was adopted to build a united Indian identity over regional ones. Pair 3 is correct: Emergency provisions are an extraordinary mechanism explicitly designed to convert the federal structure to a unitary one to protect national integrity and security."
+            },
+            {
+                q: "Regarding the exceptions to the 'Rule of Law' (Article 14) in the Indian Constitution, consider the following statements:<br><br>1. The President of India is completely immune from civil proceedings during their term of office.<br>2. Foreign sovereigns and diplomats are immune from both civil and criminal proceedings in Indian courts.<br>3. Members of Parliament cannot be held liable in any court for any vote given by them in parliamentary committees.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 2 and 3 only
+                exp: "Statement 1 is incorrect: Under Article 361, the President is immune from criminal proceedings, but civil proceedings *can* be instituted against them in respect of their personal acts after giving a two-month advance notice. Statement 2 is correct: This is based on international law principles integrated into domestic law. Statement 3 is correct: Article 105 protects MPs from legal proceedings for anything said or any vote given in Parliament or any committee thereof."
+            },
+            {
+                q: "Which of the following elements are considered part of the 'Basic Structure' of the Indian Constitution, limiting the Parliament's amending power?<br><br>1. The Parliamentary system of government.<br>2. The mandate to build a welfare state under Directive Principles.<br>3. Freedom and dignity of the individual.<br>4. The principle of equality as enshrined in Article 14.<br><br>Select the correct answer using the code given below:",
+                options: ["1 and 4 only", "2, 3 and 4 only", "1, 3 and 4 only", "1, 2, 3 and 4"],
+                answer: 3, // Index 3 = 1, 2, 3 and 4
+                exp: "All four are recognised elements of the Basic Structure. The Parliamentary system, individual dignity, and the principle of equality (Rule of Law) are foundational. Furthermore, the Supreme Court has explicitly recognized the 'Welfare State' (arising from DPSPs) and the balance between FRs and DPSPs as part of the Basic Structure (Minerva Mills and subsequent cases)."
+            },
+            {
+                q: "Assertion (A): The Constitution of India provides for an elaborate, permanent institutional structure for 'Asymmetric Federalism' through the Inter-State Council.<br>Reason (R): Article 263 empowers the President to establish an Inter-State Council to investigate and advise on disputes between states.<br><br>In the context of the above, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 3, // Index 3 = A is false but R is true
+                exp: "Assertion is false: 'Asymmetric Federalism' refers to the differential treatment of certain states (like Article 371 provisions for North-Eastern states, Gujarat, Maharashtra), not the mechanism of dispute resolution. The Inter-State Council promotes *Co-operative Federalism*, not asymmetric federalism. Reason is true: Article 263 does indeed empower the President to create the Inter-State Council (which was done in 1990)."
+            },
+            {
+                q: "Consider the following statements regarding the philosophical underpinning of the Indian Constitution:<br><br>1. The Constitution favors community rights over individual rights in absolute terms.<br>2. The Indian version of secularism recognizes and protects religious minorities as distinct constitutional entities.<br>3. The constitutional ideal of 'Fraternity' was heavily inspired by the American Declaration of Independence.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is incorrect: The Constitution balances individual rights (FRs) with community rights and social welfare, but it does not absolutely favor community rights over individual dignity. Statement 2 is correct: Unlike Western secularism (which often ignores religious group identities in public spaces), Indian secularism constitutionally recognizes and protects religious minorities (Articles 29 and 30). Statement 3 is incorrect: The ideals of Liberty, Equality, and Fraternity were borrowed from the French Revolution, not the American Declaration."
+            },
+            {
+                q: "The Constitution of India relies heavily on 'Constitutional Conventions' despite being comprehensively written. Which of the following is an established convention rather than a written constitutional rule?<br><br>1. The President acting on the aid and advice of the Council of Ministers.<br>2. The appointment of the senior-most judge of the Supreme Court as the Chief Justice of India.<br>3. The Governor of a state reserving bills for the consideration of the President.<br><br>Select the correct answer:",
+                options: ["1 and 2 only", "2 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 2 only
+                exp: "Statement 1 is a written constitutional rule (Article 74, especially after the 42nd and 44th Amendments, made the advice legally binding). Statement 3 is a written discretionary power (Article 200). Statement 2 is a Constitutional Convention; nowhere in the Constitution is it mandated that the senior-most judge *must* be appointed as the CJI, though it is the established practice (enforced further by the Second Judges Case)."
+            },
+            {
+                q: "Which of the following characteristics legally define the 'Sovereign' nature of the Indian Republic as declared in the Preamble?<br><br>1. Absolute freedom to acquire foreign territory or cede a part of its territory in favor of a foreign state.<br>2. The complete absence of any external legal obligation binding on the State without its consent.<br>3. Membership of the Commonwealth of Nations structurally limits India's external sovereignty.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statements 1 and 2 are correct. As a sovereign state, India can acquire or cede territory (established by the 9th Amendment Act for the Berubari Union case) and is not legally subject to any external authority. Statement 3 is incorrect: Membership in the Commonwealth was declared by the Constituent Assembly to be extra-constitutional and a voluntary political association that does not diminish India's absolute sovereignty in any manner."
+            },
+            {
+                q: "Consider the following statements regarding the 'Amendment procedure' (Article 368):<br><br>1. A state legislature cannot initiate any bill for the amendment of the Constitution.<br>2. A constitutional amendment bill can be passed by a joint sitting of Parliament if there is a deadlock between the two Houses.<br>3. The President is constitutionally bound to give assent to a Constitutional Amendment Bill passed by Parliament.<br><br>Which of the statements given above are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 2, // Index 2 = 1 and 3 only
+                exp: "Statement 1 is correct: Only Parliament can initiate an amendment. Statement 2 is incorrect: Article 368 does NOT provide for a joint sitting (Article 108) for amendment bills; they must be passed separately by both houses. Statement 3 is correct: The 24th Constitutional Amendment Act (1971) made it obligatory for the President to give his assent to a Constitutional Amendment Bill."
+            },
+            {
+                q: "Assertion (A): Fundamental Rights in the Indian Constitution are not absolute but qualified.<br>Reason (R): The State can impose reasonable restrictions on Fundamental Rights, and the reasonableness of such restrictions is determined exclusively by the Parliament.<br><br>In the context of the above, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 2, // Index 2 = A is true but R is false
+                exp: "Assertion is true: FRs are subject to reasonable restrictions. Reason is false: The power to impose restrictions lies with the legislature (Parliament/State Legislatures), but the determination of whether a restriction is 'reasonable' or not is the exclusive prerogative of the Judiciary (Supreme Court and High Courts), not the Parliament."
+            },
+            {
+                q: "The unique Indian model of 'Universal Adult Franchise' had profound structural implications. Which of the following is/are the direct constitutional consequences of this adoption?<br><br>1. The abolition of the system of communal electorates established during British rule.<br>2. The mandating of a uniform property qualification for voting across all States.<br>3. The constitutional reservation of seats for Scheduled Castes and Scheduled Tribes in the Lok Sabha based on population proportion.<br><br>Select the correct answer:",
+                options: ["1 only", "1 and 3 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 1 and 3 only
+                exp: "Statement 1 is correct: Universal Adult Franchise replaced the fragmented, divisive communal electorate system. Statement 2 is incorrect: Adult franchise means there are NO property, taxation, or educational qualifications required to vote. Statement 3 is correct: To protect depressed classes in a universal voting system, the Constitution provided for political reservations (Article 330) based on population proportionality."
+            },
+            {
+                q: "Consider the following statements regarding the 'Minorities' under the Indian Constitution:<br><br>1. The Constitution recognizes only religious and linguistic minorities, explicitly excluding ethnic minorities.<br>2. The National Commission for Minorities is a constitutional body established under Article 338B.<br>3. The right to establish and administer educational institutions is available exclusively to minority citizens, not to minority foreign nationals residing in India.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is correct: Article 29 and 30 explicitly mention 'based on religion or language' only. Ethnic/racial minorities are not categorized as constitutional minorities. Statement 2 is incorrect: The National Commission for Minorities is a STATUTORY body (created by an Act in 1992), whereas Art 338B established the NCBC. Statement 3 is incorrect: Article 30 (Right to establish educational institutions) is available to all religious or linguistic minorities, irrespective of whether they are citizens or non-citizens, unlike Art 15, 16, 19, 29 which are citizens only. *(Wait, Art 30 is available to non-citizens? Yes, Art 30 is not restricted to citizens alone like Art 29. However, the UPSC consensus often pairs 29 and 30. Actually, Article 30 protects 'all minorities, whether based on religion or language', without the word 'citizen'.)*"
+            },
+            {
+                q: "Which of the following constitutional provisions serve as a 'Unitary bias' within the Indian federal structure?<br><br>1. Parliament's power to form new states without the binding consent of the affected states.<br>2. The constitutional requirement for states to conduct their own independent civil service exams through SPSCs.<br>3. The vesting of Emergency powers entirely in the Union Executive and Parliament.<br>4. The provision of an independent Comptroller and Auditor General (CAG) auditing state accounts.<br><br>Select the correct code:",
+                options: ["1, 2 and 3 only", "1, 3 and 4 only", "2, 3 and 4 only", "1, 2, 3 and 4"],
+                answer: 1, // Index 1 = 1, 3 and 4 only
+                exp: "Statements 1, 3, and 4 represent a Unitary bias. 1: Shows states have no territorial integrity. 3: Emergencies convert the system into a unitary one. 4: A single central authority (CAG) auditing state finances is a unitary check on state autonomy. Statement 2 is incorrect: The existence of separate State Public Service Commissions (SPSCs) is a FEDERAL feature, ensuring state control over their own bureaucracy (though All-India Services act as a unitary counterweight)."
+            },
+            {
+                q: "Consider the following statements comparing the Indian model of 'Secularism' with the Western (American) model:<br><br>1. While the American model mandates a strict wall of separation between Church and State, the Indian Constitution permits State intervention in religious affairs to eradicate social evils.<br>2. Unlike the American model, the Indian State is constitutionally mandated to provide financial assistance to minority religious educational institutions without discrimination.<br>3. The term 'Secular' was structurally implicit in the Fundamental Rights (Articles 25 to 28) before its explicit insertion into the Preamble.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 2, // Index 2 = All three
+                exp: "All three statements are correct. Statement 1 highlights India's 'positive' secularism (e.g., banning untouchability, opening Hindu temples to all classes). Statement 2 is correct: Article 30(2) prevents the State from discriminating against minority institutions in granting aid, an active engagement not found in strict Western secularism. Statement 3 is correct: The Supreme Court noted in the S.R. Bommai case that secularism was always a basic feature, embedded in Articles 25-28, even before the 42nd Amendment."
+            },
+            {
+                q: "Regarding the 'Preamble' as a salient feature of the Indian Constitution, consider the following statements:<br><br>1. The Supreme Court in the Berubari Union Case (1960) held that the Preamble is a source of substantive power for the legislature.<br>2. The Preamble is justiciable in nature, meaning its provisions are enforceable in courts of law.<br>3. The Kesavananda Bharati Case (1973) established that the Preamble is a part of the Constitution and can be amended, subject to the basic structure doctrine.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 and 2 only", "3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 3 only
+                exp: "Statement 1 is incorrect: The Preamble is neither a source of power to the legislature nor a prohibition upon its powers (reaffirmed in Kesavananda Bharati). Statement 2 is incorrect: It is non-justiciable; its provisions cannot be enforced in courts. Statement 3 is correct: Reversing its Berubari stance, the SC in Kesavananda held the Preamble IS a part of the Constitution and is subject to amendment under Article 368, provided the basic structure is not destroyed."
+            },
+            {
+                q: "Which of the following constitutional provisions collectively ensure the 'Republican' character of the Indian State?<br><br>1. Vesting of popular sovereignty in the citizens.<br>2. The election of the President of India by an electoral college.<br>3. The absence of any privileged class in matters of public employment under Article 16.<br>4. The existence of a bicameral legislature at the Union level.<br><br>Select the correct code:",
+                options: ["1, 2 and 3 only", "2 and 4 only", "1, 3 and 4 only", "1, 2, 3 and 4"],
+                answer: 0, // Index 0 = 1, 2 and 3 only
+                exp: "Statements 1, 2, and 3 define a Republic. A Republic means the head of state is elected (not a hereditary monarch), sovereignty rests with the people, and all public offices are open to every citizen without privileged classes. Statement 4 (Bicameralism) is a feature of Federalism or Parliamentary democracy, not a defining feature of a Republic (many republics are unicameral, and the UK is bicameral but a monarchy)."
+            },
+            {
+                q: "Assertion (A): The Fundamental Duties (Part IVA) are fundamentally distinct from the Directive Principles of State Policy (Part IV) as they are enforceable by a writ of mandamus.<br>Reason (R): The Supreme Court has ruled that since Fundamental Duties are addressed to citizens, the State cannot be compelled to enforce them.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 3, // Index 3 = A is false but R is true
+                exp: "Assertion is false: Like DPSPs, Fundamental Duties are non-justiciable. The Constitution does not provide for their direct enforcement by the courts via writs (like mandamus). Reason is true: Duties are moral and civic obligations of the *citizens*, not the State. Therefore, a writ of mandamus (which commands a public authority to do its duty) cannot be issued to compel citizens to perform fundamental duties."
+            },
+            {
+                q: "Consider the following statements regarding 'Local Self-Government' (Part IX and IX-A):<br><br>1. The Constitution mandates that all states must establish a three-tier Panchayati Raj system, regardless of their population size.<br>2. State Legislatures possess absolute discretion in deciding the reservation of seats for backward classes in Panchayats.<br>3. The Finance Commission of India has no constitutional role in augmenting the Consolidated Fund of a State to supplement the resources of the Panchayats.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one (Wait, let's evaluate carefully)
+                exp: "Let's evaluate: Statement 1 is incorrect: States with a population not exceeding 20 lakhs are exempted from constituting the intermediate tier (Article 243B). Statement 2 is correct: Article 243D makes SC/ST/Women reservation mandatory, but explicitly leaves reservation for Backward Classes (OBCs) to the voluntary discretion of the State Legislature. Statement 3 is incorrect: Article 280 requires the Central Finance Commission to recommend measures to augment state funds for Panchayats/Municipalities based on State Finance Commission reports. Therefore, ONLY ONE statement (Statement 2) is correct."
+            },
+            {
+                q: "The Indian Constitution embodies a 'Synthesis of Parliamentary Sovereignty and Judicial Supremacy'. Which of the following constitutional provisions acts as a structural limitation on the power of Judicial Review in India?<br><br>1. Article 13 explicitly declaring laws inconsistent with Fundamental Rights as void.<br>2. The usage of 'Procedure Established by Law' in Article 21 instead of 'Due Process of Law'.<br>3. Article 31B read with the Ninth Schedule.<br><br>Select the correct answer:",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 2 and 3 only
+                exp: "Statement 1 EXPANDS judicial review (expressly granting courts the power to strike down laws). Statement 2 LIMITS judicial review: 'Procedure established by law' restricts courts from striking down laws solely on the grounds of them being substantive 'unjust' or 'unreasonable' (though Maneka Gandhi expanded this practically, textually it is a limitation). Statement 3 LIMITS judicial review: The 9th Schedule was explicitly created to shield certain laws from judicial scrutiny."
+            },
+            {
+                q: "With reference to the 'Rigidity and Flexibility' of the Indian Constitution, consider the following constitutional changes:<br><br>1. Alteration of the quorum in Parliament.<br>2. Changes in the representation of States in Parliament.<br>3. Conferment of more jurisdiction on the Supreme Court.<br>4. Amendment of the election manner of the President.<br><br>Which of the above require an amendment under Article 368 requiring ratification by half of the State Legislatures?",
+                options: ["2 and 4 only", "1, 2 and 4 only", "2, 3 and 4 only", "1, 3 and 4 only"],
+                answer: 0, // Index 0 = 2 and 4 only
+                exp: "Provisions that disrupt the federal balance require State ratification. Statement 2 (Schedule 4) and Statement 4 (Article 54/55) directly affect the states. Statement 1 (quorum) and Statement 3 (conferring MORE jurisdiction on SC, Article 138) can be done by a simple majority in Parliament and do not even require an Article 368 special majority, let alone state ratification."
+            },
+            {
+                q: "Assertion (A): The Constitution of India does not strictly adhere to the doctrine of 'Separation of Powers' as envisioned by Montesquieu.<br>Reason (R): The Indian Executive is organically drawn from the Legislature and remains accountable to it, creating a fusion of powers.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0, // Index 0
+                exp: "Assertion is true: India does not have a strict, watertight separation of powers like the USA. Reason is also true and explains the assertion: In a Parliamentary system (India), the Executive (Council of Ministers) is drawn from the Legislature (Parliament) and is collectively responsible to the Lok Sabha. This creates a functional 'fusion' rather than 'separation' of the executive and legislative branches."
+            },
+            {
+                q: "Consider the following statements regarding 'Universal Adult Suffrage' in India:<br><br>1. The voting age is fixed at 18 years by Article 326 of the Constitution itself, not by a statutory act.<br>2. A person can be disqualified from inclusion in the electoral roll on the grounds of non-residence, crime, or corrupt practices.<br>3. The right to vote in India is inherently a Fundamental Right protected under Article 19(1)(a) as freedom of expression.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is correct: The 61st Amendment physically amended Article 326 to change 'twenty-one years' to 'eighteen years'. Statement 2 is correct: Article 326 explicitly allows disqualification on grounds of 'non-residence, unsoundness of mind, crime or corrupt or illegal practice'. Statement 3 is incorrect: The Supreme Court has repeatedly held that the Right to Vote is a Constitutional/Statutory Right, NOT a Fundamental Right."
+            },
+            {
+                q: "The Constitution provides for 'Independent Bodies' to protect democracy. Which of the following bodies is strictly an extra-constitutional (non-statutory and non-constitutional) body, yet plays a crucial role in Indian federalism and governance?<br><br>1. The Inter-State Council<br>2. The Zonal Councils<br>3. The NITI Aayog<br>4. The Finance Commission<br><br>Select the correct answer:",
+                options: ["2 and 3 only", "3 only", "1 and 3 only", "1, 2, 3 and 4"],
+                answer: 1, // Index 1 = 3 only
+                exp: "1. Inter-State Council is Constitutional (Article 263). 2. Zonal Councils are Statutory (created by the States Reorganisation Act, 1956). 4. Finance Commission is Constitutional (Article 280). 3. NITI Aayog is Extra-constitutional and Non-statutory; it was created by a mere executive resolution of the Union Cabinet."
+            },
+            {
+                q: "Regarding the salient feature of 'Single Citizenship', which of the following statements is legally accurate?<br><br>1. Unlike the USA, where citizens have dual allegiance to the nation and the state, an Indian citizen owes allegiance solely to the Union.<br>2. State legislatures are constitutionally empowered to offer employment reservations strictly based on domicile or residence within that state.<br>3. The Constitution explicitly defines the term 'domicile' to resolve disputes regarding citizenship at the commencement of the Constitution.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is correct: Single citizenship means singular allegiance to India. Statement 2 is incorrect: Article 16(3) empowers PARLIAMENT, not state legislatures, to prescribe residence within a state as a qualification for certain employments. Statement 3 is incorrect: The Constitution does NOT define the word 'domicile', leaving its interpretation to the judiciary."
+            },
+            {
+                q: "Consider the following statements regarding the 'Fundamental Rights' (Part III):<br><br>1. They operate as limitations on the tyranny of the executive but not on the arbitrary laws of the legislature.<br>2. The right to property was deleted from the list of Fundamental Rights by the 42nd Amendment Act.<br>3. Certain Fundamental Rights are available to both citizens and foreigners, excluding enemy aliens.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 and 2 only", "3 only", "2 and 3 only", "1 and 3 only"],
+                answer: 1, // Index 1 = 3 only
+                exp: "Statement 1 is incorrect: FRs operate as limitations on BOTH the executive and the legislature (Article 13 voids arbitrary laws). Statement 2 is incorrect: The Right to Property was deleted by the 44th Amendment Act, 1978 (not the 42nd). Statement 3 is correct: Rights under Articles 14, 20, 21, 21A, 22, 23, 24, 25, 26, 27, and 28 are available to foreigners, except enemy aliens."
+            },
+            {
+                q: "Assertion (A): The 'Doctrine of Harmonious Construction' is frequently employed by the Supreme Court when interpreting the relationship between Fundamental Rights and Directive Principles.<br>Reason (R): The Constitution explicitly dictates that in case of any conflict, Directive Principles shall unconditionally supersede Fundamental Rights to ensure a welfare state.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 2, // Index 2 = A is true but R is false
+                exp: "Assertion is true: The SC uses harmonious construction to balance FRs and DPSPs, ensuring neither is completely destroyed by the other (as established in cases like Kerala Education Bill). Reason is false: The Constitution does NOT unconditionally state that DPSPs supersede FRs. In fact, traditionally FRs had primacy, and only specific DPSPs (39b and c) were given precedence over specific FRs (14, 19) via Article 31C."
+            },
+            {
+                q: "The 'Cabinet System' is a salient feature of the Indian Constitution. Which of the following accurately describes its constitutional foundation?<br><br>1. The term 'Cabinet' was present in the original, unamended Constitution under Article 74.<br>2. The principle of 'Collective Responsibility' applies to the entire Council of Ministers, not just the Cabinet.<br>3. A minister who is a member of the Rajya Sabha has the constitutional right to vote in the Lok Sabha during a No-Confidence Motion.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is incorrect: The term 'Cabinet' was NOT in the original Constitution; it was inserted into Article 352 by the 44th Amendment Act, 1978. Statement 2 is correct: Article 75(3) states the 'Council of Ministers' (which includes Cabinet, Ministers of State, and Deputy Ministers) shall be collectively responsible to the Lok Sabha. Statement 3 is incorrect: A minister can speak in either House, but can VOTE ONLY in the House of which they are a member (Article 88)."
+            },
+            {
+                q: "Consider the following statements regarding 'Asymmetric Federalism' and 'Special Provisions' (Part XXI):<br><br>1. Article 370 was a temporary provision, whereas Article 371 and its subsequent clauses are permanent special provisions.<br>2. The special provisions under Article 371-A (Nagaland) prevent the Parliament from enacting laws regarding Naga customary law without the concurrence of the State Legislative Assembly.<br>3. These special provisions violate the basic structure of the Constitution as they destroy the symmetry of equality among states.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 and 2 only", "2 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 2 only
+                exp: "Statement 1 is incorrect: Both Article 370 and the Article 371 series fall under Part XXI, which is titled 'Temporary, Transitional and Special Provisions'. Statement 2 is correct: Article 371-A strictly limits parliamentary competence over Naga customary law, social practices, and land ownership without the state assembly's consent. Statement 3 is incorrect: The Supreme Court has upheld Asymmetric Federalism as a valid accommodation of diversity, not a violation of the Basic Structure."
+            },
+            {
+                q: "The Indian Constitution utilizes an 'Integrated Audit Machinery'. In this context, consider the following about the Comptroller and Auditor General (CAG):<br><br>1. The CAG audits the receipts and expenditure of the Union, States, and constitutionally mandated Local Bodies (Panchayats and Municipalities).<br>2. The CAG submits audit reports relating to the accounts of a State directly to the President for laying them before the Parliament.<br>3. The CAG act as a guide, friend, and philosopher of the Public Accounts Committee of the Parliament.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is incorrect: The CAG's constitutional mandate covers the Union and States. Auditing of Local Bodies is strictly the domain of the State Legislature, which may authorize the CAG, but it is not a direct constitutional mandate for the CAG. Statement 2 is incorrect: State audit reports are submitted to the GOVERNOR (not the President), who places them before the State Legislature. Statement 3 is correct: The CAG assists the PAC in examining audit reports."
+            },
+            {
+                q: "Which of the following best encapsulates the constitutional meaning of 'Fraternity' as envisioned by Dr. B.R. Ambedkar?<br><br>1. A sense of common brotherhood of all Indians, transcending religious, linguistic, regional, or sectional diversities.<br>2. The psychological and territorial integration of the nation.<br>3. The structural requirement of having a single citizenship.<br><br>Select the correct answer using the code given below:",
+                options: ["1 only", "1 and 2 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 3, // Index 3 = 1, 2 and 3
+                exp: "All three encompass the constitutional concept of Fraternity. Statement 1 is the fundamental definition given by Ambedkar. Statement 2 reflects the dual objective of fraternity: dignity of the individual and the unity and integrity of the nation. Statement 3 reflects the structural mechanism (Single Citizenship) the Constitution employs to practically enforce this psychological concept."
+            },
+            {
+                q: "Consider the following statements regarding the 'Basic Structure Doctrine':<br><br>1. The Supreme Court has provided an exhaustive, final list of all elements that constitute the basic structure of the Constitution.<br>2. The doctrine applies retroactively to all Constitutional Amendments passed since the commencement of the Constitution in 1950.<br>3. 'Free and fair elections' and the 'independence of the judiciary' have been recognized as elements of the basic structure.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is incorrect: The SC has repeatedly stated that the list of basic structure elements is NOT exhaustive and is decided on a case-by-case basis. Statement 2 is incorrect: In the Waman Rao case (1981), the SC clarified that the doctrine applies PROSPECTIVELY to amendments made after April 24, 1973 (the date of the Kesavananda Bharati judgement). Statement 3 is correct: Both are well-established elements of the basic structure."
+            },
+            {
+                q: "Assertion (A): The President of India possesses an absolute veto over Constitutional Amendment Bills.<br>Reason (R): Constitutional Amendment Bills affect the fundamental framework of the polity, necessitating the highest level of executive scrutiny.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "Both A and R are false"
+                ],
+                answer: 3, // Index 3 = Both A and R are false
+                exp: "Assertion is false: The President has NO veto power over a Constitutional Amendment Bill. The 24th Amendment Act (1971) made it mandatory for the President to give his assent to such bills. Reason is logically flawed in the Indian context: because such bills are the domain of the constituent power of the Parliament, executive scrutiny (veto) is deliberately removed to prevent the executive from blocking constitutional changes desired by the legislature."
+            },
+            {
+                q: "Regarding the division of legislative subjects (Seventh Schedule), which of the following mechanisms reflect the 'Unitary bias' of the Indian Constitution?<br><br>1. The Union List contains more subjects than the State List.<br>2. In case of a conflict between a Central law and a State law on a Concurrent List subject, the Central law unequivocally prevails without any exceptions.<br>3. Residuary powers are vested in the Union Parliament.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 and 2 only", "1 and 3 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 1, // Index 1 = 1 and 3 only
+                exp: "Statement 1 is correct (100 items in Union List vs 61 in State List). Statement 3 is correct (Article 248). Statement 2 is incorrect due to the phrase 'without any exceptions'. There is an exception under Article 254(2): If a State law on a concurrent subject has been reserved for the President's consideration and received his assent, the State law prevails over the Central law in that specific state."
+            },
+            {
+                q: "Consider the following statements regarding the 'Parliamentary Privileges' derived from the British Constitution:<br><br>1. They are explicitly codified in a comprehensive, single statute passed by the Parliament of India.<br>2. These privileges are available to the Attorney General of India and Union Ministers even when they participate in the proceedings of a House they are not members of.<br>3. They provide blanket immunity to MPs from both civil and criminal arrests during the session of Parliament.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is incorrect: Parliamentary privileges are largely uncodified in India; Parliament has not passed a single comprehensive law defining them. Statement 2 is correct: Article 105(4) extends privileges to anyone who has a right to speak in the proceedings (like the AG and Ministers). Statement 3 is incorrect: The immunity from arrest during sessions (and 40 days before/after) applies ONLY to civil cases, NOT to criminal cases or preventive detention."
+            },
+            {
+                q: "Which of the following reflects the implementation of 'Directive Principles' aimed at achieving economic democracy?<br><br>1. Abolition of the Zamindari system and land reform legislations.<br>2. Nationalisation of commercial banks and life insurance.<br>3. The enactment of the Equal Remuneration Act, 1976.<br>4. The establishment of the Khadi and Village Industries Commission.<br><br>Select the correct answer using the code given below:",
+                options: ["1 and 2 only", "3 and 4 only", "1, 2 and 3 only", "1, 2, 3 and 4"],
+                answer: 3, // Index 3 = 1, 2, 3 and 4
+                exp: "All four reflect economic DPSPs. 1 and 2 implement Article 39 (preventing concentration of wealth and securing equitable distribution of material resources). 3 implements Article 39(d) (equal pay for equal work). 4 implements Article 43 (promotion of cottage industries in rural areas)."
+            },
+            {
+                q: "Assertion (A): The concept of 'Due Process of Law' gives the judiciary greater power than 'Procedure Established by Law'.<br>Reason (R): 'Due Process' allows the courts to examine whether a law is fair, just, and non-arbitrary in its substantive intent, not merely whether the correct legislative procedure was followed.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0, // Index 0
+                exp: "Assertion is true. Reason is also true and is the correct explanation. 'Procedure established by law' (strictly interpreted) only checks if the legislature had the competence and followed the rules. 'Due process' checks the inherent fairness (substantive justice) of the law itself, giving the judiciary massive power to strike down even procedurally flawless laws if they are deemed arbitrary."
+            },
+            {
+                q: "Consider the following regarding the constituent power of the Parliament under Article 368:<br><br>1. The power to amend the Constitution includes the power to repeal it entirely and adopt a new one.<br>2. The 24th Amendment Act categorically distinguished 'legislative power' from 'constituent power' to overcome the Golaknath judgement.<br>3. An amendment of the Constitution can be initiated only by a Minister, not by a private member.<br><br>Which of the statements given above is/are correct?",
+                options: ["2 only", "1 and 2 only", "2 and 3 only", "1, 2 and 3"],
+                answer: 0, // Index 0 = 2 only
+                exp: "Statement 1 is incorrect: The Kesavananda Bharati judgement held that the 'power to amend' does not include the 'power to destroy' or repeal the fundamental framework (Basic Structure). Statement 2 is correct: The 24th CAA altered Art 13 and Art 368 to clarify that Parliament acting under Art 368 exercises constituent, not ordinary legislative power. Statement 3 is incorrect: A private member CAN introduce a Constitutional Amendment Bill."
+            },
+            {
+                q: "The Indian Constitution utilizes an intricate mix of Direct and Indirect democratic devices. Which of the following constitutional mechanisms represents a tool of 'Direct Democracy' active at the Union level?<br><br>1. Referendum for constitutional amendments.<br>2. Recall of elected representatives.<br>3. Citizens' Initiative for drafting legislations.<br><br>Select the correct answer:",
+                options: ["1 only", "1 and 3 only", "2 and 3 only", "None"],
+                answer: 3, // Index 3 = None
+                exp: "The Indian Constitution does NOT provide for any direct democratic devices (Referendum, Initiative, Recall, Plebiscite) at the Union or State legislative levels. India is purely an 'Indirect' or 'Representative' Democracy at these levels. (Gram Sabhas at the local level exhibit elements of direct democracy, but the question specifies 'Union level')."
+            },
+            {
+                q: "Consider the following statements regarding the concept of 'Liberty' as enshrined in the Preamble of the Indian Constitution:<br><br>1. The Preamble secures to all citizens the liberty of thought, expression, belief, faith, and worship.<br>2. The liberty conceived by the Preamble is absolute and unencumbered, distinct from the qualified Fundamental Rights.<br>3. Dr. B.R. Ambedkar asserted that liberty cannot be divorced from equality and fraternity, forming a 'union of trinity'.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is correct: These are the exact five dimensions of liberty mentioned in the Preamble. Statement 2 is incorrect: Liberty in the Preamble is NOT absolute; it is subject to the reasonable restrictions explicitly detailed in the Fundamental Rights (Part III) that operationalize it. Statement 3 is correct: Dr. Ambedkar famously warned that liberty without equality would produce the supremacy of the few over the many, calling them a 'union of trinity'."
+            },
+            {
+                q: "Assertion (A): The Indian Constitution is characterized as 'Elephantine' in size primarily because it incorporates the historical legacy of the Government of India Act, 1935.<br>Reason (R): The framers included not only fundamental principles of governance but also detailed administrative provisions to prevent constitutional subversion in a newly independent nation.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0, // Index 0
+                exp: "Assertion is true. Reason is also true and provides the correct explanation. The GoI Act 1935 was extremely bulky because it contained detailed administrative blueprints. The framers, knowing India's vast diversity and lack of democratic tradition, deliberately chose not to leave administrative details (like PSCs, elections, civil services) to ordinary legislation, embedding them in the Constitution to ensure stability, thereby increasing its size."
+            },
+            {
+                q: "Which of the following scenarios represent a constitutional 'Unitary' mechanism operating within the 'Federal' structure during normal (non-emergency) times?<br><br>1. The Governor reserving a State Bill for the consideration of the President under Article 200.<br>2. Parliament legislating on a State List subject to implement an international treaty under Article 253.<br>3. The Centre directing a State to maintain means of communication of national importance under Article 256.<br><br>Select the correct answer using the code given below:",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 3, // Index 3 = 1, 2 and 3
+                exp: "All three are correct unitary mechanisms that operate WITHOUT the declaration of any emergency. 1: President's absolute veto on state bills (Art 200/201). 2: Parliament overriding state jurisdiction for international agreements (Art 253). 3: Executive directions to states whose non-compliance can attract Art 365 (President's Rule)."
+            },
+            {
+                q: "Regarding the 'Ninth Schedule'—a unique feature added to protect laws from judicial review—consider the following statements:<br><br>1. It was added by the First Constitutional Amendment Act in 1951 to protect laws related exclusively to agrarian reforms.<br>2. In the I.R. Coelho Case (2007), the Supreme Court ruled that laws placed in the Ninth Schedule are completely immune from judicial review.<br>3. Any law placed in the Ninth Schedule after April 24, 1973, is open to judicial scrutiny if it violates the basic structure.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two (Wait, let's check Statement 1 closely)
+                exp: "Let's evaluate closely. Statement 1 is incorrect: While originally intended primarily for agrarian land reforms, it was NEVER textually restricted 'exclusively' to them; later, many non-agrarian laws (like reservation laws) were added. Statement 2 is incorrect: The I.R. Coelho case explicitly destroyed the 'blanket immunity' of the 9th Schedule. Statement 3 is correct: The SC held that laws added after the Kesavananda Bharati judgement date (April 24, 1973) can be reviewed if they violate the basic structure. Hence, ONLY ONE statement is correct."
+            },
+            {
+                q: "The Indian Constitution uniquely establishes an 'Independent Election Commission' (Article 324). Which of the following constitutional provisions structurally ensure its independence?<br><br>1. The Chief Election Commissioner is provided with the security of tenure equivalent to a Supreme Court judge.<br>2. The conditions of service of the CEC cannot be varied to their disadvantage after appointment.<br>3. The Constitution explicitly bars retiring Election Commissioners from any further appointment under the Government.<br><br>Which of the statements given above is/are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 0, // Index 0 = 1 and 2 only
+                exp: "Statements 1 and 2 are correct constitutional safeguards under Article 324(5). Statement 3 is incorrect: Unlike the Chairman of the UPSC or the CAG, the Constitution does NOT debar retiring Election Commissioners from further government appointments (a frequent point of criticism regarding their independence)."
+            },
+            {
+                q: "Consider the following statements regarding 'Constitutional Morality':<br><br>1. The term 'Constitutional Morality' is explicitly defined in Article 367 (Interpretation) of the Constitution.<br>2. Dr. B.R. Ambedkar argued that constitutional morality is a natural sentiment in India and does not need to be cultivated.<br>3. The Supreme Court has used this doctrine to strike down Section 377 of the IPC and allow entry of women into the Sabarimala temple.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is incorrect: The term is NOT mentioned or defined anywhere in the text of the Constitution. Statement 2 is incorrect: Ambedkar famously said that constitutional morality is 'not a natural sentiment' in India; it has to be cultivated, noting that democracy in India is only a top-dressing on an undemocratic soil. Statement 3 is correct: The SC heavily utilized the doctrine in Navtej Singh Johar (Sec 377) and Indian Young Lawyers Association (Sabarimala)."
+            },
+            {
+                q: "Assertion (A): The Rajya Sabha possesses certain exclusive constitutional powers that the Lok Sabha does not, reflecting its role as a federal chamber.<br>Reason (R): Only the Rajya Sabha can authorize the Parliament to create new All-India Services.<br><br>In the context of the above two statements, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0, // Index 0
+                exp: "Both A and R are true, and R is the correct explanation. The Rajya Sabha has two primary exclusive powers that protect state interests (federalism): Article 249 (authorizing Parliament to make laws on State List subjects) and Article 312 (authorizing Parliament to create new All-India Services). Both require a special majority in the Rajya Sabha."
+            },
+            {
+                q: "Which of the following judicial pronouncements established that 'Federalism' and 'Secularism' are integral components of the Basic Structure of the Indian Constitution?<br><br>1. S.R. Bommai Case (1994)<br>2. L. Chandra Kumar Case (1997)<br>3. Indira Nehru Gandhi Case (1975)<br>4. Kihoto Hollohan Case (1992)<br><br>Select the correct answer:",
+                options: ["1", "2", "3", "4"],
+                answer: 0, // Index 0 = 1 (S.R. Bommai)
+                exp: "In the landmark S.R. Bommai case (1994), dealing with the arbitrary dismissal of state governments under Article 356, a nine-judge bench of the Supreme Court firmly laid down that both Federalism and Secularism are parts of the basic structure of the Constitution. (L. Chandra Kumar dealt with judicial review; Indira Gandhi with free elections; Kihoto Hollohan with the 10th Schedule)."
+            },
+            {
+                q: "Consider the following statements regarding the Directive Principles (DPSPs) and their relation to the 'Salient Features':<br><br>1. The Constitution officially categorizes DPSPs into Socialistic, Gandhian, and Liberal-Intellectual principles.<br>2. The 86th Amendment Act shifted the subject matter of Article 45 (early childhood care and education) to Article 21A as a Fundamental Right.<br>3. DPSPs are analogous to the 'Instrument of Instructions' issued under the Government of India Act, 1935.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is incorrect: The Constitution does NOT contain any formal classification of DPSPs. This categorization is done by scholars for academic convenience. Statement 2 is correct: 86th CAA added Art 21A and amended Art 45 to 'early childhood care until age 6'. Statement 3 is correct: Dr. Ambedkar equated DPSPs with the Instrument of Instructions directed at the executive/legislature."
+            },
+            {
+                q: "The constitutional ideal of a 'Welfare State' places certain positive obligations on the government. Which of the following constitutional provisions acts as the strongest legal shield when the State implements land reform policies violating the Right to Equality (Article 14)?<br><br>1. Article 31A<br>2. Article 31B read with the 9th Schedule<br>3. Article 31C<br><br>Select the correct code:",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 3, // Index 3 = 1, 2 and 3
+                exp: "All three articles were specifically designed to protect welfare/socialist legislations from judicial invalidation based on Fundamental Rights. Art 31A protects laws regarding the acquisition of estates (land reforms). Art 31B protects any act placed in the 9th Schedule. Art 31C protects laws implementing DPSPs 39(b) and 39(c) from challenges under Articles 14 and 19."
+            },
+            {
+                q: "Assertion (A): Unlike the US Constitution, the Indian Constitution does not prescribe a rigid Separation of Powers.<br>Reason (R): Article 50 of the Indian Constitution actively promotes the fusion of the Executive and the Judiciary at the lower levels of governance to ensure swift justice.<br><br>In the context of the above, which one is correct?",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 2, // Index 2 = A is true but R is false
+                exp: "Assertion is true: India follows the Parliamentary model (fusion of legislature and executive). Reason is completely false: Article 50 (a DPSP) explicitly directs the State to take steps to SEPARATE the judiciary from the executive in the public services of the State, not fuse them. Historically, district collectors held judicial powers, which Article 50 sought to dismantle."
+            },
+            {
+                q: "Consider the following statements regarding the 'Rule of Law' and 'Equality':<br><br>1. 'Equality before the law' is a negative concept borrowed from English common law.<br>2. 'Equal protection of laws' is a positive concept derived from the American Constitution.<br>3. The Supreme Court has held that where equals and unequals are treated differently, Article 14 does not apply.<br><br>Which of the statements given above are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: 3, // Index 3 = 1, 2 and 3
+                exp: "Statement 1 is correct: It implies the absence of special privileges (negative). Statement 2 is correct: It requires the State to take affirmative action to ensure equality of treatment in equal circumstances (positive). Statement 3 is correct: Article 14 forbids class legislation but permits 'reasonable classification'. If equals and unequals are treated differently, it is valid classification and Art 14 is not violated."
+            },
+            {
+                q: "Which of the following features of the Indian Constitution makes it structurally 'flexible' without requiring the formal machinery of Article 368?<br><br>1. The power of the President to promulgate Ordinances.<br>2. Parliament's power to abolish a State Legislative Council.<br>3. The power of Parliament to regulate citizenship.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 1, // Index 1 = Only two
+                exp: "Statement 1 is an executive power (temporary legislation), not a constitutional amendment mechanism demonstrating flexibility. Statement 2 is correct: Article 169 allows abolition/creation of Legislative Councils by a simple majority, outside Art 368. Statement 3 is correct: Article 11 empowers Parliament to regulate citizenship by ordinary law (simple majority)."
+            },
+            {
+                q: "Regarding the protection of 'Cultural and Educational Rights', consider the following statements:<br><br>1. The Constitution explicitly restricts the right to conserve language, script, or culture (Article 29) exclusively to 'minorities'.<br>2. The State cannot compel an unaided minority educational institution to implement reservation policies for SCs, STs, and OBCs.<br>3. A minority educational institution loses its minority character if it receives financial aid from the State.<br><br>How many of the above statements are correct?",
+                options: ["Only one", "Only two", "All three", "None"],
+                answer: 0, // Index 0 = Only one
+                exp: "Statement 1 is incorrect: Article 29(1) uses the phrase 'any section of the citizens', which the Supreme Court has ruled includes the MAJORITY as well, not just minorities. Statement 2 is correct: The SC in Pramati Educational Trust case held that RTE and State reservation mandates do not apply to unaided minority institutions to protect their autonomy (Article 30). Statement 3 is incorrect: Receiving state aid does not annihilate the minority character, though the State can impose reasonable regulatory conditions for academic excellence."
+            },
+            {
+                q: "As a culmination of its 'Salient Features', the Indian Constitution strikes a balance between opposing principles. Match the following Constitutional Doctrines with their foundational purpose:<br><br>1. Doctrine of Severability : To protect the federal balance during emergencies.<br>2. Doctrine of Eclipse : To validate pre-constitutional laws that violate Fundamental Rights once the restriction is removed.<br>3. Doctrine of Pith and Substance : To resolve legislative incompetency disputes between the Union and States.<br><br>How many pairs are correctly matched?",
+                options: ["Only one pair", "Only two pairs", "All three pairs", "None"],
+                answer: 1, // Index 1 = Only two pairs
+                exp: "Pair 1 is incorrect: Doctrine of Severability (Art 13) states that if a part of a law violates Fundamental Rights, only that specific part is voided (severed), not the whole law. It has nothing to do with emergencies. Pair 2 is correct: Pre-constitutional laws violating FRs are eclipsed (dormant); if the FR is amended later, the law becomes active again. Pair 3 is correct: Determines the true nature of a law when there is an incidental encroachment into another's legislative list."
+            }]
+
+        // --- 2. STATE MANAGEMENT ---
+        let currentQ = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        // 0: Unvisited, 1: Visited, 2: Answered, 3: Marked, 4: Marked & Answered
+        let qStatus = new Array(questions.length).fill(0); 
+        qStatus[0] = 1; // First question visited immediately
+
+        let timeLeft = 7200; // 2 hours in seconds
+        let timerInterval;
+
+        // --- 3. INITIALIZATION ---
+        window.onload = () => {
+            initPalette();
+            loadQuestion(0);
+            startTimer();
+        };
+
+        function startTimer() {
+            const timerEl = document.getElementById('timer');
+            timerInterval = setInterval(() => {
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                } else {
+                    timeLeft--;
+                    let h = Math.floor(timeLeft / 3600).toString().padStart(2, '0');
+                    let m = Math.floor((timeLeft % 3600) / 60).toString().padStart(2, '0');
+                    let s = (timeLeft % 60).toString().padStart(2, '0');
+                    timerEl.innerText = `${h}:${m}:${s}`;
+                }
+            }, 1000);
+        }
+
+        // --- 4. QUESTION RENDERING ---
+        function loadQuestion(index) {
+            currentQ = index;
+            document.getElementById('q-no').innerText = `Question ${index + 1} of ${questions.length}`;
+            document.getElementById('q-text').innerHTML = questions[index].q;
+            
+            const optionsBox = document.getElementById('options-box');
+            optionsBox.innerHTML = '';
+            
+            questions[index].options.forEach((opt, i) => {
+                const checked = userAnswers[index] === i ? 'checked' : '';
+                optionsBox.innerHTML += `
+                    <label class="option-label">
+                        <input type="radio" name="option" value="${i}" ${checked} onchange="selectOption(${i})">
+                        <span>${opt}</span>
+                    </label>
+                `;
+            });
+
+            if (qStatus[index] === 0) qStatus[index] = 1;
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQ] = optIndex;
+        }
+
+        // --- 5. NAVIGATION LOGIC ---
+        function updateStatusOnNext() {
+            if (userAnswers[currentQ] !== null) {
+                if (qStatus[currentQ] !== 4) qStatus[currentQ] = 2; // Answered
+            } else {
+                if (qStatus[currentQ] !== 3) qStatus[currentQ] = 1; // Visited (Not answered)
+            }
+        }
+
+        function nextQuestion() {
+            updateStatusOnNext();
+            if (currentQ < questions.length - 1) {
+                loadQuestion(currentQ + 1);
+            } else {
+                updatePalette();
+            }
+        }
+
+        function prevQuestion() {
+            updateStatusOnNext();
+            if (currentQ > 0) loadQuestion(currentQ - 1);
+        }
+
+        function markForReview() {
+            if (userAnswers[currentQ] !== null) {
+                qStatus[currentQ] = 4; // Answered & Marked
+            } else {
+                qStatus[currentQ] = 3; // Marked
+            }
+            if (currentQ < questions.length - 1) {
+                loadQuestion(currentQ + 1);
+            } else {
+                updatePalette();
+            }
+        }
+
+        function jumpToQuestion(index) {
+            updateStatusOnNext();
+            loadQuestion(index);
+        }
+
+        // --- 6. PALETTE LOGIC ---
+        function initPalette() {
+            const palette = document.getElementById('palette');
+            palette.innerHTML = '';
+            for(let i=0; i<questions.length; i++) {
+                palette.innerHTML += `<div class="palette-btn" id="pbtn-${i}" onclick="jumpToQuestion(${i})">${i+1}</div>`;
+            }
+        }
+
+        function updatePalette() {
+            for(let i=0; i<questions.length; i++) {
+                const btn = document.getElementById(`pbtn-${i}`);
+                btn.className = 'palette-btn'; // Reset
+                if(i === currentQ) btn.style.border = '2px solid black';
+                else btn.style.border = '1px solid var(--border)';
+
+                if(qStatus[i] === 0) btn.classList.add('status-unvisited');
+                else if(qStatus[i] === 1) btn.classList.add('status-visited');
+                else if(qStatus[i] === 2) btn.classList.add('status-answered');
+                else if(qStatus[i] === 3) btn.classList.add('status-marked');
+                else if(qStatus[i] === 4) btn.classList.add('status-marked-answered');
+            }
+        }
+
+        // --- 7. SUBMIT & EVALUATE ---
+        function submitExam() {
+            if(timeLeft > 0) {
+                if(!confirm("Are you sure you want to submit the exam?")) return;
+            }
+            
+            clearInterval(timerInterval);
+            document.getElementById('quiz-interface').style.display = 'none';
+            
+            let correct = 0;
+            let incorrect = 0;
+            let attempted = 0;
+
+            const reviewHtml = [];
+
+            for(let i=0; i<questions.length; i++) {
+                const uAns = userAnswers[i];
+                const cAns = questions[i].answer;
+                
+                let statusText = "";
+                if(uAns !== null) {
+                    attempted++;
+                    if(uAns === cAns) {
+                        correct++;
+                        statusText = `<div class="user-ans user-correct">Your Answer: ${questions[i].options[uAns]} (Correct)</div>`;
+                    } else {
+                        incorrect++;
+                        statusText = `<div class="user-ans user-wrong">Your Answer: ${questions[i].options[uAns]} (Incorrect)</div>`;
+                    }
+                } else {
+                    statusText = `<div class="user-ans" style="color: grey;">Unattempted</div>`;
+                }
+
+                reviewHtml.push(`
+                    <div class="review-question">
+                        <h4>Question ${i+1}</h4>
+                        <div style="margin-top: 0.5rem;">${questions[i].q}</div>
+                        ${statusText}
+                        <div class="correct-ans">Correct Answer: ${questions[i].options[cAns]}</div>
+                        <div class="explanation-box">
+                            <strong>Explanation:</strong><br>${questions[i].exp}
+                        </div>
+                    </div>
+                `);
+            }
+
+            const totalScore = (correct * 2) - (incorrect * 0.66);
+            const accuracy = attempted > 0 ? ((correct / attempted) * 100).toFixed(2) : 0;
+
+            document.getElementById('final-score').innerText = `${totalScore.toFixed(2)} / ${questions.length * 2}`;
+            document.getElementById('final-attempted').innerText = `${attempted} / ${questions.length}`;
+            document.getElementById('final-accuracy').innerText = `${accuracy}%`;
+            
+            document.getElementById('review-content').innerHTML = reviewHtml.join('');
+            document.getElementById('result-screen').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
