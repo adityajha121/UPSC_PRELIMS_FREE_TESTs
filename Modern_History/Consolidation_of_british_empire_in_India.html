@@ -1,0 +1,1216 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC CSE Prelims Quiz - Consolidation of British Power in India</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+    color: #222;
+}
+
+.header {
+    background: #0f172a;
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header h1 {
+    font-size: 22px;
+}
+
+.timer {
+    font-size: 20px;
+    font-weight: bold;
+    background: #1e293b;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: calc(100vh - 70px);
+}
+
+.sidebar {
+    background: white;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.section-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.progress-box {
+    background: #f8fafc;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.progress-box p {
+    margin: 8px 0;
+}
+
+.palette {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.palette-btn {
+    height: 42px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    background: #e2e8f0;
+}
+
+.palette-btn.current {
+    border: 3px solid #2563eb;
+}
+
+.palette-btn.answered {
+    background: #16a34a;
+    color: white;
+}
+
+.palette-btn.review {
+    background: #f59e0b;
+    color: white;
+}
+
+.palette-btn.notvisited {
+    background: #e2e8f0;
+}
+
+.content {
+    padding: 30px;
+}
+
+.question-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+.question-number {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.question-text {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.option {
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.option:hover {
+    background: #eff6ff;
+}
+
+.option.selected {
+    border: 2px solid #2563eb;
+    background: #dbeafe;
+}
+
+.navigation {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    border: none;
+    cursor: pointer;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-prev {
+    background: #475569;
+    color: white;
+}
+
+.btn-next {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-review {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-submit {
+    background: #dc2626;
+    color: white;
+}
+
+.result-screen {
+    display: none;
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px;
+}
+
+.result-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.1);
+}
+
+.result-card h2 {
+    margin-bottom: 20px;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.result-item {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.explanations {
+    margin-top: 25px;
+}
+
+.explanation-box {
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.explanation-box h4 {
+    margin-bottom: 10px;
+}
+
+.legend {
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.legend-color {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+}
+
+.green { background: #16a34a; }
+.orange { background: #f59e0b; }
+.grey { background: #cbd5e1; }
+
+.footer-note {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+@media(max-width: 900px) {
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+    .palette {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    .content {
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <h1>UPSC CSE Prelims Quiz</h1>
+    <div>
+        <strong>Topic:</strong> Consolidation of British Power in India
+    </div>
+    <div class="timer" id="timer">
+        02:00:00
+    </div>
+</header>
+
+<div class="main-container" id="quizContainer">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h3 class="section-title">Examination Dashboard</h3>
+        <div class="progress-box">
+            <p><strong>Total Questions:</strong> <span id="totalQuestions">25</span></p>
+            <p><strong>Attempted:</strong> <span id="attemptedCount">0</span></p>
+            <p><strong>Marked Review:</strong> <span id="reviewCount">0</span></p>
+            <p><strong>Remaining:</strong> <span id="remainingCount">25</span></p>
+        </div>
+
+        <h3 class="section-title">Question Palette</h3>
+        <div class="palette" id="palette">
+            <!-- JS -->
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color green"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color orange"></div>
+                <span>Marked Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color grey"></div>
+                <span>Not Visited</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Negative Marking: -0.66 for every incorrect answer.
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+        <div class="question-card">
+            <div class="question-number" id="questionNumber">Question 1</div>
+            <div class="question-text" id="questionText">Loading Question...</div>
+            <div id="optionsContainer">
+                <!-- JS -->
+            </div>
+            <div class="navigation">
+                <button class="btn btn-prev" id="prevBtn">Previous</button>
+                <button class="btn btn-next" id="nextBtn">Next</button>
+                <button class="btn btn-review" id="reviewBtn">Mark for Review</button>
+                <button class="btn btn-submit" id="submitBtn">Submit Test</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="result-screen" id="resultScreen">
+    <div class="result-card">
+        <h2>UPSC Prelims Performance Report</h2>
+        <div class="result-grid" id="resultGrid">
+            <div class="result-item">
+                <h4>Score</h4>
+                <p id="finalScore">0</p>
+            </div>
+            <div class="result-item">
+                <h4>Correct</h4>
+                <p id="correctAnswers">0</p>
+            </div>
+            <div class="result-item">
+                <h4>Incorrect</h4>
+                <p id="incorrectAnswers">0</p>
+            </div>
+            <div class="result-item">
+                <h4>Attempted</h4>
+                <p id="attemptedAnswers">0</p>
+            </div>
+            <div class="result-item">
+                <h4>Accuracy</h4>
+                <p id="accuracy">0%</p>
+            </div>
+        </div>
+        <div class="explanations">
+            <h3>Detailed Answer Explanations</h3>
+            <div id="explanationsContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* =========================
+   GLOBAL VARIABLES
+========================= */
+let currentQuestion = 0;
+let totalTime = 7200; // 2 Hours
+let userAnswers = [];
+let reviewQuestions = [];
+
+const questions = [
+    {
+        q: "With reference to the British consolidation of power in India during the late eighteenth and early nineteenth centuries, consider the following statements: 1. Subsidiary Alliances primarily sought territorial annexation at the outset rather than strategic control. 2. The system reduced the military autonomy of Indian states even when formal sovereignty was retained. 3. The financial burden of maintaining subsidiary forces often increased dependence on the Company. Which of the statements given above are correct?",
+        options: ["2 and 3 only", "1 and 2 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Statement 1 is incorrect because the primary objective was strategic and political control rather than immediate annexation. Statements 2 and 3 are correct."
+    },
+    {
+        q: "Consider the following regarding British expansion after the Battle of Buxar: 1. It transformed the Company from a mere trading corporation into a territorial power. 2. It directly resulted in Company control over revenue resources in eastern India. 3. It eliminated the need for further military campaigns for territorial consolidation. Which of the statements given above are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Statements 1 and 2 are correct. Statement 3 is incorrect because further military campaigns continued."
+    },
+    {
+        q: "Assertion (A): The Regulating Act of 1773 represented parliamentary intervention in Company affairs. Reason (R): The British Parliament believed that the Company's political functions had implications beyond private commercial interests.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "The Company had acquired political authority and territorial responsibilities, requiring parliamentary oversight."
+    },
+    {
+        q: "Which of the following best explains why the Anglo-Mysore Wars had significance beyond territorial conquest?",
+        options: ["They completely ended princely states in South India", "They demonstrated that military modernization by Indian powers could challenge Company expansion", "They resulted in direct British rule over the entire Deccan", "They immediately established paramountcy across India"],
+        answer: 1,
+        exp: "Mysore under Haidar Ali and Tipu Sultan demonstrated that military modernization could effectively challenge British expansion."
+    },
+    {
+        q: "Consider the following statements regarding the doctrine of paramountcy before 1857: 1. It implied unquestioned equality between the Company and Indian rulers. 2. It enabled increasing British intervention in princely state affairs. 3. Its scope was often deliberately left ambiguous. Which statements are correct?",
+        options: ["2 and 3 only", "1 and 2 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Paramountcy implied superiority rather than equality and enabled intervention."
+    },
+    {
+        q: "Consider the following statements regarding the British policy towards Indian states: 1. The choice between annexation and indirect control was influenced by strategic considerations. 2. The Company followed a uniform policy toward all princely states throughout the nineteenth century. 3. Financial considerations often shaped expansionist policies. Which of the statements given above are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "The British used flexible strategies. Annexation, alliances and indirect control were adopted depending on political, strategic and fiscal considerations."
+    },
+    {
+        q: "Which one of the following best explains the significance of the Diwani grant of 1765?",
+        options: ["It ended British involvement in Indian politics", "It provided a stable fiscal base for territorial expansion", "It abolished the Mughal Empire", "It established Crown rule in India"],
+        answer: 1,
+        exp: "The Diwani granted revenue collection rights, giving the Company resources necessary for administration and military expansion."
+    },
+    {
+        q: "Assertion (A): The Company's military expansion and administrative reforms evolved simultaneously. Reason (R): Territorial acquisitions created governance challenges requiring institutional adaptation.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "As territory expanded, governance became more complex. Administrative reforms were often responses to territorial growth."
+    },
+    {
+        q: "Consider the following statements regarding Lord Wellesley's Subsidiary Alliance system: 1. It aimed to exclude rival European influence from Indian states. 2. It strengthened the independent military capabilities of allied rulers. 3. It increased Company influence without immediate annexation. Which are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Statement 2 is incorrect because allied rulers lost military autonomy. Statements 1 and 3 correctly describe the system."
+    },
+    {
+        q: "The Anglo-Maratha Wars demonstrated which of the following? 1. Internal divisions can undermine confederate political structures. 2. Superior resources alone guarantee military victory. 3. Diplomatic maneuvering can be as important as battlefield success.",
+        options: ["1 and 3 only", "2 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "British success involved diplomacy and exploitation of divisions. Resource superiority alone does not explain outcomes."
+    },
+    {
+        q: "Which of the following best captures the relationship between revenue settlements and British consolidation?",
+        options: ["Revenue policies were entirely economic and unrelated to political control", "Revenue administration helped institutionalize colonial authority", "Revenue systems weakened administrative capacity", "Revenue collection was delegated entirely to Indian rulers"],
+        answer: 1,
+        exp: "Revenue settlements provided financial resources and strengthened administrative penetration into Indian society."
+    },
+    {
+        q: "Consider the following statements: 1. The Regulating Act and Pitt's India Act both reflected concerns regarding Company governance. 2. Both Acts completely transferred power from the Company to the Crown. 3. Parliamentary oversight increased after these measures. Which statements are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Neither Act completely abolished Company authority, but both increased parliamentary supervision."
+    },
+    {
+        q: "Assertion (A): British supremacy in India was not achieved solely through military conquest. Reason (R): Alliances, diplomacy and fiscal control often preceded direct political dominance.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "British expansion combined military, diplomatic and fiscal instruments of power."
+    },
+    {
+        q: "Which one of the following was a major limitation of many Indian powers confronting the Company?",
+        options: ["Complete absence of military innovation", "Inability to form durable political coalitions", "Lack of territorial resources", "Universal support for British rule"],
+        answer: 1,
+        exp: "Political fragmentation and unstable alliances frequently weakened resistance to British expansion."
+    },
+    {
+        q: "Consider the following regarding the concept of paramountcy: 1. It evolved gradually rather than emerging through a single legal act. 2. It justified British intervention in succession disputes. 3. It rested upon assumptions of political superiority. Which are correct?",
+        options: ["1, 2 and 3", "1 and 2 only", "2 and 3 only", "1 and 3 only"],
+        answer: 0,
+        exp: "Paramountcy developed incrementally and became a justification for intervention in princely affairs."
+    },
+    {
+        q: "The Charter Acts collectively indicate which broader trend?",
+        options: ["Declining British interest in India", "Increasing state regulation of Company activities", "Immediate democratization of governance", "Restoration of Mughal authority"],
+        answer: 1,
+        exp: "The Charter Acts progressively increased governmental supervision and redefined Company functions."
+    },
+    {
+        q: "Consider the following statements regarding British military success: 1. Access to Bengal revenues strengthened military sustainability. 2. Political alliances amplified British strategic advantages. 3. Military victories alone automatically secured long-term stability. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Military victories required administrative and political consolidation. Statement 3 oversimplifies the process."
+    },
+    {
+        q: "Assertion (A): The defeat of Mysore had implications beyond southern India. Reason (R): It reduced one of the most significant military challenges to Company expansion.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Mysore represented a major obstacle to British expansion. Its defeat altered the balance of power across India."
+    },
+    {
+        q: "Which one of the following best explains why the Company preferred alliances in some regions rather than direct annexation?",
+        options: ["Administrative costs and political convenience", "Legal prohibition on annexation", "Absence of military capability", "Opposition from Parliament in every case"],
+        answer: 0,
+        exp: "Indirect control was often cheaper and politically advantageous while still ensuring influence."
+    },
+    {
+        q: "Consider the following statements regarding the Company's transition into a territorial state: 1. Revenue collection became increasingly central to governance. 2. Military expenditure depended upon territorial resources. 3. Political authority expanded independently of fiscal capacity. Which are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Fiscal resources and political authority reinforced one another. Statement 3 is incorrect."
+    },
+    {
+        q: "The Anglo-Sikh Wars are significant because they:",
+        options: ["Marked the end of all resistance in India", "Integrated a major north-western power into the British imperial framework", "Established representative institutions in Punjab", "Created an independent Sikh confederacy"],
+        answer: 1,
+        exp: "The defeat of the Sikh kingdom brought a major independent military power under British control."
+    },
+    {
+        q: "Consider the following statements: 1. British consolidation involved both coercion and cooperation. 2. Alliances were sometimes used to reduce the need for direct administration. 3. Every princely state experienced the same degree of intervention. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "The degree of intervention varied considerably across states. Statements 1 and 2 are correct."
+    },
+    {
+        q: "Assertion (A): British expansion frequently generated new administrative challenges. Reason (R): Larger territories required mechanisms for revenue collection, law and governance.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Administrative structures evolved because expanding territory required effective governance."
+    },
+    {
+        q: "Which of the following best explains the strategic importance of controlling Bengal?",
+        options: ["It possessed extensive fiscal resources and commercial significance", "It contained all major princely states", "It was isolated from wider Indian politics", "It prevented European trade completely"],
+        answer: 0,
+        exp: "Bengal's wealth and revenue potential made it crucial to British consolidation."
+    },
+    {
+        q: "Consider the following statements regarding British imperial strategy in India: 1. Military power, diplomacy and revenue control functioned together. 2. Political consolidation was entirely separate from economic objectives. 3. Expansion often produced institutional innovation. Which statements are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "British consolidation combined military, political and economic instruments. Statement 2 is incorrect because economic and political objectives were deeply interconnected."
+    },
+
+
+ // FIXED: Properly closed the array.
+/* ==========================================
+   QUESTIONS 61–80
+   CONSOLIDATION OF BRITISH POWER IN INDIA
+========================================== */
+    {
+        q: "Consider the following statements regarding the Company's rise to political power: 1. Revenue control enhanced military sustainability. 2. Military success strengthened bargaining power with Indian rulers. 3. Political influence expanded independently of economic resources. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Revenue and military strength reinforced each other. Political influence did not expand independently of economic resources."
+    },
+    {
+        q: "Assertion (A): The Subsidiary Alliance system often increased British influence without direct annexation. Reason (R): It placed Indian states in a position of strategic dependence.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Strategic dependence reduced the autonomy of Indian rulers and enhanced British influence."
+    },
+    {
+        q: "Which one of the following best explains the significance of indirect rule in British expansion?",
+        options: ["It allowed political control while minimizing administrative burdens", "It eliminated the need for revenue collection", "It guaranteed political stability in every case", "It abolished princely states"],
+        answer: 0,
+        exp: "Indirect rule provided influence without the costs associated with direct administration."
+    },
+    {
+        q: "Consider the following statements regarding British expansion in India: 1. Diplomatic agreements frequently complemented military campaigns. 2. Revenue acquisition often followed territorial control. 3. Administrative consolidation was necessary for long-term authority. Which statements are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Revenue acquisition generally followed conquest, but administrative consolidation was equally important."
+    },
+    {
+        q: "Assertion (A): The Company's wars against Indian powers were often linked to broader strategic concerns. Reason (R): Control of territory alone was insufficient without influence over trade routes and resources.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Strategic resources, trade networks and territorial control were closely interconnected."
+    },
+    {
+        q: "Which of the following best explains why Bengal became the foundation of British expansion?",
+        options: ["It provided financial resources for administration and warfare", "It was politically isolated from India", "It contained all major military powers", "It was directly governed by Parliament"],
+        answer: 0,
+        exp: "Bengal's revenue resources became the fiscal foundation of Company expansion."
+    },
+    {
+        q: "Consider the following statements regarding the Anglo-Sikh Wars: 1. They involved confrontation with one of the strongest remaining military powers. 2. Their outcome strengthened British control over north-western India. 3. They resulted in the immediate abolition of princely states. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "The Sikh kingdom was a major military power. Statement 3 is incorrect."
+    },
+    {
+        q: "Assertion (A): British consolidation required institutional development. Reason (R): Political control over larger territories demanded administrative capacity.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Administrative structures expanded because territorial growth increased governance requirements."
+    },
+    {
+        q: "Which one of the following best characterizes British paramountcy?",
+        options: ["A relationship implying political superiority without necessarily requiring annexation", "A principle of equal sovereignty among states", "A system of democratic representation", "A purely ceremonial doctrine"],
+        answer: 0,
+        exp: "Paramountcy implied British supremacy while allowing subordinate rulers to continue."
+    },
+    {
+        q: "Consider the following statements regarding the Maratha Confederacy: 1. Internal rivalries weakened collective resistance. 2. It functioned as a completely centralized state. 3. British diplomacy exploited divisions among its leaders. Which statements are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "The Confederacy was not fully centralized and internal rivalries weakened resistance."
+    },
+    {
+        q: "Assertion (A): Fiscal resources were essential for sustaining imperial expansion. Reason (R): Armies, administration and diplomacy required financial support.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Revenue was necessary to support all instruments of colonial expansion."
+    },
+    {
+        q: "Which one of the following best explains the significance of parliamentary intervention in Company affairs?",
+        options: ["It reflected concerns regarding governance and accountability", "It abolished Company administration immediately", "It transferred sovereignty directly to Indian rulers", "It ended British commercial interests"],
+        answer: 0,
+        exp: "Parliament intervened because the Company exercised political authority beyond commercial functions."
+    },
+    {
+        q: "Consider the following statements: 1. British expansion often relied upon alliances with Indian powers. 2. Alliances could isolate stronger opponents. 3. Diplomacy was secondary to warfare in every circumstance. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Diplomacy frequently played a central role and cannot be considered secondary in all circumstances."
+    },
+    {
+        q: "Assertion (A): The Company's political authority expanded after military victories. Reason (R): Victories increased access to resources and strengthened legitimacy.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Military victories enhanced both material resources and political influence."
+    },
+    {
+        q: "Which one of the following best describes the relationship between conquest and governance in British India?",
+        options: ["Conquest required subsequent administrative consolidation", "Governance became unnecessary after conquest", "Military control automatically ensured legitimacy", "Administration preceded every conquest"],
+        answer: 0,
+        exp: "Territorial acquisition required institutions capable of governing and extracting revenue."
+    },
+    {
+        q: "Consider the following statements regarding colonial state formation: 1. Revenue administration was central to governance. 2. Military and civilian institutions evolved together. 3. Territorial control alone defined state-building. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "State formation involved institutions, administration and fiscal systems, not merely territorial control."
+    },
+    {
+        q: "Assertion (A): British expansion was facilitated by political fragmentation in India. Reason (R): Fragmentation enabled selective alliances and diplomatic intervention.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Fragmented political conditions allowed the Company to pursue divide-and-rule strategies."
+    },
+    {
+        q: "Which one of the following best explains the continuity between the Regulating Act and Pitt's India Act?",
+        options: ["Both aimed to increase supervision of Company governance", "Both abolished Company authority", "Both established Crown rule", "Both guaranteed Indian representation"],
+        answer: 0,
+        exp: "These Acts reflected increasing state involvement in the regulation of Company affairs."
+    },
+    {
+        q: "Consider the following statements regarding British imperial strategy: 1. Military force was often supplemented by fiscal control. 2. Alliances could achieve strategic objectives at lower cost. 3. Expansion relied exclusively upon annexation. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "British strategy used multiple instruments; annexation was only one among them."
+    },
+    {
+        q: "The broader significance of British consolidation in India before 1857 lies in the fact that it:",
+        options: ["Created the foundations of a centralized colonial state", "Immediately introduced representative democracy", "Eliminated all princely authority", "Ended imperial competition permanently"],
+        answer: 0,
+        exp: "By 1857, the British had established the institutional, fiscal and political foundations of a centralized colonial state."
+    },
+    /* ==========================================
+   QUESTIONS 81–100
+   CONSOLIDATION OF BRITISH POWER IN INDIA
+========================================== */
+    {
+        q: "Consider the following statements regarding British consolidation in India: 1. Military victories often created opportunities for administrative restructuring. 2. Political influence could expand without direct territorial annexation. 3. Revenue administration was peripheral to colonial governance. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Revenue administration was central to governance. Statements 1 and 2 correctly capture British methods of consolidation."
+    },
+    {
+        q: "Assertion (A): The Company's territorial expansion frequently increased its administrative responsibilities. Reason (R): Larger territories required mechanisms for taxation, law and order, and governance.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Administrative expansion was a direct consequence of territorial acquisition."
+    },
+    {
+        q: "Which one of the following best explains the strategic logic of the Subsidiary Alliance system?",
+        options: ["To increase British influence while minimizing the costs of annexation", "To eliminate all princely states immediately", "To establish democratic governance", "To reduce British military presence"],
+        answer: 0,
+        exp: "The system allowed indirect control and strategic dominance without immediate annexation."
+    },
+    {
+        q: "Consider the following statements regarding British imperial finance: 1. Revenue from conquered territories supported military campaigns. 2. Fiscal resources strengthened diplomatic leverage. 3. Expansion occurred independently of financial considerations. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Financial strength supported both military and diplomatic expansion."
+    },
+    {
+        q: "Assertion (A): The defeat of major regional powers contributed to British supremacy. Reason (R): It removed alternative centers of military and political authority.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "The weakening of Mysore, Marathas and Sikhs reduced major obstacles to British dominance."
+    },
+    {
+        q: "Which one of the following best characterizes the Company's transition during the late eighteenth century?",
+        options: ["From a trading corporation into a territorial and political power", "From a political authority into a commercial body", "From a military power into a princely state", "From a colonial authority into a democratic institution"],
+        answer: 0,
+        exp: "The Company increasingly combined commercial, military and political functions."
+    },
+    {
+        q: "Consider the following statements: 1. Parliamentary regulation reflected concern about governance. 2. The Company retained significant authority even after regulatory reforms. 3. Regulation completely eliminated Company autonomy. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Regulation increased oversight but did not completely remove Company authority."
+    },
+    {
+        q: "Assertion (A): British consolidation relied on a combination of coercion and cooperation. Reason (R): Alliances and treaties often complemented military force.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "British power frequently expanded through a mixture of diplomacy and coercion."
+    },
+    {
+        q: "Which of the following best explains why alliances were important to British expansion?",
+        options: ["They reduced the need for costly military campaigns in some situations", "They abolished military conflict entirely", "They guaranteed loyalty permanently", "They ended political competition"],
+        answer: 0,
+        exp: "Alliances often provided strategic advantages at lower cost than direct conquest."
+    },
+    {
+        q: "Consider the following statements regarding the colonial state: 1. Administrative institutions evolved alongside territorial growth. 2. Fiscal systems were integral to governance. 3. State formation depended solely on military conquest. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Military conquest alone was insufficient; institutions and fiscal systems were equally important."
+    },
+    {
+        q: "Assertion (A): British authority in India expanded through both direct and indirect methods. Reason (R): Different political circumstances required different strategies of control.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "British policy was pragmatic and adapted to varying regional conditions."
+    },
+    {
+        q: "Which one of the following best explains the importance of the Anglo-Maratha Wars?",
+        options: ["They weakened a major rival political formation", "They established Crown rule immediately", "They ended all princely states", "They eliminated the need for diplomacy"],
+        answer: 0,
+        exp: "The decline of Maratha power significantly enhanced British supremacy."
+    },
+    {
+        q: "Consider the following statements regarding paramountcy: 1. It justified British intervention in princely affairs. 2. It implied an unequal political relationship. 3. It depended entirely on annexation. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Paramountcy implied superiority without necessarily requiring annexation."
+    },
+    {
+        q: "Assertion (A): Revenue settlements were politically significant. Reason (R): Fiscal administration strengthened state penetration into society.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Revenue administration was both an economic and political instrument."
+    },
+    {
+        q: "Which one of the following best explains the relationship between military power and revenue in British India?",
+        options: ["Revenue supported armies, and armies protected revenue systems", "Military power eliminated the need for taxation", "Revenue and military power were unrelated", "Revenue collection ceased after conquest"],
+        answer: 0,
+        exp: "Revenue and military power reinforced one another in a mutually sustaining cycle."
+    },
+    {
+        q: "Consider the following statements regarding British consolidation: 1. It involved institutional innovation. 2. It relied upon administrative adaptation. 3. It was purely a military phenomenon. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "British consolidation was political, administrative and fiscal as well as military."
+    },
+    {
+        q: "Assertion (A): The defeat of Mysore had consequences beyond South India. Reason (R): It removed an important challenge to British strategic ambitions.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "The decline of Mysore strengthened British strategic freedom across the subcontinent."
+    },
+    {
+        q: "Which one of the following best characterizes colonial state formation before 1857?",
+        options: ["The integration of military, fiscal and administrative institutions", "The immediate establishment of representative government", "The disappearance of all princely authority", "The separation of political and economic objectives"],
+        answer: 0,
+        exp: "Colonial state formation involved the integration of multiple instruments of governance."
+    },
+    {
+        q: "Consider the following statements: 1. Political fragmentation aided British expansion. 2. Diplomatic flexibility enhanced strategic effectiveness. 3. Fiscal resources strengthened long-term control. Which statements are correct?",
+        options: ["1, 2 and 3", "1 and 2 only", "2 and 3 only", "1 and 3 only"],
+        answer: 0,
+        exp: "All three factors contributed significantly to British consolidation."
+    },
+    {
+        q: "The most appropriate interpretation of British consolidation in India before 1857 is that it represented:",
+        options: ["The gradual construction of a centralized colonial order through military, fiscal and political means", "A purely commercial enterprise with limited political significance", "The replacement of all indigenous institutions", "The establishment of democratic self-government"],
+        answer: 0,
+        exp: "British consolidation was a gradual process involving military conquest, fiscal integration, administrative innovation and political domination, laying the foundations of the colonial state."
+    },
+    /* ==========================================
+   BONUS QUESTIONS 101–125
+   CONSOLIDATION OF BRITISH POWER IN INDIA
+========================================== */
+    {
+        q: "Consider the following statements regarding the British policy of balance of power in India: 1. The Company often supported weaker states against stronger regional powers. 2. The objective was always the preservation of Indian political independence. 3. Such policies could eventually increase British influence over both parties. Which statements are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "British diplomacy often sought to prevent the emergence of powerful rivals while increasing its own influence."
+    },
+    {
+        q: "Assertion (A): The Company's military superiority alone cannot explain British expansion. Reason (R): Many Indian states also possessed significant military resources.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Military strength mattered, but diplomacy, finance and political fragmentation were equally important."
+    },
+    {
+        q: "Which one of the following best explains the importance of controlling strategic routes during British expansion?",
+        options: ["It facilitated troop movement and commercial integration", "It eliminated taxation requirements", "It ended regional rivalries", "It prevented all rebellions"],
+        answer: 0,
+        exp: "Strategic routes improved military mobility and economic control."
+    },
+    {
+        q: "Consider the following statements: 1. British alliances often isolated major opponents. 2. Indian rulers never used alliances for their own strategic purposes. 3. Diplomatic maneuvering frequently preceded military action. Which statements are correct?",
+        options: ["1 and 3 only", "2 and 3 only", "1 and 2 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Indian rulers also used alliances strategically; hence Statement 2 is incorrect."
+    },
+    {
+        q: "The significance of the Treaty of Allahabad (1765) lies primarily in:",
+        options: ["The fiscal and political advantages it conferred upon the Company", "The establishment of Crown rule", "The abolition of Mughal authority", "The defeat of the Marathas"],
+        answer: 0,
+        exp: "The treaty strengthened Company legitimacy and revenue authority."
+    },
+    {
+        q: "Assertion (A): The Company's administrative structure became more complex over time. Reason (R): Expanding territorial responsibilities required greater bureaucratic specialization.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Territorial growth required increasingly specialized administrative institutions."
+    },
+    {
+        q: "Consider the following statements regarding British imperial strategy: 1. Economic interests and political expansion were interconnected. 2. Revenue extraction supported military operations. 3. Territorial expansion reduced administrative burdens. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Expansion increased rather than reduced administrative responsibilities."
+    },
+    {
+        q: "Which one of the following best characterizes the Company's relationship with the Mughal Emperor after 1765?",
+        options: ["It sought legitimacy while exercising increasing practical autonomy", "It completely ignored imperial authority", "It restored Mughal supremacy", "It abolished the Mughal institution immediately"],
+        answer: 0,
+        exp: "The Company often used imperial legitimacy while consolidating its own authority."
+    },
+    {
+        q: "Assertion (A): British paramountcy was deliberately flexible. Reason (R): Ambiguity allowed intervention under changing political circumstances.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Flexibility enabled the British to justify interventions when politically convenient."
+    },
+    {
+        q: "Consider the following statements regarding colonial governance: 1. Revenue collection was linked to administrative control. 2. Judicial reforms supported state authority. 3. Governance and expansion were unrelated processes. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Administrative, judicial and fiscal institutions reinforced colonial authority."
+    },
+    {
+        q: "The Anglo-Mysore Wars illustrate which broader historical theme?",
+        options: ["The interaction of military modernization and imperial expansion", "The decline of all Indian resistance before 1757", "The emergence of parliamentary democracy", "The end of European rivalries in India"],
+        answer: 0,
+        exp: "Mysore's military modernization represented a significant challenge to British expansion."
+    },
+    {
+        q: "Assertion (A): Fiscal control often preceded direct political control. Reason (R): Revenue influence could create dependence and leverage.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Financial dependence often translated into political influence."
+    },
+    {
+        q: "Consider the following statements regarding British expansion after the Anglo-Maratha Wars: 1. It reduced the power of a major rival confederacy. 2. It enhanced British influence across large parts of India. 3. It eliminated all future resistance. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Resistance continued even after Maratha defeat."
+    },
+    {
+        q: "Which one of the following best explains why indirect rule remained attractive to the British?",
+        options: ["It combined influence with lower administrative costs", "It prevented all conflicts", "It guaranteed economic equality", "It eliminated military expenditure"],
+        answer: 0,
+        exp: "Indirect rule provided control without full administrative responsibility."
+    },
+    {
+        q: "Assertion (A): The Company increasingly resembled a state rather than a trading corporation. Reason (R): It exercised taxation, military and judicial powers.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "State functions expanded far beyond commercial activities."
+    },
+    {
+        q: "Consider the following statements: 1. British expansion involved legal and administrative innovations. 2. Parliamentary regulation reflected metropolitan concerns. 3. Colonial governance developed without institutional change. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Institutional innovation was central to colonial governance."
+    },
+    {
+        q: "Which one of the following best captures the role of diplomacy in British expansion?",
+        options: ["It often amplified military and fiscal advantages", "It was irrelevant compared to warfare", "It replaced military power entirely", "It prevented all conflicts"],
+        answer: 0,
+        exp: "Diplomacy complemented military and economic instruments of power."
+    },
+    {
+        q: "Assertion (A): Administrative integration was essential to imperial consolidation. Reason (R): Territorial acquisition alone could not guarantee durable control.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Durable control required institutions, taxation and governance mechanisms."
+    },
+    {
+        q: "Consider the following statements regarding the Company's rise: 1. Economic resources strengthened military capacity. 2. Political legitimacy could be derived from existing institutions. 3. British expansion relied solely on coercion. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "British authority combined coercion, legitimacy and economic power."
+    },
+    {
+        q: "Which one of the following best explains the significance of colonial state formation before 1857?",
+        options: ["The emergence of centralized mechanisms of governance and extraction", "The establishment of representative democracy", "The disappearance of local institutions", "The end of princely authority everywhere"],
+        answer: 0,
+        exp: "Colonial state formation involved centralization, revenue extraction and administrative integration."
+    },
+    {
+        q: "Assertion (A): Political fragmentation in India created opportunities for British expansion. Reason (R): Fragmented systems were easier to influence through selective alliances and intervention.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Political fragmentation enabled the Company to expand influence incrementally."
+    },
+    {
+        q: "Consider the following statements regarding the Company's military campaigns: 1. They were often connected to fiscal objectives. 2. Strategic geography influenced campaign decisions. 3. Military operations were independent of political considerations. Which statements are correct?",
+        options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        answer: 0,
+        exp: "Military campaigns were closely linked to political and economic goals."
+    },
+    {
+        q: "Which one of the following best characterizes British consolidation in India between 1765 and 1857?",
+        options: ["A multidimensional process involving military, political, fiscal and administrative instruments", "A purely military conquest", "A commercial venture with limited political implications", "A democratic transformation"],
+        answer: 0,
+        exp: "British consolidation involved interconnected military, fiscal, diplomatic and administrative processes."
+    },
+    {
+        q: "Assertion (A): Colonial expansion often generated new governance challenges. Reason (R): Larger territories required new administrative mechanisms and institutional capacity.",
+        options: ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"],
+        answer: 0,
+        exp: "Administrative expansion was a necessary consequence of territorial growth."
+    },
+    {
+        q: "The most appropriate conclusion regarding British consolidation before 1857 is that:",
+        options: ["Military victories succeeded because they were supported by fiscal, diplomatic and administrative structures", "Military technology alone explains British success", "Indian resistance was absent", "Political factors were insignificant"],
+        answer: 0,
+        exp: "UPSC-style interpretation requires understanding the interaction of military, fiscal, diplomatic and institutional factors rather than monocausal explanations."
+    }]
+
+
+
+/* =========================
+   TIMER MODULE
+========================= */
+function startTimer() {
+    const timerElement = document.getElementById("timer");
+    const interval = setInterval(() => {
+        let hours = Math.floor(totalTime / 3600);
+        let minutes = Math.floor((totalTime % 3600) / 60);
+        let seconds = totalTime % 60;
+
+        timerElement.textContent =
+            String(hours).padStart(2, "0") + ":" +
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        totalTime--;
+
+        if (totalTime < 0) {
+            clearInterval(interval);
+            alert("Time Over! Test Submitted Automatically.");
+            submitQuiz();
+        }
+    }, 1000);
+} // FIXED: Removed trailing commas from function blocks
+
+/* =========================
+   QUESTION PALETTE MODULE
+========================= */
+function createPalette() {
+    const palette = document.getElementById("palette");
+    palette.innerHTML = "";
+    questions.forEach((_, index) => {
+        const btn = document.createElement("button");
+        btn.classList.add("palette-btn");
+        btn.textContent = index + 1;
+        btn.id = `palette-${index}`;
+        btn.onclick = () => {
+            currentQuestion = index;
+            loadQuestion();
+        };
+        palette.appendChild(btn);
+    });
+}
+
+function updatePalette() {
+    questions.forEach((_, index) => {
+        const btn = document.getElementById(`palette-${index}`);
+        if (!btn) return;
+        btn.className = "palette-btn";
+        
+        if (userAnswers[index] !== undefined) {
+            btn.classList.add("answered");
+        } else {
+            btn.classList.add("notvisited");
+        }
+        
+        if (reviewQuestions[index]) {
+            btn.classList.remove("answered");
+            btn.classList.add("review");
+        }
+        
+        if (index === currentQuestion) {
+            btn.classList.add("current");
+        }
+    });
+}
+
+/* =========================
+   LOAD QUESTION
+========================= */
+function loadQuestion() {
+    if (!questions.length) return;
+    const q = questions[currentQuestion];
+    
+    document.getElementById("questionNumber").textContent = `Question ${currentQuestion + 1}`;
+    document.getElementById("questionText").textContent = q.q;
+    
+    const optionsContainer = document.getElementById("optionsContainer");
+    optionsContainer.innerHTML = "";
+    
+    q.options.forEach((option, index) => {
+        const optionDiv = document.createElement("div");
+        optionDiv.classList.add("option");
+        
+        if (userAnswers[currentQuestion] === index) {
+            optionDiv.classList.add("selected");
+        }
+        
+        optionDiv.innerHTML = `<strong>${String.fromCharCode(65 + index)}.</strong> ${option}`;
+        optionDiv.onclick = () => {
+            userAnswers[currentQuestion] = index;
+            updateProgress();
+            updatePalette();
+            loadQuestion();
+        };
+        optionsContainer.appendChild(optionDiv);
+    });
+    updatePalette();
+}
+
+/* =========================
+   NAVIGATION MODULE
+========================= */
+function nextQuestion() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+    }
+}
+
+/* =========================
+   PROGRESS TRACKER
+========================= */
+function updateProgress() {
+    let attempted = userAnswers.filter(item => item !== undefined).length;
+    let review = reviewQuestions.filter(item => item === true).length;
+    let remaining = questions.length - attempted;
+
+    document.getElementById("attemptedCount").textContent = attempted;
+    document.getElementById("reviewCount").textContent = review;
+    document.getElementById("remainingCount").textContent = remaining;
+}
+
+/* ==========================================
+   SCORING & NEGATIVE MARKING MODULE
+========================================== */
+function calculateResult() {
+    let correct = 0;
+    let incorrect = 0;
+    let attempted = 0;
+
+    questions.forEach((question, index) => {
+        const userAnswer = userAnswers[index];
+        if (userAnswer !== undefined) {
+            attempted++;
+            if (userAnswer === question.answer) {
+                correct++;
+            } else {
+                incorrect++;
+            }
+        }
+    });
+
+    const score = (correct * 2) - (incorrect * 0.66);
+    const accuracy = attempted === 0 ? 0 : ((correct / attempted) * 100);
+
+    return {
+        correct,
+        incorrect,
+        attempted,
+        score: score.toFixed(2),
+        accuracy: accuracy.toFixed(2)
+    };
+}
+
+/* ==========================================
+   OPTIONAL UPSC ANALYTICS
+========================================== */
+function generateAnalytics(accuracy) {
+    if (accuracy >= 80) return "Excellent UPSC Prelims Performance";
+    if (accuracy >= 60) return "Good Performance";
+    if (accuracy >= 40) return "Average Performance";
+    return "Needs Significant Improvement";
+}
+
+/* ==========================================
+   RESULT SCREEN MODULE (Merged)
+========================================== */
+function showResults() {
+    const result = calculateResult();
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+
+    document.getElementById("finalScore").textContent = result.score;
+    document.getElementById("correctAnswers").textContent = result.correct;
+    document.getElementById("incorrectAnswers").textContent = result.incorrect;
+    document.getElementById("attemptedAnswers").textContent = result.attempted;
+    document.getElementById("accuracy").textContent = result.accuracy + "%";
+
+    // Add Performance Analytics Element
+    const analysis = document.createElement("div");
+    analysis.className = "result-item";
+    analysis.innerHTML = `
+        <h4>Performance</h4>
+        <p>${generateAnalytics(result.accuracy)}</p>
+    `;
+    document.getElementById("resultGrid").appendChild(analysis);
+
+    renderExplanations();
+}
+
+/* ==========================================
+   EXPLANATION VIEWER MODULE
+========================================== */
+function renderExplanations() {
+    const container = document.getElementById("explanationsContainer");
+    container.innerHTML = "";
+
+    questions.forEach((question, index) => {
+        const userAnswer = userAnswers[index];
+        const answerText = question.options[question.answer];
+        let userText = "Not Attempted";
+
+        if (userAnswer !== undefined) {
+            userText = question.options[userAnswer];
+        }
+
+        const status = userAnswer === question.answer ? "✅ Correct" : (userAnswer === undefined ? "⚪ Skipped" : "❌ Incorrect");
+
+        const explanationDiv = document.createElement("div");
+        explanationDiv.className = "explanation-box";
+        explanationDiv.innerHTML = `
+            <h4>Q${index + 1}</h4>
+            <p><strong>Question:</strong> ${question.q}</p>
+            <br>
+            <p><strong>Your Answer:</strong> ${userText}</p>
+            <p><strong>Correct Answer:</strong> ${answerText}</p>
+            <p><strong>Status:</strong> ${status}</p>
+            <br>
+            <p><strong>Explanation:</strong> ${question.exp}</p>
+        `;
+        container.appendChild(explanationDiv);
+    });
+}
+
+function submitQuiz() {
+    showResults();
+}
+
+/* =========================
+   INITIALIZE & EVENT LISTENERS
+========================= */
+function initializeQuiz() {
+    document.getElementById("totalQuestions").textContent = questions.length;
+    createPalette();
+    updateProgress();
+    loadQuestion();
+    startTimer();
+}
+
+// Add Event Listeners
+document.getElementById("nextBtn").addEventListener("click", nextQuestion);
+document.getElementById("prevBtn").addEventListener("click", previousQuestion);
+
+document.getElementById("reviewBtn").addEventListener("click", () => {
+    reviewQuestions[currentQuestion] = !reviewQuestions[currentQuestion];
+    updatePalette();
+    updateProgress();
+});
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+    const confirmSubmit = confirm("Are you sure you want to submit the test?");
+    if (confirmSubmit) {
+        submitQuiz();
+    }
+});
+
+// START THE QUIZ ON LOAD
+window.onload = initializeQuiz; // FIXED: Finally triggered the application
+
+</script>
+
+</body>
+</html>
+
+```

@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC CSE Mock - British Economic and Administrative Policies</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #243b75;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .timer {
+            background-color: #4b629c;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 22px;
+        }
+
+        /* Main Content Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Left Panel: Question Area */
+        .left-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            border-right: 1px solid #ddd;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 30px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+        }
+
+        .question-content {
+            padding: 30px;
+            flex: 1;
+            overflow-y: auto;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            margin-top: 25px;
+        }
+
+        .option {
+            display: flex;
+            align-items: baseline;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .option input {
+            margin-right: 15px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        /* Bottom Action Bar */
+        .action-bar {
+            padding: 15px 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            background-color: #f8fafc;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.9; }
+        .btn-prev { background-color: #64748b; }
+        .btn-review { background-color: #f59e0b; color: #000; }
+        .btn-next { background-color: #3b82f6; }
+
+        /* Right Panel: Palette Area */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            min-width: 300px;
+        }
+
+        .palette-header {
+            background-color: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        /* Status Colors */
+        .status-answered { background-color: #22c55e; color: white; border: none; }
+        .status-not-answered { background-color: #ef4444; color: white; border: none;}
+        .status-not-visited { background-color: #e2e8f0; color: #333; border: 1px solid #cbd5e1; }
+        .status-marked { background-color: #f59e0b; color: white; border: none;}
+        .status-marked-ans { background-color: #8b5cf6; color: white; border: none;}
+
+        .palette-grid-container {
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 10px;
+        }
+
+        .q-btn {
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: transform 0.1s;
+        }
+        
+        .q-btn:active { transform: scale(0.95); }
+
+        .submit-area {
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #10b981;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        /* Results Screen */
+        #results-screen {
+            display: none;
+            padding: 40px;
+            overflow-y: auto;
+            height: 100%;
+            background-color: white;
+            width: 100%;
+        }
+
+        .score-card {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .score-card h2 { margin-bottom: 15px; color: #1e293b; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            padding: 15px;
+            border-radius: 6px;
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+        .stat-box.correct { border-bottom: 4px solid #22c55e; }
+        .stat-box.incorrect { border-bottom: 4px solid #ef4444; }
+        
+        .explanation-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .correct-ans-highlight {
+            color: #166534;
+            background-color: #dcfce7;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .exp-text {
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-left: 4px solid #3b82f6;
+            margin-top: 10px;
+            font-size: 14.5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="quiz-screen" style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+        <div class="header">
+            <div>UPSC CSE Mock - British Economic and Administrative Policies</div>
+            <div class="timer" id="time-display">02:00:00</div>
+        </div>
+
+        <div class="main-container">
+            <div class="left-panel">
+                <div class="question-header">
+                    <div id="q-number-header">Question 1 of 100</div>
+                    <div>Negative Marks: -0.66</div>
+                </div>
+
+                <div class="question-content">
+                    <div id="question-text">Loading question...</div>
+                    <div class="options-container" id="options-container">
+                        </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-prev" onclick="prevQuestion()">&#8592; Previous</button>
+                    <button class="btn btn-review" onclick="markForReviewAndNext()">Mark for Review & Next</button>
+                    <button class="btn btn-next" onclick="saveAndNext()">Save & Next &#8594;</button>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="palette-header">Question Palette</div>
+                <div class="legend">
+                    <div class="legend-item"><div class="dot status-answered"></div> Answered</div>
+                    <div class="legend-item"><div class="dot status-not-answered"></div> Not Answered</div>
+                    <div class="legend-item"><div class="dot status-not-visited"></div> Not Visited</div>
+                    <div class="legend-item"><div class="dot status-marked"></div> Marked</div>
+                    <div class="legend-item" style="grid-column: span 2;"><div class="dot status-marked-ans"></div> Marked & Answered</div>
+                </div>
+                <div class="palette-grid-container">
+                    <div class="palette-grid" id="palette-grid">
+                        </div>
+                </div>
+                <div class="submit-area">
+                    <button class="btn btn-submit" onclick="submitExamConfirmation()">SUBMIT EXAM</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="results-screen">
+        <div class="score-card">
+            <h2>Examination Results</h2>
+            <div style="font-size: 32px; font-weight: bold; color: #1e3a8a;" id="final-score">Score: 0.00</div>
+            <div class="stats-grid">
+                <div class="stat-box"><strong>Total Questions</strong><br><span id="stat-total">0</span></div>
+                <div class="stat-box correct"><strong>Correct Attempt</strong><br><span id="stat-correct">0</span></div>
+                <div class="stat-box incorrect"><strong>Incorrect Attempt</strong><br><span id="stat-incorrect">0</span></div>
+                <div class="stat-box"><strong>Accuracy</strong><br><span id="stat-accuracy">0%</span></div>
+            </div>
+        </div>
+        <h3 style="margin-bottom: 20px;">Detailed Explanations</h3>
+        <div id="explanations-container">
+            </div>
+    </div>
+
+<script>
+// ==========================================
+// UPSC CSE MOCK EXAM DATA (Advanced Level)
+// ==========================================
+const questions = [
+    {
+        q: `Consider the following statements regarding the 'Permanent Settlement' introduced by Lord Cornwallis in 1793:<br><br>
+            1. It transformed the Zamindars from mere revenue collectors to absolute owners of the land, stripping ryots of all customary occupancy rights.<br>
+            2. The state's revenue demand was fixed in perpetuity, primarily to encourage capitalist agriculture by allowing Zamindars to appropriate the surplus.<br>
+            3. The 'Sunset Clause' embedded in the settlement exclusively applied to the ryots, allowing the confiscation of their lands if taxes were unpaid by sunset.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 2 is correct, 1 and 3 are incorrect).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> While Zamindars were recognized as owners, it was not absolute. The traditional customary rights of the ryots were ignored by the state initially, but ryots were not completely stripped of all rights de jure; however, de facto, they became tenants-at-will. Later regulations (like the Tenancy Act of 1859) had to be brought in to protect ryot rights.<br>
+              <strong>Statement 2 is correct:</strong> The ideological underpinning, influenced by Physiocrats, was that fixing the state's demand would leave a surplus with the Zamindar, incentivizing them to invest in agricultural improvement (capitalist agriculture).<br>
+              <strong>Statement 3 is incorrect:</strong> The 'Sunset Law' (1794) applied to the <strong>Zamindars</strong>, not the ryots. If a Zamindar failed to deposit the stipulated revenue in the royal treasury by sunset of the fixed date, their estate was auctioned off.`
+    },
+    {
+        q: `Regarding the 'Commercialization of Agriculture' during the 19th century in British India, which of the following assertions is conceptually accurate?`,
+        options: [
+            "It was primarily a forced process driven by the ryot's need to meet high, inflexible cash revenue demands rather than a natural response to market price incentives.",
+            "It uniformly enriched the Indian peasantry by integrating them into the global capitalist supply chain, particularly during the American Civil War.",
+            "It led to the immediate breakdown of the Jajmani system and the complete monetization of the rural Indian economy.",
+            "It shifted the cropping pattern from cash crops to food crops to meet the demands of the growing British Indian Army."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A</strong><br><br>
+              The commercialization of agriculture in India was 'forced' or 'artificial'. Because land revenue was extremely high and had to be paid in cash (inflexibility of demand), peasants were compelled to grow cash crops (like indigo, cotton, opium) simply to survive and pay taxes, often taking advances from moneylenders (e.g., the Tinkathia system). They did not shift to cash crops because it was highly profitable for them. <br><br>
+              Option B is a trap: It did not uniformly enrich the peasantry; the profit was largely siphoned off by middlemen, moneylenders, and British agency houses. The cotton boom during the American Civil War benefited a few rich farmers in the Deccan but left the masses in a debt trap once the boom crashed.<br>
+              Option C is extreme: The rural economy was not 'completely' monetized, and barter/Jajmani systems survived in pockets.<br>
+              Option D is factually inverse: The shift was from food crops to cash crops, which frequently led to catastrophic famines.`
+    },
+    {
+        q: `Consider the following assertion and reason:<br><br>
+            <strong>Assertion (A):</strong> The introduction of railways by the British in India in the latter half of the 19th century accelerated the process of deindustrialization of traditional Indian handicrafts.<br>
+            <strong>Reason (R):</strong> Railways facilitated the penetration of cheap British machine-made goods into the deepest rural markets of India while simultaneously extracting raw materials for British factories.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              Before the railways, British manufactured goods were largely restricted to port cities and major urban centers due to the high cost of inland transport. The Indian rural artisan was somewhat protected by this geographical and infrastructural barrier. The railways breached this barrier, allowing mass-produced, cheap British textiles to flood rural markets, outcompeting traditional handicrafts. Simultaneously, the discriminatory freight rates of the railways made it cheaper to transport raw materials from the hinterland to the ports (for export) than to transport them between Indian cities, stunting domestic industrial growth.`
+    },
+    {
+        q: `With reference to the 'Drain of Wealth' theory formulated by Dadabhai Naoroji, the term "Home Charges" constituted a major mechanism of this drain. Which of the following were included under "Home Charges"?<br><br>
+            1. Pensions and furloughs of British civil and military officers working in India.<br>
+            2. Interest on loans raised in England by the Government of India.<br>
+            3. Profits remitted by British capitalists operating in Indian railways and plantations.<br>
+            4. Expenses on the India Office in London.<br><br>
+            Select the correct answer using the code given below:`,
+        options: [
+            "1, 2 and 4 only",
+            "1, 3 and 4 only",
+            "2 and 3 only",
+            "1, 2, 3 and 4"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: 1, 2 and 4 only (Option A).</strong><br><br>
+              <strong>UPSC Trap:</strong> While "Profits remitted by British capitalists" (Statement 3) was indeed a massive part of the broader 'Drain of Wealth', it was classified as 'Private Remittances' and was conceptually distinct from the official state-managed <strong>"Home Charges"</strong>.<br><br>
+              Home Charges strictly referred to the external public debt and official administrative expenses paid from the Indian treasury to London. These included:<br>
+              - Interest on public debt raised in England (Statement 2).<br>
+              - Civil and military charges (Pensions, training in England) (Statement 1).<br>
+              - Store purchases in England for government departments.<br>
+              - The cost of the Secretary of State's establishment at the India Office in London (Statement 4).`
+    },
+    {
+        q: `Analyze the administrative evolution under the British rule through the Charter Acts. Which of the following statements reveals the hidden distinction between the Charter Act of 1833 and the Charter Act of 1853?<br><br>
+            1. While the Act of 1833 was the climax of administrative and legislative centralization, the Act of 1853 initiated the process of legislative decentralization.<br>
+            2. The Act of 1833 attempted to introduce open competition for civil services, but it was the Act of 1853 that successfully implemented it, ending the Court of Directors' patronage.<br>
+            3. The Act of 1853 permanently extended the Company's rule for another 20 years, whereas the 1833 Act had kept the tenure ambiguous.`,
+        options: [
+            "1 and 2 only",
+            "2 only",
+            "2 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: 2 only (Option B).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The Charter Act of 1833 was indeed the climax of centralization (making Governor-General of Bengal the GG of India and stripping Madras/Bombay of legislative powers). However, the Act of 1853 did NOT initiate decentralization. Decentralization started with the <strong>Indian Councils Act of 1861</strong>. The 1853 Act merely separated the legislative and executive functions of the Governor-General's council.<br>
+              <strong>Statement 2 is correct:</strong> The 1833 Act attempted open competition (Section 87), but it failed due to opposition from the Court of Directors. The 1853 Act finally instituted open competition (Macaulay Committee of 1854), stripping the Directors of their patronage rights.<br>
+              <strong>Statement 3 is incorrect:</strong> It is the exact opposite. Previous acts (1793, 1813, 1833) renewed the charter for 20 years. The <strong>Act of 1853</strong> did NOT specify a timeframe; it stated the Company would retain territories "in trust for Her Majesty... until Parliament shall otherwise provide," setting the stage for the Crown's takeover in 1858.`
+    },
+    {
+        q: `Consider the following statements regarding the evolution of Financial Decentralization under British rule:<br><br>
+            1. Lord Mayo's Resolution of 1870 introduced the system of sharing specific revenue heads between the Centre and the Provinces.<br>
+            2. Lord Lytton's reforms transferred the administration of certain services like Land Revenue and General Administration to the provinces.<br>
+            3. The ultimate objective of these financial decentralization measures was to grant fiscal autonomy to Indians to appease moderate nationalists.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 2 is correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> Lord Mayo's Resolution (1870) introduced fixed lump-sum grants to provinces from imperial revenues, not the sharing of revenue heads. The system of 'divided heads' of revenue was introduced later by Lord Lytton in 1877.<br>
+              <strong>Statement 2 is correct:</strong> Lytton transferred heads like Land Revenue, Excise, and General Administration to provinces to make them responsible for their collection and expenditure.<br>
+              <strong>Statement 3 is incorrect:</strong> The objective was strictly imperial: to relieve the central treasury of the massive financial strain caused by the Mutiny and to make provincial governments more efficient at tax collection, not to grant Indian autonomy.`
+    },
+    {
+        q: `Regarding the 'Managing Agency System' that dominated the Indian industrial landscape during the British era, consider the following statements:<br><br>
+            1. It was a unique organizational structure where a single agency promoted, financed, and managed multiple independent joint-stock companies.<br>
+            2. This system primarily facilitated the entry of indigenous Indian capital into heavy industries by bypassing British banking monopolies.<br>
+            3. The managing agents heavily concentrated their investments in export-oriented sectors like jute, tea, and mining.<br><br>
+            Which of the statements given above is/are correct?`,
+        options: [
+            "1 and 2 only",
+            "3 only",
+            "1 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: 1 and 3 only (Option C).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Managing agencies (mostly British houses like Andrew Yule, Bird & Co.) were partnerships or companies that controlled a vast network of disparate companies (jute mills, collieries, tea estates) through interlocking directorates.<br>
+              <strong>Statement 2 is incorrect:</strong> It did the exact opposite. It acted as a formidable barrier to indigenous capital. British managing agencies monopolized the capital market, banks, and export-import networks, making it extremely difficult for Indian entrepreneurs to compete.<br>
+              <strong>Statement 3 is correct:</strong> Their primary interest was exploiting Indian resources for the global market, hence the heavy concentration in jute, mining, and plantations, rather than domestic consumption industries.`
+    },
+    {
+        q: `Analyze the following statements regarding the British Famine Policy in India:<br><br>
+            1. The Campbell Commission (1866) was the first to explicitly declare that the State must take responsibility to save lives at any cost.<br>
+            2. The Strachey Commission (1880) recommended that famine relief should be a provincial responsibility, supported by a central 'Famine Fund'.<br>
+            3. The MacDonnell Commission (1900) advocated for the policy of 'Moral Strategy', emphasizing advances to peasants and the appointment of a Famine Commissioner.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: All three.</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Following the devastating Orissa Famine (1866), the Campbell Commission laid down the principle that the government was responsible for saving lives, marking a shift from absolute laissez-faire.<br>
+              <strong>Statement 2 is correct:</strong> Richard Strachey's commission laid the foundation of the modern Famine Code. It stressed that relief was a provincial duty and suggested creating a Famine Insurance Fund through taxation.<br>
+              <strong>Statement 3 is correct:</strong> Following the 1899 famine, Anthony MacDonnell's commission recommended a "moral strategy"—giving early takkavi (agricultural) loans to instill confidence, suspending revenue, and officially appointing a Famine Commissioner.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the development of Railways in British India:<br><br>
+            <strong>Assertion (A):</strong> The 'Old Guarantee System' (1849-1869) for railway construction led to gross financial inefficiency and inflated costs, burdening the Indian taxpayer.<br>
+            <strong>Reason (R):</strong> Private British companies were guaranteed a 5% fixed return on their capital investment by the Government of India, regardless of the actual profits or losses incurred by the railway lines.<br><br>
+            Select the correct answer:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both A and R are true and R explains A).</strong><br><br>
+              Under the Old Guarantee System, British capital was invited to build railways with a guaranteed 5% interest paid out of Indian revenues. If a company made less than 5%, the Indian state covered the deficit. If it made more, the surplus was shared. Because their return was guaranteed irrespective of performance, the private companies had absolutely no incentive to be cost-effective. They built lavish stations and ignored cost overruns, leading to massive financial drains ("private enterprise at public risk").`
+    },
+    {
+        q: `With reference to the Mahalwari System of land revenue, consider the following statements:<br><br>
+            1. It was primarily implemented in the Bengal Presidency and the Northern Circars.<br>
+            2. The revenue settlement was made with the entire village community (Mahal) collectively, rather than with individual cultivators.<br>
+            3. The concept of individual property rights was completely abolished under this system, making the state the sole owner of all village lands.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 2 is correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The Mahalwari system, formulated by Holt Mackenzie, was implemented primarily in the North-Western Provinces (modern UP), parts of Central India, and Punjab, not Bengal (which had the Permanent Settlement).<br>
+              <strong>Statement 2 is correct:</strong> The assessment was made on the 'Mahal' (estate/village). The co-sharing village bodies were collectively responsible for paying the revenue, represented by the Lambardar (village headman).<br>
+              <strong>Statement 3 is incorrect:</strong> Individual property rights were <strong>not</strong> abolished. Individual ownership was recognized, but the <em>liability</em> to pay revenue was both individual and collective (jointly and severally liable).`
+    },
+    {
+        q: `Which of the following logically explains the phenomenon of the 'Deindustrialization' of India during the 19th century?<br><br>
+            1. The loss of traditional aristocratic patronage for Indian handicrafts following the annexation of native states.<br>
+            2. The imposition of one-way free trade, allowing duty-free entry of British goods while placing prohibitive tariffs on Indian exports to Britain.<br>
+            3. The rapid industrialization of the Indian economy replacing traditional handlooms with modern domestic textile mills by the 1850s.`,
+        options: [
+            "1 and 2 only",
+            "2 and 3 only",
+            "1 only",
+            "1, 2 and 3"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: 1 and 2 only (Option A).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The annexation of native states (like Awadh) destroyed the courts of Nawabs and Rajas who were the primary consumers of luxury Indian handicrafts (silk, brocades, fine muslin).<br>
+              <strong>Statement 2 is correct:</strong> The Charter Act of 1813 ended the Company's monopoly, flooding India with cheap machine-made goods. Meanwhile, Indian goods entering Britain faced massive tariffs (sometimes up to 70-80%) to protect British mills.<br>
+              <strong>Statement 3 is incorrect:</strong> Deindustrialization meant the destruction of traditional crafts <strong>without</strong> the commensurate growth of modern industries. Indian domestic textile mills did not grow rapidly in the 1850s; the transition was delayed and stunted.`
+    },
+    {
+        q: `Consider the following statements concerning the development of Civil Services under British rule:<br><br>
+            1. Lord Cornwallis Indianized the lower rungs of the administration while strictly reserving all covenanted posts for Europeans.<br>
+            2. The Aitchison Commission (1886) recommended dropping the terms 'covenanted' and 'uncovenanted' and classified the services into Imperial, Provincial, and Subordinate.<br>
+            3. The Lee Commission (1924) proposed the immediate cessation of European recruitment to ensure complete Indianization of the ICS by 1930.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Cornwallis deeply distrusted Indians. He formalized the system where all high-paying Covenanted civil service jobs were reserved exclusively for Europeans, leaving only subordinate clerk/peon roles for Indians.<br>
+              <strong>Statement 2 is correct:</strong> The Aitchison Commission (appointed by Dufferin) established the three-tier structure (Imperial, Provincial, Subordinate) that formed the basis of the modern administrative framework.<br>
+              <strong>Statement 3 is incorrect:</strong> The Lee Commission did <strong>not</strong> propose immediate cessation. It proposed a 50:50 parity between Europeans and Indians in the ICS to be reached in 15 years, meaning European recruitment continued.`
+    },
+    {
+        q: `The 'Punjab Land Alienation Act of 1900' was a landmark economic legislation passed by Lord Curzon. What was the primary objective behind this Act?`,
+        options: [
+            "To alienate the lands of rebellious Sikh chiefs and distribute them among loyalist British zamindars.",
+            "To prevent the transfer of agricultural land from traditional peasant classes to urban moneylenders.",
+            "To forcefully acquire fertile lands in the Doab region for the construction of extensive canal networks.",
+            "To commercialize agriculture by allowing European planters to freely purchase land in Punjab."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              High land revenue and rigid colonial laws had pushed the Punjab peasantry into deep debt, leading to massive transfers of land from cultivators to urban moneylenders (sahukars). Fearing a political uprising among the martial races of Punjab (who formed the backbone of the British Indian Army), Lord Curzon passed the Punjab Land Alienation Act (1900). It prohibited the sale of land from 'agricultural tribes' to 'non-agricultural classes', effectively restricting the moneylenders from seizing peasant lands.`
+    },
+    {
+        q: `With reference to the British policy of 'Imperial Preference' adopted in the early 20th century, consider the following statements:<br><br>
+            1. It was formalized at the Ottawa Conference of 1932.<br>
+            2. Under this policy, India was forced to impose lower import duties on goods arriving from Great Britain compared to goods from non-Empire countries.<br>
+            3. It successfully protected infant Indian industries from cheaper Japanese and German imports without harming the Indian consumer.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The Ottawa Economic Conference (1932) established a zone of limited tariffs within the British Empire.<br>
+              <strong>Statement 2 is correct:</strong> Imperial Preference meant India gave preferential (lower) tariff treatment to British imports, ensuring Britain maintained its market share in India against rising foreign competition.<br>
+              <strong>Statement 3 is incorrect:</strong> It did <strong>not</strong> protect Indian industries; it protected <em>British</em> industries from Japanese/German competition at the cost of the Indian consumer, who was forced to buy more expensive British goods due to the discriminatory tariffs.`
+    },
+    {
+        q: `Examine the differences between the Ryotwari and Zamindari systems. Which of the following is an accurate conceptual distinction?`,
+        options: [
+            "In Zamindari, the state's revenue demand was fixed permanently, whereas in Ryotwari, it was subject to periodic revisions.",
+            "In Zamindari, the land could be confiscated for non-payment of revenue, whereas in Ryotwari, the ryot's land was immune to state confiscation.",
+            "In Zamindari, the cultivator held absolute property rights, whereas in Ryotwari, the state was the absolute owner of the soil.",
+            "In Zamindari, the revenue was collected in kind, whereas in Ryotwari, it was exclusively collected in cash."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A</strong><br><br>
+              <strong>Option A is correct:</strong> The Permanent Settlement (Zamindari in Bengal) fixed the state's demand in perpetuity. In the Ryotwari system (Madras, Bombay), the assessment was temporary and revised periodically (usually every 20-30 years), allowing the state to capture unearned increments in land value.<br>
+              <strong>Option B is incorrect:</strong> Under both systems, land could be confiscated and auctioned for default.<br>
+              <strong>Option C is incorrect:</strong> In Zamindari, the Zamindar (not the cultivator) held property rights. In Ryotwari, the ryot held the proprietary rights as long as they paid the revenue.<br>
+              <strong>Option D is incorrect:</strong> Both systems ultimately demanded revenue in cash, which drove the commercialization of agriculture.`
+    },
+    {
+        q: `Consider the following statements about the Factory Acts passed in British India:<br><br>
+            1. The First Factory Act (1881) primarily aimed to regulate adult male labor and fix minimum wages.<br>
+            2. The Second Factory Act (1891) was largely a result of pressure from Lancashire textile capitalists who feared cheap Indian labor gave Indian mills an unfair competitive advantage.<br>
+            3. Both the 1881 and 1891 Acts were widely applicable to British-owned tea and coffee plantations.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 2 is correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The 1881 Act (under Lord Ripon) primarily dealt with child labor (prohibiting employment of children under 7) and health/safety. It did <strong>not</strong> regulate adult male labor or fix minimum wages.<br>
+              <strong>Statement 2 is correct:</strong> British textile magnates in Lancashire pushed for these reforms not out of humanitarian concern, but because they felt the lack of labor laws in India allowed Indian mills to produce cheaper textiles, undercutting British profits.<br>
+              <strong>Statement 3 is incorrect:</strong> The Factory Acts strictly applied to factories (with power and a certain number of workers) and <strong>explicitly exempted</strong> British-owned tea, coffee, and indigo plantations, where labor conditions remained horrific (governed by draconian laws like the Inland Emigration Act).`
+    },
+    {
+        q: `Who among the following was the primary architect of the 'Cornwallis Code' (1793), and what was its defining administrative principle?`,
+        options: [
+            "Thomas Macaulay; The centralization of all executive and judicial powers in the hands of the District Collector.",
+            "George Barlow; The absolute separation of revenue collection from the administration of justice.",
+            "Warren Hastings; The synthesis of Hindu, Islamic, and British common law into a single penal code.",
+            "Holt Mackenzie; The delegation of judicial powers to traditional village panchayats."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The Cornwallis Code of 1793 was drafted primarily by Sir George Barlow. Its most defining feature was the <strong>separation of revenue and judicial administration</strong>. Cornwallis stripped the District Collector of his judicial and magisterial powers, leaving him only with the duty of revenue collection. A new class of District Judges was created to handle civil justice. This was based on the principle that the revenue collector could not be an impartial judge in cases involving land revenue disputes.`
+    },
+    {
+        q: `Consider the following statements regarding the economic critique of colonialism by Indian nationalists:<br><br>
+            1. R.C. Dutt's 'Economic History of India' argued that the Permanent Settlement was the root cause of poverty and advocated for its abolition in favor of the Ryotwari system.<br>
+            2. Dadabhai Naoroji calculated the per capita income of India to highlight the extreme poverty caused by the Drain of Wealth.<br>
+            3. The nationalists vehemently opposed the influx of foreign capital, arguing it led to political subjugation and suppressed indigenous enterprise.<br><br>
+            Which of the statements given above are correct?`,
+        options: [
+            "1 and 2 only",
+            "2 and 3 only",
+            "1 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: 2 and 3 only (Option B).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> This is a common UPSC trap. R.C. Dutt actually <strong>supported</strong> the Permanent Settlement. He argued that it protected the peasantry from the ever-increasing, oppressive revenue demands of the state seen in the Ryotwari areas. He advocated for the extension of the Permanent Settlement to the rest of India to prevent famines.<br>
+              <strong>Statement 2 is correct:</strong> Naoroji, in his book *Poverty and Un-British Rule in India*, made the first attempt to calculate India's national and per capita income (estimating it at Rs. 20 per annum) to prove the drain theory.<br>
+              <strong>Statement 3 is correct:</strong> Early nationalists opposed foreign capital (unlike modern developing nations) because they saw it not as developmental, but as an instrument of exploitation that remitted profits abroad and stifled local industries.`
+    },
+    {
+        q: `With reference to the Indian Forest Acts under British rule, consider the following Assertion and Reason:<br><br>
+            <strong>Assertion (A):</strong> The Indian Forest Act of 1878 classified forests into Reserved, Protected, and Village forests, severely curtailing the customary rights of forest dwellers.<br>
+            <strong>Reason (R):</strong> The colonial state required absolute monopoly over valuable timber, particularly teak and sal, for railway sleeper construction and shipbuilding.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              The British initially viewed forests as wild impediments to agriculture. However, with the rapid expansion of the railways in the 1850s, the demand for durable timber (for railway sleepers) skyrocketed. To monopolize these resources, the government passed the Forest Act of 1865, and later the more stringent Act of 1878. The 1878 Act created 'Reserved Forests' where local rights (grazing, timber collection) were completely extinguished, shifting ownership from communities to the colonial state for commercial extraction.`
+    },
+    {
+        q: `Examine the ownership and structure of modern industries in India prior to World War I. Which of the following statements reveals the hidden dichotomy in the industrial sector?`,
+        options: [
+            "Both the Cotton and Jute industries were completely dominated by British Managing Agencies based in Calcutta.",
+            "The Cotton textile industry in western India was primarily owned by indigenous Indian capital, whereas the Jute industry in eastern India was a monopoly of European capital.",
+            "Indian capitalists dominated heavy industries like steel and mining, leaving consumer goods like textiles to the British.",
+            "The British actively encouraged the growth of indigenous machine-tool industries to support their railway workshops."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              This is a classic structural distinction in India's economic history. The cotton textile industry, centered in Bombay and Ahmedabad, was built primarily by Indian entrepreneurs (Parsis, Gujaratis) using indigenous capital. Conversely, the jute industry, centered in Bengal along the Hooghly basin, was overwhelmingly controlled by European/British Managing Agencies because of its export-oriented nature and proximity to the colonial power center in Calcutta. Heavy industries (mining, steel) were also largely European-dominated initially (with Tata being an exception later), and the British actively discouraged indigenous machine-tool industries.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Charter Act of 1813' and its economic implications:<br><br>
+            1. It abolished the East India Company's monopoly over all trade with India and China.<br>
+            2. It allocated one lakh rupees annually for the promotion of western education, driven by the economic motive of creating a class of Indian consumers for British goods.<br>
+            3. It legally permitted Christian missionaries to enter India, partly supported by British manufacturers who believed Christianization would modernize Indian tastes.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 2 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The Act of 1813 ended the Company's trade monopoly in India, <strong>except</strong> for the trade in tea and trade with China, which were retained until the Charter Act of 1833.<br>
+              <strong>Statement 2 is correct:</strong> The one lakh rupees for education had an underlying economic logic. Free-traders in Britain believed that imparting Western education would westernize Indian tastes, creating a vast captive market for British manufactured goods.<br>
+              <strong>Statement 3 is correct:</strong> Missionaries were allowed entry. Charles Grant and British industrial lobbies argued that spreading Christianity and Western values would "civilize" the population, thereby increasing their desire for British products.`
+    },
+    {
+        q: `In the context of the British Indian Army post-1857, what was the primary recommendation of the Peel Commission regarding the economic and administrative structure of the military?`,
+        options: [
+            "To completely disband the Indian sepoy regiments and rely exclusively on British troops for internal security.",
+            "To increase the ratio of European to Indian soldiers and organize regiments on the basis of caste, community, or region to prevent united uprisings.",
+            "To transfer the financial burden of maintaining the British Indian Army from the Indian exchequer directly to the British Parliament.",
+            "To modernise the artillery divisions by equipping them exclusively with native Indian officers."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              Following the Revolt of 1857, the Peel Commission (1859) recommended an overhaul of the army. Its primary strategy was "Divide and Rule." It recommended balancing communities by organizing regiments based on caste/region (e.g., Sikh, Gurkha, Rajput regiments) so they could not unite. It also drastically increased the ratio of British to Indian soldiers (1:2 in Bengal, 1:3 in Madras/Bombay).<br>
+              Option C is incorrect: The massive financial burden remained firmly on the Indian taxpayer.<br>
+              Option D is incorrect: Artillery was strictly reserved for Europeans post-1857 to prevent Indians from holding advanced weaponry.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Commercialization of Agriculture' in British India:<br><br>
+            1. The cultivation of opium in India was a state monopoly designed to finance the illicit British tea trade with China.<br>
+            2. The transition to cash crops significantly improved the resilience of the Indian peasantry against localized droughts.<br>
+            3. The 'Tinkathia' system in Champaran was an exploitative form of commercialization involving the forced cultivation of Indigo.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The British East India Company forced Indian farmers (especially in Malwa and Bengal) to grow opium. This was smuggled into China to offset the massive trade deficit Britain had due to its immense consumption of Chinese tea (the triangular trade).<br>
+              <strong>Statement 2 is incorrect:</strong> Commercialization <strong>decreased</strong> resilience. Land previously used for subsistence food crops (jowar, bajra, wheat) was diverted to inedible cash crops. During droughts, peasants had money but no food was available, leading to catastrophic famines.<br>
+              <strong>Statement 3 is correct:</strong> Under the Tinkathia system, European planters forced peasants to grow indigo on 3/20th of their land, causing severe agrarian distress leading to Gandhi's Champaran Satyagraha.`
+    },
+    {
+        q: `With reference to the development of the Press under British rule, which of the following regulations was explicitly designed by Lord Lytton with an economic and administrative motive to crush vernacular criticism of his disastrous famine management?`,
+        options: [
+            "The Censorship of Press Act, 1799",
+            "The Licensing Regulations, 1823",
+            "The Vernacular Press Act, 1878",
+            "The Indian Press Act, 1910"
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              Lord Lytton passed the <strong>Vernacular Press Act of 1878</strong> (nicknamed the Gagging Act). During 1876-1878, a severe famine killed millions in India. Simultaneously, Lytton was holding a lavish Imperial Durbar in Delhi (1877) and fighting an expensive Afghan War. The vernacular (local language) press fiercely criticized these economic priorities. To silence this criticism, Lytton passed the Act, which authorized the confiscation of printing presses of vernacular newspapers publishing "seditious" material, without the right to appeal in court. It famously exempted the English-language press.`
+    },
+    {
+        q: `Consider the following statements regarding the British Tariff Policy in India:<br><br>
+            1. The Government of India abolished the import duties on coarse cotton goods in 1879 under pressure from Lancashire textile magnates.<br>
+            2. To compensate for the loss of revenue from tariff abolition, the British introduced the Income Tax on a permanent basis in the 1880s.<br>
+            3. In 1894, an excise duty was imposed on Indian-manufactured cotton yarn to negate any natural advantage domestic mills had over British imports.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Lord Lytton abolished the 5% import duty on coarse cotton textiles in 1879, purely to satisfy the Lancashire lobby, despite India facing a severe financial crisis due to famine and war.<br>
+              <strong>Statement 2 is incorrect:</strong> The loss of revenue was compensated by increasing the Salt Tax, not the Income Tax. Salt tax was highly regressive and hit the poorest Indians hardest.<br>
+              <strong>Statement 3 is correct:</strong> In 1894/1896, a 3.5% countervailing excise duty was levied on cotton cloth produced in Indian mills. This was to ensure that Indian cloth became artificially expensive, neutralizing its cost advantage and keeping British imports competitive in the Indian market.`
+    },
+    {
+        q: `Which of the following describes the core objective of the 'Woods Despatch' (1854) from a purely administrative and economic standpoint?`,
+        options: [
+            "To revive classical Indian literature to assist British judges in the administration of Hindu and Muslim personal laws.",
+            "To promote secular scientific education aiming at immediate rapid industrialization of India under Indian entrepreneurship.",
+            "To create a reliable, cheap pool of subordinate administrative clerks and instil Western tastes to boost the consumption of British goods.",
+            "To mandate free and compulsory primary education across all presidencies funded by the Permanent Settlement revenues."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              While often hailed as the "Magna Carta of English Education in India," the Wood's Despatch had clear colonial utility. Economically and administratively, it sought to:<br>
+              1. Provide the state with a steady supply of cheap, English-educated Indian clerks (Babus) to run the lower levels of the massive imperial bureaucracy.<br>
+              2. Cultivate a class of Indians who were "English in taste, in opinions, in morals and in intellect" (Macaulay's vision), thereby creating a permanent, willing market for British manufactured consumer goods.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the Permanent Settlement (1793):<br><br>
+            <strong>Assertion (A):</strong> The Permanent Settlement was never extended beyond Bengal, Bihar, and Orissa to the newly conquered territories in Madras and Bombay Presidencies.<br>
+            <strong>Reason (R):</strong> The British realized that by fixing the revenue in perpetuity, the State was deprived of a share in the increased agricultural income arising from rising prices and expanded cultivation.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              In the decades following 1793, agricultural prices rose and cultivation expanded. Consequently, the Zamindars' incomes skyrocketed, but the Government's revenue remained absolutely fixed. The colonial state faced massive financial pressures (due to wars and administrative costs) and realized it had committed a financial blunder by locking its primary revenue source. Therefore, when they conquered Madras and Bombay, they opted for the Ryotwari system, where assessments were temporary and could be revised upwards to capture the 'unearned increment'.`
+    },
+    {
+        q: `Analyze the evolution of the Judiciary under the British. Which of the following statements correctly identifies the contribution of Lord William Bentinck?`,
+        options: [
+            "He established the Supreme Court at Calcutta under the Regulating Act of 1773.",
+            "He abolished the Provincial Courts of Appeal set up by Cornwallis, transferring their duties to Commissioners of Revenue and Circuit.",
+            "He codified the Indian Penal Code and established the High Courts in Bombay, Madras, and Calcutta.",
+            "He introduced the principle of the Rule of Law, making British subjects legally subordinate to native Indian judges."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              <strong>Option B is correct:</strong> Lord William Bentinck reformed the costly and dilatory judicial system left by Cornwallis. He abolished the four Provincial Courts of Appeal and Circuit, which had become incredibly backlogged. He transferred their functions to newly appointed Commissioners of Revenue and Circuit.<br>
+              Option A refers to Warren Hastings / Regulating Act.<br>
+              Option C refers to Lord Canning (High Courts Act 1861) and Macaulay (Law Commission).<br>
+              Option D is incorrect; the Ilbert Bill (under Ripon) attempted to allow native judges to try Europeans, but it was heavily diluted due to the White Mutiny.`
+    },
+    {
+        q: `With reference to the currency policies of British India, what was the primary impact of the closure of Indian mints to the free coinage of silver in 1893 (following the Herschell Committee)?`,
+        options: [
+            "It led to hyperinflation by flooding the market with unbacked paper currency.",
+            "It artificially stabilized the exchange rate of the Rupee against the Pound Sterling, benefiting the Government's remittance of Home Charges.",
+            "It massively increased the global price of silver, making Indian silver ornaments highly valuable export commodities.",
+            "It allowed Indian merchants to easily import silver, boosting the domestic handicraft industry."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              In the late 19th century, global silver prices crashed while gold prices remained stable. India was on a Silver Standard, while Britain was on a Gold Standard. As silver fell, the Rupee depreciated against the Pound. This meant the Government of India had to spend significantly more Rupees to pay the 'Home Charges' (which were fixed in Pounds). To stop this financial hemorrhage, the government accepted the Herschell Committee's recommendation in 1893 to close the mints to the free coinage of silver, artificially restricting the supply of Rupees to maintain its exchange value against gold/pound.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Ilbert Bill Controversy' (1883-84):<br><br>
+            1. The original bill aimed to remove racial anomalies in the judicial system by allowing Indian magistrates to preside over cases involving European subjects.<br>
+            2. The European planter community in Bengal and Assam vehemently opposed the bill primarily because they feared impartial Indian judges would convict them for abusing plantation laborers.<br>
+            3. The controversy ended with the total withdrawal of the bill, leading Lord Ripon to resign immediately in protest.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Drafted by C.P. Ilbert under Lord Ripon, it sought to give Indian District Magistrates the same powers as their European counterparts to try European offenders.<br>
+              <strong>Statement 2 is correct:</strong> The fiercest opposition (the 'White Mutiny') came from British tea and indigo planters. They routinely inflicted violence on Indian laborers and relied on sympathetic European magistrates to acquit them. They feared Indian judges would enforce the law impartially.<br>
+              <strong>Statement 3 is incorrect:</strong> The bill was not totally withdrawn, nor did Ripon resign immediately. It was heavily <em>amended</em> (diluted). The amendment allowed Europeans tried by Indian judges to demand a jury where at least half the members were European/American, effectively defeating the bill's purpose.`
+    },
+    {
+        q: `Consider the following statements regarding the police reforms introduced by Lord Cornwallis:<br><br>
+            1. He relieved the Zamindars of their police functions and established a regular police force under the state.<br>
+            2. He established a system of 'Thanas' (circles) headed by a Daroga, who was explicitly required to be a European officer.<br>
+            3. The new police system successfully eliminated the epidemic of dacoity in Bengal by strictly integrating traditional village watchmen into the imperial payroll.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 1 is correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Cornwallis stripped Zamindars of their traditional policing duties (which they often abused) and created a modern state-controlled police force.<br>
+              <strong>Statement 2 is incorrect:</strong> The Darogas heading the Thanas were <strong>Indians</strong>, not Europeans. The District Superintendent of Police (SP) above them was European.<br>
+              <strong>Statement 3 is incorrect:</strong> The Cornwallis police system actually <em>failed</em> to curb dacoity initially because it destroyed the traditional local system of village watchmen without effectively replacing it at the grassroots level. The Darogas became notoriously corrupt and oppressive.`
+    },
+    {
+        q: `The concept of 'Discriminating Protection', a major shift in British Indian tariff policy, was introduced based on the recommendations of the First Fiscal Commission (1921-22). Which of the following conditions had to be strictly met by an Indian industry to qualify for this protection?<br><br>
+            1. The industry must possess natural advantages, such as an abundant supply of raw materials and cheap labor.<br>
+            2. The industry must be indispensable for the national defense of the British Empire.<br>
+            3. The industry must prove that it is either completely unable to develop without protection or unable to develop as rapidly as the national interest requires.<br><br>
+            Select the correct code:`,
+        options: [
+            "1 and 2 only",
+            "2 and 3 only",
+            "1 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: 1 and 3 only (Option C).</strong><br><br>
+              The Fiscal Commission laid down a "Triple Formula" for an industry to qualify for discriminating protection:<br>
+              1. It must have natural advantages (abundant raw material, cheap power, sufficient labor, large home market). (Statement 1 is correct).<br>
+              2. It must be one which, without protection, is not likely to develop at all, or not rapidly enough. (Statement 3 is correct).<br>
+              3. It must be one which will eventually be able to face world competition without protection.<br>
+              <strong>Statement 2 is incorrect:</strong> While defense industries might receive state support, it was not one of the mandatory economic criteria under the 'Triple Formula' for tariff protection.`
+    },
+    {
+        q: `With reference to the evolution of Local Self-Government in British India, analyze the hidden distinction between Lord Mayo's Resolution (1870) and Lord Ripon's Resolution (1882):`,
+        options: [
+            "Mayo sought to create local bodies primarily composed of elected non-officials, whereas Ripon reverted to a system dominated by nominated European bureaucrats.",
+            "Mayo's primary motive was to relieve the Imperial treasury by making local bodies raise local taxes, whereas Ripon viewed local bodies primarily as instruments of political education.",
+            "Mayo successfully extended the elective principle to rural boards across India, whereas Ripon restricted local self-government exclusively to urban municipalities.",
+            "Mayo transferred vital subjects like higher education to local bodies, whereas Ripon clawed back these powers to the provincial governments."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              <strong>Option B is correct:</strong> Lord Mayo's Resolution of 1870 was driven by sheer financial necessity. The central government was facing a deficit, so Mayo decentralized certain departments (roads, public works) to local bodies so they could levy local taxes to fund them. It was administrative convenience, not democracy. Lord Ripon (1882), conversely, famously stated that local self-government is "not primarily with a view to improvement in administration... it is chiefly desirable as an instrument of political and popular education." He genuinely sought to introduce the elective principle.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Trade Disputes Act of 1929':<br><br>
+            1. It made sympathy strikes and strikes designed to coerce the government legally permissible as a fundamental right of trade unions.<br>
+            2. It mandated the appointment of Courts of Inquiry and Boards of Conciliation for resolving industrial disputes.<br>
+            3. It made strikes in public utility services like railways and postal departments illegal unless a minimum of 14 days' advance notice was given.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 2 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The Act was draconian and explicitly <strong>banned</strong> sympathy strikes (strikes not connected to a direct trade dispute) and any strikes designed to coerce the government or inflict hardship on the community.<br>
+              <strong>Statement 2 is correct:</strong> It established ad-hoc statutory machinery (Courts of Inquiry and Boards of Conciliation) to investigate and settle disputes.<br>
+              <strong>Statement 3 is correct:</strong> It strictly prohibited flash strikes in public utility services, mandating a 14-day notice, thereby heavily restricting the bargaining power of crucial worker unions.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the economic impact of the opening of the Suez Canal in 1869:<br><br>
+            <strong>Assertion (A):</strong> The opening of the Suez Canal accelerated the decline of indigenous Indian artisanal industries and drastically altered India's cropping pattern.<br>
+            <strong>Reason (R):</strong> It drastically reduced the shipping cost and transit time between Britain and India, enabling bulk agricultural exports from India and the massive influx of cheap British machine-made goods.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              Before 1869, ships had to navigate around the Cape of Good Hope, which was time-consuming and expensive. Only high-value goods (like spices or fine textiles) were profitable to trade. The Suez Canal cut the distance from London to Bombay by half. This sudden drop in freight rates meant that heavy, bulky, low-value raw materials (like wheat, raw cotton, oilseeds) could now be profitably exported from India to feed British factories. Conversely, cheap British textiles flooded the Indian market, devastating local weavers.`
+    },
+    {
+        q: `In the context of land revenue administration in the Madras Presidency, the term 'Mirasdars' often appears. Who were the Mirasdars, and what was their relationship with the Ryotwari settlement?`,
+        options: [
+            "They were landless agricultural laborers who were granted proprietary rights by Thomas Munro to break the monopoly of upper castes.",
+            "They were traditional hereditary landowners or village elites whose privileged status was initially undermined but later recognized and incorporated by the Ryotwari system.",
+            "They were wealthy urban moneylenders who purchased confiscated lands during the sunset auctions under the Ryotwari system.",
+            "They were East India Company officials who acted as middlemen between the Ryots and the Board of Revenue."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              Mirasdars held hereditary 'mirasi' (property) rights over village lands in parts of South India. When Thomas Munro initially introduced the Ryotwari system, the ideological aim was to settle directly with the actual tiller, bypassing these elites. However, practically, the colonial state found it impossible to collect revenue without the cooperation of these socially dominant groups. Thus, in many areas, the Ryotwari settlement simply confirmed the Mirasdars as the 'ryots' (registered landholders), allowing them to continue exploiting the actual landless laborers (Padiyals).`
+    },
+    {
+        q: `Consider the following statements regarding the 'Royal Commission on Agriculture' (Linlithgow Commission) of 1928:<br><br>
+            1. It was the first comprehensive commission to investigate the overall condition of agriculture and the rural economy in British India.<br>
+            2. It recommended the complete abolition of the Zamindari system to spur agricultural modernization.<br>
+            3. Its recommendations led to the establishment of the Imperial Council of Agricultural Research (ICAR).<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Appointed in 1926 under Lord Linlithgow, it was a landmark commission that exhaustively studied Indian agriculture, irrigation, and rural credit.<br>
+              <strong>Statement 2 is incorrect:</strong> <em>Crucial UPSC Trap.</em> The Commission was explicitly instructed in its terms of reference <strong>not</strong> to make any recommendations regarding the existing systems of land ownership, tenancy, or land revenue assessment. The British avoided disturbing the political loyalty of the Zamindars.<br>
+              <strong>Statement 3 is correct:</strong> The establishment of ICAR in 1929 was a direct outcome of its recommendations to coordinate agricultural research.`
+    },
+    {
+        q: `Analyze the concept of 'Unrequited Exports' in the context of the economic drain from India. What does it signify?`,
+        options: [
+            "Exports of raw materials from India that were forcibly diverted to non-British European markets without generating any customs revenue.",
+            "The massive export of bullion (gold and silver) from India to Britain to pay for the expenses of the World Wars.",
+            "The surplus of Indian exports over imports for which India received no corresponding return in the form of capital, goods, or bullion, but was used to pay off the 'Home Charges'.",
+            "The smuggling of Indian opium into China which bypassed the official accounting of the East India Company."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              The concept of "unrequited exports" is central to the Drain of Wealth theory. India consistently maintained a massive trade surplus (it exported much more than it imported). In a normal economy, this surplus would mean an influx of gold, silver, or foreign capital, enriching the country. However, India's export surplus was 'unrequited'—meaning it received nothing in return. The surplus foreign exchange earned by Indian exports was hijacked by the British in London to pay off the 'Home Charges' (salaries, pensions, debt interest of the colonial state).`
+    },
+    {
+        q: `With reference to the financial administration of British India, which of the following events was the direct catalyst for the introduction of the Income Tax by James Wilson in 1860?`,
+        options: [
+            "The massive financial deficit caused by the suppression of the Revolt of 1857.",
+            "The catastrophic drop in land revenue collections following the Orissa Famine of 1866.",
+            "The loss of monopoly over the lucrative China trade following the Charter Act of 1833.",
+            "The sudden depreciation of silver causing an immense increase in the Home Charges burden."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A</strong><br><br>
+              The suppression of the Revolt of 1857 was heavily financed by borrowing, leaving the colonial government with a staggering debt and a severe financial crisis. To balance the budget and establish modern financial management, the Crown appointed James Wilson (founder of The Economist) as the first Finance Member of the Viceroy's Council. In 1860, he presented the first budget and introduced the Income Tax to raise emergency funds.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Agency Houses' operating in India during the late 18th and early 19th centuries:<br><br>
+            1. They were indigenous Indian banking firms that financed the East India Company's military campaigns in the Deccan.<br>
+            2. They heavily monopolized the internal trade and export of raw materials like indigo, sugar, and opium.<br>
+            3. They were structurally sound financial institutions that successfully transitioned into modern commercial banks by the 1850s.<br><br>
+            Which of the statements given above is/are correct?`,
+        options: [
+            "1 and 2 only",
+            "2 only",
+            "2 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: 2 only (Option B).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> Agency Houses were <strong>European</strong> commercial firms (set up by former Company servants), not indigenous Indian bankers (like Jagat Seths).<br>
+              <strong>Statement 2 is correct:</strong> Operating largely from Calcutta, they controlled the bulk of India's export trade. They managed plantations, shipping, and banking, often acting as agents for East India Company officials remitting their illicit fortunes back to England.<br>
+              <strong>Statement 3 is incorrect:</strong> They were highly speculative and structurally weak. Most of the major Agency Houses collapsed catastrophically during the financial crises of the early 1830s due to over-speculation in the indigo trade.`
+    },
+    {
+        q: `The 'Hilton Young Commission' (1926) is famous for its recommendations regarding India's monetary and banking system. Which of the following was its most controversial recommendation that drew fierce opposition from Indian nationalists?`,
+        options: [
+            "The establishment of the Reserve Bank of India as a fully state-owned entity rather than a shareholders' bank.",
+            "Fixing the exchange rate of the Rupee at 1s. 6d. instead of the pre-war rate of 1s. 4d., which nationalists argued would cripple Indian exports.",
+            "The complete demonetization of silver rupees to strictly enforce the Gold Standard.",
+            "Allowing European Imperial banks unfettered access to print Indian paper currency."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The Royal Commission on Indian Currency and Finance (Hilton Young Commission) recommended fixing the Rupee to Sterling at the higher rate of 1 shilling 6 pence (1s 6d) instead of the traditional 1s 4d. Nationalists (like Purshottamdas Thakurdas) fought bitterly against this "ratio controversy." A higher exchange rate (an artificially overvalued Rupee) made British imports into India cheaper (benefiting British manufacturers) and Indian exports more expensive in the world market (devastating Indian industrialists and farmers).`
+    },
+    {
+        q: `Consider the following statements about the 'Deccan Riots' (1875):<br><br>
+            1. The riots were an anti-imperialist armed rebellion aimed at overthrowing the British provincial government in Bombay.<br>
+            2. The immediate trigger was the crash in cotton prices following the end of the American Civil War, coupled with an arbitrary increase in land revenue by the government.<br>
+            3. The rioters specifically targeted Marwari and Gujarati Sahukars (moneylenders), destroying their debt bonds and decrees.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 2 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The riots were an agrarian uprising, not an anti-imperialist armed rebellion. The peasants did not attack the British state directly; their anger was focused entirely on the local oppressors (the moneylenders). The violence was limited and focused on destroying documents.<br>
+              <strong>Statement 2 is correct:</strong> The end of the American Civil War in 1865 crashed the artificial boom in Indian cotton exports. To make matters worse, the Bombay government raised land revenue by up to 50%, pushing peasants into the arms of moneylenders.<br>
+              <strong>Statement 3 is correct:</strong> The ryots boycotted and attacked the 'outsider' moneylenders (Marwaris/Gujaratis), burning the <em>bahi khatas</em> (account books) and debt bonds.`
+    },
+    {
+        q: `With reference to the judicial administration under British rule, what was the primary significance of the establishment of the 'Federal Court' in 1937?`,
+        options: [
+            "It served as the absolute final court of appeal for all civil and criminal cases in India, entirely replacing the jurisdiction of the Privy Council.",
+            "It was established to specifically try European subjects who previously enjoyed immunity from Indian provincial high courts.",
+            "It was designed to resolve disputes between the Central Government and the Provinces, and between the Provinces themselves, under the Government of India Act 1935.",
+            "It was an emergency tribunal established to prosecute nationalist leaders involved in the Civil Disobedience Movement."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              The Government of India Act 1935 envisaged a federal structure for India (combining British Indian provinces and Princely States). Consequently, a Federal Court was inaugurated in Delhi in 1937. Its original jurisdiction was strictly to settle disputes between the federal units (Centre vs Provinces, or Province vs Province) and interpret the constitution. <br>
+              Option A is incorrect because the Federal Court was <strong>not</strong> the final court of appeal; appeals against its judgments could still be taken to the Privy Council in London until 1949.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the post-1857 British land policy in Awadh (Oudh):<br><br>
+            <strong>Assertion (A):</strong> Following the suppression of the 1857 Revolt, Lord Canning confiscated the lands of the Taluqdars of Awadh and distributed them to the actual cultivators under a Ryotwari settlement.<br>
+            <strong>Reason (R):</strong> The British recognized that the oppressive exactions of the Taluqdars had driven the peasantry to join the mutiny against the colonial state.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true.",
+            "Both A and R are false."
+        ],
+        answer: 4, // E (Mapped to 4 for simplicity, but let's adjust to standard 4 options in code)
+        // Wait, standard options are 4. Let's rewrite the options:
+        /*
+            "Both A and R are true and R explains A",
+            "Both A and R are true but R does not explain A",
+            "A is true but R is false",
+            "Both A and R are false"
+        */
+       exp: `<strong>Answer: Both A and R are false (Option D in standard format).</strong><br><br>
+              <strong>Assertion is false:</strong> While Canning's initial 'Oudh Proclamation' threatened confiscation, the actual implemented policy was exactly the opposite. The British realized that trying to bypass the traditional elites (the Taluqdars) before 1857 had triggered their rebellion. Post-1857, to create a loyal aristocratic buffer, the British <strong>restored</strong> the Taluqdars to their estates, granting them Sanads (patents) that made them absolute proprietors. The cultivators were completely abandoned to their mercy.<br>
+              <strong>Reason is false:</strong> The peasantry in Awadh joined the mutiny <em>in support</em> of their traditional Taluqdars, whom they viewed as legitimate local leaders against the alien British state, not against them.`
+    },
+    {
+        q: `Analyze the impact of the Charter Act of 1833 on the economic landscape of British India. Which of the following statements is conceptually correct?`,
+        options: [
+            "It mandated the East India Company to act purely as a commercial enterprise, stripping it of all political and administrative functions.",
+            "It removed all restrictions on European immigration and the acquisition of property in India, clearing the path for the massive influx of British plantation capital.",
+            "It decentralized the financial administration by allowing the Governors of Madras and Bombay to independently levy taxes on European merchants.",
+            "It introduced the first formal framework for the protection of indigenous Indian industries from European competition."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              <strong>Option B is correct:</strong> The Charter Act of 1833 allowed British citizens to enter India freely, settle, and acquire land. Prior to this, European colonization was restricted to protect the Company's monopoly. This crucial clause allowed British private capital to flow into India to establish massive tea, coffee, and indigo plantations, marking a new phase of colonial exploitation.<br>
+              Option A is inverse: It ended the Company's commercial activities entirely (even tea/China trade) and made it purely an administrative body.<br>
+              Option C is incorrect: It highly centralized finances; provinces lost all legislative/financial autonomy.`
+    },
+    {
+        q: `With reference to the 'Tinkathia' system, which was the root cause of the Champaran Satyagraha, consider the following statements:<br><br>
+            1. Under this system, the peasant was legally bound by contract to cultivate indigo on 3/20th of their landholding.<br>
+            2. The crisis erupted primarily because the British planters violently forced peasants to grow indigo despite a massive surge in global indigo prices.<br>
+            3. The planters charged illegal cesses (abwabs) like 'tawan' and 'sharahbeshi' to release peasants from their obligation to grow indigo.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Tinkathia literally means three (tin) kathas out of a bigha (20 kathas). Peasants were forced to grow indigo on this portion of their best land.<br>
+              <strong>Statement 2 is incorrect:</strong> The crisis was caused by a <strong>crash</strong> in global prices, not a surge. The invention of cheap synthetic dye by Germany in the late 19th century made natural indigo unprofitable.<br>
+              <strong>Statement 3 is correct:</strong> Because natural indigo was no longer profitable, the European planters wanted to shift to other crops, but they extorted the peasants. To release the peasants from the Tinkathia contracts, they demanded massive illegal rent enhancements (sharahbeshi) or lump-sum compensations (tawan).`
+    },
+    {
+        q: `Consider the following statements regarding the 'Woodhead Commission' (Famine Inquiry Commission) of 1944:<br><br>
+            1. It was appointed to investigate the causes of the devastating Bengal Famine of 1943.<br>
+            2. It concluded that the famine was primarily a 'man-made' crisis caused by administrative failure and hoarding, rather than an absolute shortage of food grains.<br>
+            3. It led to the immediate establishment of the Food Corporation of India (FCI) to manage buffer stocks.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Sir John Woodhead led the commission to probe the 1943 Bengal Famine which killed 3-4 million people.<br>
+              <strong>Statement 2 is correct:</strong> The Commission (and later economists like Amartya Sen) highlighted that it was a failure of 'exchange entitlements'. Wartime inflation, Japanese occupation of Burma (stopping rice imports), panic hoarding, and the brutal 'Denial Policy' (destroying boats to prevent Japanese advance) caused the crisis, not a severe crop failure.<br>
+              <strong>Statement 3 is incorrect:</strong> The Food Corporation of India (FCI) was established much later in independent India (1965) to manage food security, not by the Woodhead Commission.`
+    },
+    {
+        q: `Examine the concept of the 'Guarantee System' employed by the British for railway construction. Which of the following statements reveals the hidden economic trap for India in this arrangement?`,
+        options: [
+            "The guaranteed interest to British investors was paid exclusively from the profits generated by the railways, limiting the financial risk to the Indian state.",
+            "If the railway companies failed to make the guaranteed profit, the shortfall was made up from the general revenues of India, effectively socializing the losses while privatizing the profits.",
+            "The system required all railway tracks and rolling stock to be manufactured in India to guarantee employment, artificially inflating initial costs.",
+            "The guarantee was conditional upon the railway lines exclusively connecting rural agricultural hinterlands to prevent famines."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The Old Guarantee System (1849-1869) offered private British companies free land and a guaranteed 5% return on capital. <strong>Option B</strong> describes the trap: If the company ran inefficiently and made zero profit, the Indian taxpayer (via general revenues) still had to pay them the 5% dividend. If the company made massive profits, they kept it (sharing a portion with the government). This created a moral hazard where British capital had no incentive for economy or efficiency, leading to massive overcapitalization and drain of wealth. Options C and D are factually incorrect; materials were imported from Britain, and lines connected hinterlands to ports for export.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Islington Commission' (1912) on Public Services:<br><br>
+            1. It was appointed to examine the demand of Indian nationalists for holding simultaneous ICS examinations in England and India.<br>
+            2. It firmly recommended the immediate introduction of simultaneous examinations to satisfy moderate political demands.<br>
+            3. It suggested classifying the civil services into Class I and Class II instead of the existing Imperial and Provincial categories.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 1 is correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The Royal Commission on Public Services in India (Islington Commission) was set up due to continuous nationalist pressure for Indianization and simultaneous exams.<br>
+              <strong>Statement 2 is incorrect:</strong> The Commission outright <strong>rejected</strong> the demand for simultaneous examinations in India and London, arguing it would compromise the 'British character' of the administration.<br>
+              <strong>Statement 3 is incorrect:</strong> The classification into Class I, II, III, etc., was done much later (post-independence/central pay commissions). The Islington Commission actually recommended retaining the Imperial and Provincial classification.`
+    },
+    {
+        q: `With reference to the development of modern banking in British India, consider the following statements:<br><br>
+            1. The Bank of Bengal, established in 1809, was the first joint-stock bank with limited liability in India.<br>
+            2. The three Presidency Banks (Bengal, Bombay, Madras) were granted the exclusive monopoly of issuing paper currency, which they retained until independence.<br>
+            3. The Imperial Bank of India was formed in 1921 by amalgamating the three Presidency Banks.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 3 is correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The General Bank of India (1786) and Bank of Hindustan (1770) predated the Bank of Bengal. More importantly, the principle of 'limited liability' was not applied to Indian banking until the 1860s.<br>
+              <strong>Statement 2 is incorrect:</strong> The Presidency Banks did have the right to issue paper currency initially, but the government <strong>withdrew this right</strong> with the Paper Currency Act of 1861. After 1861, the monopoly of issuing notes belonged solely to the Government of India.<br>
+              <strong>Statement 3 is correct:</strong> In 1921, the three Presidency Banks were merged to form the Imperial Bank of India (which later became the State Bank of India in 1955).`
+    },
+    {
+        q: `Which among the following accurately describes the economic concept of the 'Home Charges' paid by colonial India to Britain?`,
+        options: [
+            "Taxes collected from British citizens residing in India sent to London to fund the monarchy.",
+            "The annual tribute paid by Indian Princely states directly to the British Crown for military protection.",
+            "The external expenses of the Government of India in London, including pensions, debt interest, and military purchases.",
+            "The profits remitted back to Britain by private British capitalists from investments in Indian tea and jute."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              The "Home Charges" were the official administrative and financial transfers from the Government of India to the Secretary of State for India in London. They constituted a massive portion of the 'Drain of Wealth'. They included: interest on Indian public debt raised in London; pensions and furloughs of British civil and military officers who served in India; expenses of the India Office in London; and payments for military stores purchased in Britain. <em>(Note: Private profits (Option D) were part of the broader drain but were technically distinct from the official 'Home Charges').</em>`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the abolition of 'Transit Duties' (Town duties/Sayer) in British India during the 1830s and 1840s:<br><br>
+            <strong>Assertion (A):</strong> The British systematically abolished internal transit duties across Indian provinces to promote the growth of indigenous Indian handicrafts and internal trade.<br>
+            <strong>Reason (R):</strong> The complex web of internal custom barriers was severely restricting the flow of cheap British machine-made textiles into the Indian hinterland.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 3, // D
+        exp: `<strong>Answer: D (A is false but R is true).</strong><br><br>
+              <strong>Assertion is false:</strong> The abolition of internal transit duties (like those by Lord Ellenborough in Sindh/Northwest) was <strong>not</strong> done to promote Indian handicrafts. In fact, it hastened their destruction.<br>
+              <strong>Reason is true:</strong> British manufactured goods entering ports like Calcutta faced multiple toll booths (Chaukis) as they moved inland, making them more expensive. By abolishing these internal barriers, the British created a unified, unobstructed market for their own machine-made imports, allowing them to penetrate deep into rural India and undercut local weavers.`
+    },
+    {
+        q: `With reference to the agrarian structure introduced by the British, what was the primary rationale behind the 'Sunset Clause' embedded in the Permanent Settlement?`,
+        options: [
+            "To grant Zamindars a grace period until sunset to physically evict defaulting ryots from the land.",
+            "To ensure the prompt and rigid realization of revenue by threatening the automatic public auction of the Zamindar's estate upon default.",
+            "To prevent rural moneylenders from conducting debt collection activities after dusk.",
+            "To synchronize the agricultural calendar with British fiscal quarters to prevent crop spoilage."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The Sunset Law (introduced in 1794 to tighten the 1793 settlement) mandated that if a Zamindar failed to deposit the required land revenue into the state treasury before sunset on a pre-determined date, their estate would immediately default to the government. The state would then publicly auction the estate to the highest bidder to recover the dues. The British needed a highly predictable and inflexible cash flow to fund their wars and trade, and the sunset clause was the brutal enforcement mechanism to guarantee it.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Acworth Committee' (1921):<br><br>
+            1. It highlighted the severe inefficiencies in the management of Indian railways by private British companies.<br>
+            2. It recommended the separation of railway finances from the general budget to allow railways to implement commercial policies and build reserves.<br>
+            3. Based on its recommendations, the complete nationalization of the Indian railway network was immediately achieved by 1924.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The Acworth Committee heavily criticized the private management of railways, pointing out their lack of expansion and maintenance, especially evident during WWI.<br>
+              <strong>Statement 2 is correct:</strong> Its most famous recommendation was separating the Railway Budget from the General Budget (implemented in 1924), ensuring railway earnings were reinvested in railway infrastructure rather than being siphoned off for general colonial administration.<br>
+              <strong>Statement 3 is incorrect:</strong> While the state gradually began taking over the management of major lines (like GIPR, EIR) after this, complete nationalization of the entire network was a slow process that was only completed after Independence.`
+    },
+    {
+        q: `Analyze the economic policy of the East India Company during its 'Mercantilist Phase' (1757-1813). Which of the following mechanisms was primarily used to extract wealth from India during this period?`,
+        options: [
+            "The massive export of British manufactured cotton textiles to India, crushing local weavers.",
+            "The direct investment of British capital into Indian heavy industries, remitting the profits back to London.",
+            "The monopolization of Indian exports using land revenue collected in Bengal to purchase Indian goods for sale in Europe.",
+            "The imposition of exorbitant tariffs on the transit of goods across the Suez Canal."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              The period from 1757 (Plassey) to 1813 is termed the phase of 'Mercantilist plunder'. During this time, Britain was not yet fully industrialized. Therefore, they did not extract wealth by selling manufactured goods to India (Option A belongs to the post-1813 Free Trade phase). Instead, the Company used its newly acquired political power in Bengal (Diwani rights) to collect immense land revenue. A large portion of this revenue was used to purchase Indian goods (cotton, silk, spices) which were then exported and sold in Europe. These purchases were known as the Company's 'Investments'. India was paying for its own exports.`
+    },
+    {
+        q: `Consider the following statements regarding the influence of the 'Utilitarian' school of thought (led by Jeremy Bentham and James Mill) on British administrative policies in India during the 1820s and 1830s:<br><br>
+            1. The Utilitarians fiercely opposed the Permanent Settlement of Bengal, arguing that it created a parasitic class of landlords who contributed nothing to the economy.<br>
+            2. They believed in ruling India through a decentralized, representative democratic system reflecting traditional Indian panchayats.<br>
+            3. Lord William Bentinck's reforms, particularly the codification of laws and suppression of social evils, were heavily influenced by Utilitarian principles.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> James Mill, a leading Utilitarian, despised the Permanent Settlement. Influenced by Ricardian rent theory, Utilitarians believed the state should directly assess the actual cultivators (like in the Ryotwari or Mahalwari systems) to capture the unearned increment, rather than giving it to idle Zamindars.<br>
+              <strong>Statement 2 is incorrect:</strong> Utilitarians were <strong>authoritarians</strong>. James Mill argued that Indians were unready for democracy. He advocated for a highly centralized, powerful, and enlightened despotic government that could forcefully reform Indian society from the top down.<br>
+              <strong>Statement 3 is correct:</strong> Bentinck's era (abolition of Sati, codification of laws via Macaulay) was the zenith of Utilitarian influence in India.`
+    },
+    {
+        q: `With reference to the 'Council Bills' system operated by the British, which of the following best describes its economic function?`,
+        options: [
+            "It was a mechanism used by the East India Company to borrow money from indigenous Indian bankers to finance the Maratha Wars.",
+            "It was the primary financial instrument used by the Secretary of State in London to extract the 'Home Charges' from the Government of India.",
+            "It was a special currency issued exclusively for the use of British military personnel stationed in India to insulate them from rupee depreciation.",
+            "It was the accounting mechanism used to track the import of British manufactured goods into the Indian princely states."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The Council Bills were the mechanical means of remitting the 'Drain of Wealth' to Britain. Since India had a massive export surplus, foreign merchants owed India money (in gold/sterling). Simultaneously, the Government of India (GoI) owed money to the Secretary of State (SoS) in London for 'Home Charges'. The SoS would sell "Council Bills" to the foreign merchants in London in exchange for Sterling/Gold. The merchants would send these bills to India to pay for their Indian imports. The GoI would then pay the merchants in Rupees out of the Indian tax revenues. Thus, India's export earnings in gold were intercepted in London, while Indian taxpayers footed the bill in rupees.`
+    },
+    {
+        q: `Consider the following statements concerning the 'Statutory Civil Service' introduced by Lord Lytton in 1878-79:<br><br>
+            1. One-sixth of the covenanted posts were reserved for Indians of high social standing and aristocratic birth.<br>
+            2. The candidates were selected through a rigorous open competitive examination held simultaneously in Delhi and London.<br>
+            3. The system was highly successful and was permanently enshrined in the Government of India Act 1919.<br><br>
+            Which of the statements given above is/are correct?`,
+        options: [
+            "1 only",
+            "1 and 2 only",
+            "2 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: 1 only (Option A).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> To pacify the growing demand for Indianization without actually giving up power, Lytton created the Statutory Civil Service. 1/6th of covenanted posts were reserved for Indians of "good family" and aristocratic background, as the British preferred loyalist princes over educated middle-class nationalists.<br>
+              <strong>Statement 2 is incorrect:</strong> Selection was <strong>not</strong> by open competition; it was by <strong>nomination</strong> by provincial governments, subject to the Viceroy's approval.<br>
+              <strong>Statement 3 is incorrect:</strong> The system was a complete failure as educated Indians rejected it (demanding open competition instead) and aristocrats lacked administrative skills. It was abolished in 1892 on the recommendation of the Aitchison Commission.`
+    },
+    {
+        q: `Analyze the agrarian legislation of the late 19th century. The 'Deccan Agriculturists Relief Act' (1879) was enacted to pacify the peasantry after the Deccan Riots. What was its most significant provision?`,
+        options: [
+            "It completely cancelled all existing debts owed by the ryots to the Marwari and Gujarati moneylenders.",
+            "It transferred the ownership of agricultural lands from the moneylenders back to the original cultivators without any compensation.",
+            "It prohibited the imprisonment of peasants for the non-payment of debt and restricted the alienation of their land.",
+            "It established a network of state-owned cooperative banks to provide interest-free loans to the peasantry."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              The Deccan Riots (1875) were triggered by the oppressive debt trap engineered by moneylenders, supported by rigid British civil laws. To cool tempers, the British passed the Relief Act of 1879. It did <strong>not</strong> cancel debts (Option A) nor did it return land unconditionally (Option B). Its main achievement was that it abolished the terrifying provision of <strong>imprisonment of the cultivator for debt default</strong>, and it required courts to investigate the history of the debt (often uncovering fraudulent accounting by the moneylender) before allowing land confiscation. State-owned cooperative banks (Option D) did not emerge until 1904.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the 'First Law Commission' established under the Charter Act of 1833:<br><br>
+            <strong>Assertion (A):</strong> The First Law Commission, chaired by Lord Macaulay, sought to codify Indian laws to establish a uniform legal system applicable to both Europeans and Indians.<br>
+            <strong>Reason (R):</strong> The Utilitarian ideology dominating British policy at the time emphasized that clear, universally applicable, and scientifically codified laws were essential for efficient administration and the 'civilization' of subjects.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              Before 1833, India had a chaotic mix of Hindu personal law, Islamic penal law, English common law in the Presidency towns, and ad-hoc Company regulations. The Charter Act of 1833 added a Law Member (Macaulay) to the Governor-General's Council. Driven by Utilitarian ideals of uniformity, certainty, and simplification (Reason R), Macaulay's commission drafted the Indian Penal Code (IPC), aiming to replace the arbitrary and varied regional laws with a single, rationalized legal framework applicable across British India.`
+    },
+    {
+        q: `Regarding the evolution of Indian trade unions, consider the following statements about the 'Trade Union Act of 1926':<br><br>
+            1. It made the registration of trade unions compulsory in British India.<br>
+            2. It granted registered trade unions immunity from civil and criminal liability for legitimate trade union activities, such as organizing strikes.<br>
+            3. It legally recognized the right of trade unions to represent workers in collective bargaining with the colonial state.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 2 is correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> Registration under the 1926 Act was <strong>optional</strong>, not compulsory. However, only registered unions enjoyed the legal protections offered by the Act.<br>
+              <strong>Statement 2 is correct:</strong> This was the most crucial provision. Following the Buckingham Mill case (where union leader B.P. Wadia was sued for damages for organizing a strike), the Act protected registered unions from civil suits and criminal conspiracy charges arising from normal strike actions.<br>
+              <strong>Statement 3 is incorrect:</strong> The Act deliberately did <strong>not</strong> mandate employers or the state to recognize or negotiate with these unions. It merely gave unions a legal existence.`
+    },
+    {
+        q: `Examine the British Famine Policy. What was the core ideological rationale behind the 'Test Works' recommended by the Strachey Commission (1880)?`,
+        options: [
+            "To test the agricultural viability of drought-resistant seeds on famine-affected lands before mass distribution.",
+            "To deliberately impose harsh labor conditions and low wages to ensure that only the genuinely starving would seek government relief, deterring the 'lazy'.",
+            "To test the administrative efficiency of newly appointed Indian civil servants under crisis conditions.",
+            "To build heavy infrastructure like railways in famine areas to quickly transport military troops."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The British famine policy was heavily influenced by Malthusian economics and Victorian ideals that abhorred "charity" as it supposedly bred laziness. The Strachey Commission recommended that relief should not be free. The state set up 'Test Works' (usually hard labor like digging canals or breaking stones). The wages were kept at a bare survival minimum, and the conditions were made deliberately stringent. The logic was that if a person was willing to endure this harsh labor for a pittance, it proved they were genuinely starving. It was a cruel test of desperation.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Indian High Courts Act of 1861':<br><br>
+            1. It abolished the existing Supreme Courts and the Sadar Adalats in the Presidencies.<br>
+            2. It established the principle that all judges in the newly formed High Courts must be European barristers.<br>
+            3. It created High Courts in Calcutta, Madras, Bombay, and Delhi simultaneously.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 1 is correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The Act of 1861 amalgamated the dual judicial system. It abolished the Crown's Supreme Courts (in Presidency towns) and the Company's Sadar Diwani/Nizamat Adalats (appellate courts for the mofussil), merging their jurisdictions into the new High Courts.<br>
+              <strong>Statement 2 is incorrect:</strong> The Act provided that one-third of the judges must be barristers (usually English), one-third covenanted civil servants, and the remaining could be pleaders or subordinate judges, which opened the door for Indians to be appointed (e.g., Sambhunath Pandit was appointed to the Calcutta High Court in 1863).<br>
+              <strong>Statement 3 is incorrect:</strong> High Courts were established in Calcutta, Madras, and Bombay in 1862. The Delhi High Court was not established until 1966 (much later, post-independence); initially, Delhi fell under the Punjab Chief Court.`
+    },
+    {
+        q: `With reference to the 'Bengal Tenancy Act of 1885', which of the following describes its primary objective?`,
+        options: [
+            "To completely abolish the Permanent Settlement of 1793 and transition Bengal to the Ryotwari system.",
+            "To grant 'occupancy rights' to ryots who had cultivated a specific plot of land continuously for 12 years, protecting them from arbitrary eviction.",
+            "To strictly limit the land holdings of Zamindars and redistribute the surplus land to landless agricultural laborers.",
+            "To legalize the collection of 'abwabs' (extra-legal cesses) by Zamindars to fund rural infrastructure."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              By the late 19th century, the agrarian distress in Bengal (manifested in the Pabna Agrarian Leagues of 1873) forced the British to act against the excesses of the Zamindars. The Bengal Tenancy Act of 1885 was passed to define the rights of the tenants. Its most crucial provision was granting <strong>occupancy rights</strong> to ryots who had held land in the same village for 12 continuous years. This made them 'occupancy ryots', giving them hereditary rights and protecting them from being evicted at the whim of the Zamindar, provided they paid their rent.`
+    },
+    {
+        q: `Consider the following statements regarding the impact of World War I (1914-1918) on the Indian economy:<br><br>
+            1. The war led to a massive influx of British consumer goods, heavily depressing indigenous Indian industries.<br>
+            2. The British Indian government adopted a policy of rapid state-led industrialization by establishing multiple public sector steel plants to meet war demands.<br>
+            3. The war generated a brief period of immense profitability for Indian capitalists in the cotton and jute sectors due to a sharp decline in foreign imports and increased military demand.<br><br>
+            Which of the statements given above is/are correct?`,
+        options: [
+            "1 and 2 only",
+            "3 only",
+            "2 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: 3 only (Option B).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The exact opposite happened. The war disrupted shipping lanes and diverted British factories to war production. This <strong>stopped</strong> the influx of British/German imports, creating a vacuum in the Indian market that indigenous industries rushed to fill (Import Substitution).<br>
+              <strong>Statement 2 is incorrect:</strong> The colonial state did <em>not</em> establish public sector steel plants. The Tata Iron and Steel Company (TISCO, a private Indian enterprise set up in 1907) provided the bulk of the steel for the Mesopotamian campaign.<br>
+              <strong>Statement 3 is correct:</strong> The cessation of foreign competition, combined with massive British military orders (for sandbags, uniforms), created windfall profits for Indian industrialists in Bombay and Calcutta.`
+    },
+    {
+        q: `Analyze the administrative restructuring of Indian finances. What was the central feature of the financial reforms introduced by the 'Montagu-Chelmsford Reforms' (Government of India Act 1919)?`,
+        options: [
+            "It introduced the concept of a consolidated imperial budget, stripping provinces of all taxation powers.",
+            "It completely separated the Central and Provincial budgets, ending the system of 'divided heads' of revenue.",
+            "It mandated that all provincial revenue must be deposited directly into the Bank of England.",
+            "It transferred the power of printing currency from the Viceroy's Council to the newly formed provincial legislative councils."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              Prior to 1919, under the Mayo and Lytton reforms, there were 'divided heads' of revenue (taxes like income tax or stamps that were shared between the center and the provinces). The Government of India Act 1919 (Mont-Ford Reforms) introduced a <strong>complete separation of finances</strong>. It divided the sources of revenue into Central and Provincial heads (e.g., customs and income tax went to the Center; land revenue and excise went to the Provinces). For the first time, provincial legislatures were authorized to enact their own separate budgets and levy specific taxes.`
+    },
+    {
+        q: `Consider the following statements about the 'Inam Commission' established in Bombay in 1852:<br><br>
+            1. Its purpose was to identify and confiscate tax-free lands (Inams) where the landholder could not produce valid title deeds proving their grant from previous rulers.<br>
+            2. The aggressive confiscation of these estates severely alienated the traditional Maratha aristocracy and contributed to the underlying discontent prior to 1857.<br>
+            3. The Commission was specifically designed to redistribute confiscated lands to the lower castes to break Brahminical dominance.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Lord Dalhousie set up the Inam Commission to investigate 'Inam' lands (rent-free grants given by Peshwas or Mughals for religious or military service). The British demanded written title deeds (which many traditional families had lost or never had) and confiscated over 20,000 estates when deeds could not be produced.<br>
+              <strong>Statement 2 is correct:</strong> This draconian resumption of estates destroyed the traditional Maratha aristocracy and created deep-seated resentment against British rule.<br>
+              <strong>Statement 3 is incorrect:</strong> The confiscated lands were not redistributed to lower castes; they were simply merged into the regular Ryotwari state lands to maximize British tax revenue.`
+    },
+    {
+        q: `With reference to the police administration, the 'Frazer Commission' (1902-03) appointed by Lord Curzon made several pivotal recommendations. Which of the following was NOT among its recommendations?`,
+        options: [
+            "The establishment of a separate Criminal Investigation Department (CID) in every province.",
+            "The total Indianization of the post of District Superintendent of Police (DSP) to bridge the gap with the public.",
+            "The creation of a system of provincial police training schools for officers.",
+            "The improvement of pay and conditions for the lower ranks (Constables) to curb pervasive corruption."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              Lord Curzon appointed the Andrew Frazer Commission because the police force was universally hated and highly corrupt. <br>
+              <strong>Option B is the correct answer (as it is the false statement).</strong> The Commission did <strong>not</strong> recommend the total Indianization of the DSP post. In fact, the higher echelons of the police (Imperial Police) were strictly reserved for Europeans through exams held only in England. Indians could only rise to the newly created subordinate rank of Deputy Superintendent of Police (DySP).<br>
+              Options A, C, and D were actual recommendations: It created the CID (and a central Intelligence Bureau), set up training schools, and recommended slight pay hikes for constables.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the East India Company's trade before the Charter Act of 1813:<br><br>
+            <strong>Assertion (A):</strong> Between 1765 and 1813, the East India Company effectively ceased to bring bullion (gold/silver) into India to purchase Indian goods.<br>
+            <strong>Reason (R):</strong> The Company used the massive surplus land revenue collected from the Diwani of Bengal to finance its purchases of Indian textiles and spices for export.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both A and R are true and R explains A).</strong><br><br>
+              Before the Battle of Plassey (1757), the EIC had to import massive amounts of gold and silver from Britain to buy Indian textiles, because Britain produced nothing India wanted. This drain of bullion enraged British mercantilists. However, after winning the Diwani of Bengal (1765), the EIC gained access to the immense tax revenues of the province. They stopped importing bullion and simply used Indian tax money (Bengal's revenue) to buy Indian goods. These purchases were cynically called "Investments." This marked the beginning of the 'Drain of Wealth'.`
+    },
+    {
+        q: `Analyze the 'Malguzari' system of land revenue settlement. In which region was it primarily implemented, and what was its structural nature?`,
+        options: [
+            "Implemented in the Madras Presidency; it was a pure Ryotwari system with no intermediary between the state and the tiller.",
+            "Implemented in the Central Provinces; it was a modified form of the Mahalwari system where traditional revenue farmers (Malguzars) were recognized as proprietary landlords.",
+            "Implemented in Assam; it was a plantation-based settlement where European tea planters were granted sovereign rights over the land.",
+            "Implemented in Punjab; it was a collective settlement where the entire village's land was held commonly by the Panchayat."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The Malguzari system was introduced by the British in the <strong>Central Provinces</strong> (parts of modern Madhya Pradesh/Maharashtra). During the Maratha rule, 'Malguzars' were merely revenue farmers or village headmen who collected taxes for the state. When the British annexed the region, they (wanting to create loyal landlords like in Bengal, but avoiding the rigidity of the Permanent Settlement) recognized these Malguzars as the absolute proprietors (landlords) of the villages. It functioned like a temporary Zamindari/Mahalwari system, severely depressing the rights of the actual cultivators.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Royal Commission on Labour' (Whitley Commission) set up in 1929:<br><br>
+            1. It was heavily boycotted by the All India Trade Union Congress (AITUC) because of its all-white composition.<br>
+            2. It investigated the horrific living conditions, indebtedness, and lack of housing for industrial workers in British India.<br>
+            3. Its recommendations led directly to the enactment of the Payment of Wages Act (1936), attempting to stop arbitrary deductions from workers' salaries.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 2 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> This is a trap. Unlike the Simon Commission (which was all-white and boycotted), the Whitley Commission on Labour <strong>included Indian members</strong> (like N.M. Joshi, a prominent trade unionist, and Diwan Chaman Lall). While some radical leftists opposed it, moderate trade unionists cooperated with it.<br>
+              <strong>Statement 2 is correct:</strong> The commission produced a damning report on the appalling slum conditions, rampant diseases, and immense indebtedness of the Indian working class.<br>
+              <strong>Statement 3 is correct:</strong> The Payment of Wages Act (1936) was a direct legislative outcome of this commission, preventing employers from delaying wages or making illegal deductions.`
+    },
+    {
+        q: `Regarding the impact of colonial economic policies, how does the economic concept of the 'Multiplier Effect' explain the stunted industrialization of India compared to Britain during the railway boom?`,
+        options: [
+            "The Indian railways generated a positive multiplier effect in India by rapidly expanding the domestic iron and steel sector.",
+            "The multiplier effect of railway investment was entirely exported to Britain, as all capital goods, rolling stock, and engineering expertise were imported from British factories.",
+            "The multiplier effect in India was negative because the railways actively dismantled existing indigenous transport systems like bullock carts.",
+            "The British legally prohibited any multiplier effect by banning Indians from traveling on the newly constructed railway lines."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              In normal economic theory, a massive infrastructure project like building 60,000 km of railways should create a massive 'multiplier effect'—it should stimulate the domestic steel, coal, engineering, and machine-tool industries. However, in India, the British built the railways using materials imported almost entirely from Britain (engines, rails, carriages, and even the coal initially). Therefore, the industrial 'multiplier effect'—the jobs, the technical advancements, the auxiliary industries—occurred in Britain, while India only received the physical tracks and the immense debt burden.`
+    },
+    {
+        q: `Consider the following statements regarding the economic critique of British rule by Indian nationalists:<br><br>
+            1. Dinshaw Wacha heavily criticized the military expenditure of the British Indian government, arguing it was a massive drain on the economy used for imperial expansion rather than Indian defense.<br>
+            2. The early nationalists strongly advocated for the rapid influx of foreign capital to build Indian infrastructure, arguing that capital had no nationality.<br>
+            3. G.V. Joshi argued that the decline of traditional handicrafts had forced an unnatural and heavy dependence of the population on agriculture.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Dinshaw Wacha (and Gokhale) constantly attacked the colonial budget, highlighting that over 50% of India's revenues were spent on the military to fight British imperial wars in Africa and Asia, starving funds for education and health.<br>
+              <strong>Statement 2 is incorrect:</strong> Early nationalists (like Naoroji and R.C. Dutt) were deeply <strong>suspicious</strong> of foreign capital. They argued that foreign investment in railways and plantations led to political subjugation and the draining away of profits, stunting the growth of indigenous Indian capital.<br>
+              <strong>Statement 3 is correct:</strong> G.V. Joshi and others correctly identified that deindustrialization led to the "ruralization" of India, putting immense demographic pressure on agriculture.`
+    },
+    {
+        q: `With reference to the 'Fowler Committee' (1898) on Indian currency, what major policy shift was implemented regarding the Indian monetary system?`,
+        options: [
+            "It returned India to a pure Silver Standard, reopening the mints to the free coinage of the Rupee.",
+            "It recommended the immediate introduction of a pure Gold Standard with a massive circulation of gold coins in rural India.",
+            "It led to the adoption of the 'Gold Exchange Standard', where the Rupee was not backed by gold internally, but was pegged to the Pound Sterling for international exchange.",
+            "It abolished paper currency entirely, arguing it was unsuitable for the Indian peasant economy."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              Following the closure of the mints to silver in 1893 (Herschell Committee), the Fowler Committee (1898) recommended a Gold Standard. However, the British government realized that backing the vast Indian currency with physical gold was too expensive. Thus, they adopted the <strong>Gold Exchange Standard</strong>. Under this complex system, gold did not circulate in India (the Rupee remained the domestic token currency), but for foreign trade, the Rupee was fixed at an exchange rate of 1s 4d to the Pound Sterling, and the government maintained reserves in London to support this rate. It effectively made Indian currency a satellite of the British Pound.`
+    },
+    {
+        q: `Analyze the difference between the 'Indentured Labor' system and the 'Kangani' system used by the British to export Indian labor. Which of the following statements is conceptually correct?`,
+        options: [
+            "Indentured labor was strictly voluntary and highly paid, whereas the Kangani system involved the forced kidnapping of tribal populations.",
+            "Under the Indentured system, individual laborers signed a strict penal contract for a fixed period, whereas under the Kangani system, labor was recruited by a headman (Kangani) often from his own village/community.",
+            "The Indentured system was used exclusively for tea plantations in Assam, whereas the Kangani system was used exclusively for export to the Caribbean.",
+            "The Kangani system allowed laborers absolute freedom of movement and collective bargaining, unlike the Indentured system."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              <strong>Option B is correct:</strong> The Indentured Labor system (used for distant colonies like Fiji, Mauritius, Caribbean) involved individuals signing a draconian legal contract (Girmit) tying them to a specific employer for usually 5 years under penal conditions. The Kangani system (used extensively in closer colonies like Ceylon/Sri Lanka and Malaya) operated through a 'Kangani' (a foreman or headman). The Kangani would go back to his native village in South India, recruit families known to him by advancing them money, and bring them to the plantations. While less legally rigid than indenture, it created a system of severe debt bondage to the Kangani.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Cotton Duties Controversy' of 1894-1896:<br><br>
+            1. Facing a severe budget deficit, the Government of India imposed a 5% import duty on British cotton goods entering India.<br>
+            2. To appease the Lancashire textile lobby, the Government simultaneously imposed an equivalent excise duty on Indian mill-made cloth.<br>
+            3. The Indian National Congress supported the excise duty as it protected the handloom weavers from competition with Indian power looms.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Due to the falling value of the silver Rupee, the GoI faced a massive deficit and was forced to impose a 5% tariff on all imports, including British cotton, in 1894 to raise revenue.<br>
+              <strong>Statement 2 is correct:</strong> Lancashire manufacturers were furious, claiming this gave Indian mills 'protection'. Bowing to this imperial pressure, the British imposed a countervailing 5% (later 3.5%) excise duty on cotton cloth produced by Indian mills, artificially raising their price to cancel out any competitive advantage.<br>
+              <strong>Statement 3 is incorrect:</strong> The Indian National Congress fiercely <strong>opposed</strong> the excise duty, calling it a blatant sacrifice of Indian industrial interests to British capitalist lobbies.`
+    },
+    {
+        q: `With reference to the development of commercial banking in India, what was the primary significance of the 'Oudh Commercial Bank' established in 1881?`,
+        options: [
+            "It was the first bank in India established entirely with British state capital to finance the 1857 mutiny suppression.",
+            "It was the first commercial bank in India with limited liability managed entirely by an Indian board of directors.",
+            "It was granted the exclusive monopoly to finance the export of opium from the Awadh region to China.",
+            "It was the first bank to introduce modern ATM and electronic clearing systems in the Indian subcontinent."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              While banks like the Bank of Hindustan (1770) were established by Europeans, the <strong>Oudh Commercial Bank (1881)</strong> in Faizabad holds the historical distinction of being the first commercial bank with limited liability that was entirely managed by an Indian board of directors. It represented the early stirrings of indigenous corporate banking, though it eventually failed in 1958. It was soon followed by the more successful Punjab National Bank (1894), the first bank purely managed and capitalized by Indians.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the East India Company's administrative structure prior to 1853:<br><br>
+            <strong>Assertion (A):</strong> The East India Company maintained a deliberate policy of keeping the executive and legislative functions strictly fused within the Governor-General’s Council.<br>
+            <strong>Reason (R):</strong> The Company operated as a commercial-military dictatorship in India, prioritizing rapid decision-making for conquests and revenue extraction over democratic deliberation.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              Until the Charter Act of 1853, there was no separate legislature in India. The Governor-General and his small Executive Council (a handful of top officials) both made the laws (legislation) and executed them. This fusion of power was a hallmark of colonial despotism. The Company was primarily interested in maximizing profit and maintaining military control (Reason). A separate legislative body would involve debates, delays, and potentially opposing viewpoints, which would hinder their autocratic machinery. It was only in 1853 that a distinct 'Legislative Council' was formed, though still heavily dominated by British officials.`
+    },
+    {
+        q: `Analyze the role of the 'Managing Agency System' in the Indian economy. Which of the following was a common abusive practice employed by British Managing Agents that drained wealth from their Indian subsidiary companies?`,
+        options: [
+            "They charged commissions based on the total production or sales volume of the subsidiary, regardless of whether the subsidiary actually made a profit.",
+            "They forced the subsidiaries to hire exclusively Indian managerial staff, depressing local wage structures.",
+            "They invested heavily in agricultural research and development, forcing the subsidiaries to bear the sunk costs.",
+            "They frequently liquidated successful Indian companies to prevent them from listing on the London Stock Exchange."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A</strong><br><br>
+              The Managing Agency system was highly exploitative. A British Managing Agency (like Andrew Yule) would float and manage a jute mill in India. Instead of taking a share of the net profits (which would incentivize them to run the company efficiently), the managing agents drew their remuneration as a <strong>commission on gross sales, total production, or even total purchases</strong>. This meant that even if the jute mill was running at a massive loss and the Indian shareholders were ruined, the British managing agent still made a fortune purely based on the volume of output. This encouraged overproduction and gross financial mismanagement.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Decentralization Commission' (1908) chaired by C.E. Hobhouse:<br><br>
+            1. It was appointed specifically to suggest measures to decentralize power from the Secretary of State in London directly to Indian village panchayats.<br>
+            2. It recommended that village panchayats should be constituted and given certain administrative and judicial powers over minor disputes.<br>
+            3. It advocated for the immediate abolition of the District Magistrate's post to remove bureaucratic control over local boards.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 2 is correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The Royal Commission on Decentralization (1908) was set up to review the relations between the Central Government and the Provincial Governments, and between Provincial Governments and Local Bodies. It did not deal with the powers of the Secretary of State in London.<br>
+              <strong>Statement 2 is correct:</strong> It recognized the failure of earlier local self-government efforts to reach the grassroots. It strongly recommended reviving the village panchayats and giving them minor civil/criminal jurisdiction and some sanitary duties.<br>
+              <strong>Statement 3 is incorrect:</strong> It did <strong>not</strong> recommend abolishing the District Magistrate (Collector). In fact, it maintained that the Collector should remain the head of the district administration and the District Board, retaining strict bureaucratic control.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Indian Councils Act of 1892' and its economic implications:<br><br>
+            1. It granted the legislative councils the power to vote on the annual budget and move resolutions on financial matters.<br>
+            2. It conceded the principle of indirect election, allowing bodies like the Bengal Chamber of Commerce to recommend members.<br>
+            3. The act was largely a British concession to the moderate Indian National Congress, which heavily campaigned for control over imperial expenditures.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 2 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> <em>Crucial UPSC Trap.</em> The Act of 1892 gave the members the right to <strong>discuss</strong> the budget, but strictly denied them the right to <strong>vote</strong> on it or move amendments. They could not stop the government from spending money. The power to vote on portions of the budget was only introduced later in the Morley-Minto Reforms (1909).<br>
+              <strong>Statement 2 is correct:</strong> While the word 'election' was carefully avoided, the act allowed for 'nomination on the recommendation' of certain bodies (Universities, Municipalities, Chambers of Commerce), establishing indirect elections.<br>
+              <strong>Statement 3 is correct:</strong> The early Congress (founded in 1885) heavily criticized the economic drain and demanded legislative reforms to scrutinize the budget, leading to this Act.`
+    },
+    {
+        q: `With reference to the labour laws in British Indian plantations, what was the primary function of the 'Workmen's Breach of Contract Act' (1859) and the 'Inland Emigration Act' (1882)?`,
+        options: [
+            "To guarantee minimum wages and safe transit for indentured laborers traveling to the Caribbean.",
+            "To legalize the penal enforcement of labor contracts, treating a worker's attempt to leave a tea plantation as a criminal offense rather than a civil breach.",
+            "To prohibit the employment of children below the age of 14 in the hazardous indigo and tea sectors.",
+            "To establish labor courts where plantation workers could sue European planters for physical abuse."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              Unlike factory workers who had some minimal protections under Factory Acts, plantation laborers (coolies) in Assam tea gardens faced horrific conditions akin to slavery. British planters used the <strong>Workmen's Breach of Contract Act (1859)</strong> and the <strong>Inland Emigration Act (1882)</strong> to bind workers. Under these draconian laws, if a worker took an advance and then tried to run away from the disease-ridden plantations (a civil breach of contract), they were treated as <strong>criminals</strong>. The police could arrest them without a warrant, imprison them, and forcibly return them to the planter.`
+    },
+    {
+        q: `Analyze the ideological shift in the British Land Revenue Policy. Why did the British shift from the 'Permanent Settlement' of Cornwallis to the 'Ryotwari System' of Munro in the early 19th century?`,
+        options: [
+            "The British recognized that the Zamindars in Bengal were actively funding anti-colonial mutinies using their surplus wealth.",
+            "The influence of Utilitarianism and Ricardian Rent Theory convinced the British that the state should directly appropriate the 'economic rent' (surplus) rather than leaving it to a parasitic landlord class.",
+            "The traditional village Panchayats in Madras strongly demanded a direct settlement with the Crown to bypass local moneylenders.",
+            "The British Parliament passed a law in 1813 explicitly outlawing the creation of new aristocracies in conquered territories."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              The shift from Zamindari (Bengal) to Ryotwari (Madras/Bombay) was driven by both financial desperation and ideology. Financially, the British realized the Permanent Settlement locked their revenue while Zamindars grew immensely rich from rising agricultural prices. Ideologically, administrators like Thomas Munro and later Utilitarians were heavily influenced by David Ricardo’s Theory of Rent. They viewed the Zamindars as parasitic middlemen who collected the 'unearned increment' (rent) of the land. They believed the State was the supreme landlord and should directly extract this surplus from the tiller to fund administration and public works.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the establishment of the Reserve Bank of India (RBI) in 1935:<br><br>
+            <strong>Assertion (A):</strong> Indian nationalists vehemently opposed the initial structure of the Reserve Bank of India established under the RBI Act of 1934.<br>
+            <strong>Reason (R):</strong> The RBI was initially established as a privately-owned shareholders' bank, which nationalists feared would place India's monetary policy under the control of British financial capitalists.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              Based on the Hilton Young Commission's recommendations, the RBI was established in 1935. However, it was constituted as a <strong>shareholders' bank</strong> (private ownership) rather than a State-owned bank. Indian nationalist leaders in the Central Legislative Assembly fought fiercely against this. They argued that a private central bank in a colonial setting would inevitably be dominated by wealthy British capitalists and City of London interests, operating against India's national economic interests. It was only nationalized later in 1949.`
+    },
+    {
+        q: `With reference to the 'Lee-Mody Pact' of 1933, consider the following statements:<br><br>
+            1. It was an agreement signed between the Indian nationalist leadership and the British government to end the boycott of British textiles.<br>
+            2. It formalized the principle of 'Imperial Preference' specifically for the cotton textile industry, granting British textiles a massive tariff advantage over Japanese imports in India.<br>
+            3. The pact was widely condemned by the Indian National Congress as a betrayal of the Swadeshi spirit by a section of Indian capitalists.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 2 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> The pact was <strong>not</strong> signed by the nationalist leadership (Congress). It was signed between British textile interests (represented by William Clare Lees) and a faction of Indian textile mill owners in Bombay (represented by Homi Mody).<br>
+              <strong>Statement 2 is correct:</strong> Facing severe competition from cheap Japanese textiles, the Bombay mill owners struck a deal with Lancashire. India agreed to lower duties on British cotton goods (Imperial Preference) in exchange for Britain buying some Indian raw cotton.<br>
+              <strong>Statement 3 is correct:</strong> The Congress and radical nationalists (like Nehru) fiercely condemned Homi Mody and the Bombay capitalists for sacrificing national interests and the Swadeshi movement for their narrow class profits.`
+    },
+    {
+        q: `Which of the following describes the core difference between the agrarian uprisings of the 'Indigo Revolt' (1859-60) and the 'Pabna Agrarian Leagues' (1873)?`,
+        options: [
+            "The Indigo Revolt was directed against the indigenous Zamindars, while the Pabna uprising was exclusively against European planters.",
+            "The Indigo Revolt involved widespread physical violence and the destruction of factories, whereas the Pabna movement was highly legalistic and relied primarily on court litigation.",
+            "The Indigo Revolt was aimed at reducing land revenue paid to the State, whereas the Pabna uprising was against the forced cultivation of cash crops.",
+            "The Indigo Revolt failed completely due to a lack of middle-class support, whereas Pabna succeeded immediately due to military intervention."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              <strong>Option B is correct:</strong> The Indigo Revolt (against European planters) saw peasants physically attacking planters, burning indigo factories, and actively using violence alongside strikes. In contrast, the Pabna Agrarian Leagues (against indigenous Zamindars trying to destroy occupancy rights) were remarkably peaceful and legalistic. The Pabna peasants organized rent strikes, raised funds, and fought the Zamindars using the British legal system and courts. Furthermore, Pabna peasants asserted they were the "Queen's ryots" and only wanted to pay legal rent, showing a sophisticated understanding of colonial law.`
+    },
+    {
+        q: `Consider the following statements about the 'Imperial Council of Agricultural Research' (ICAR), established in 1929:<br><br>
+            1. It was granted vast statutory powers to completely overhaul the land tenure systems and abolish intermediaries in British India.<br>
+            2. It was established solely as an advisory and coordinating body for agricultural research, devoid of any administrative control over provincial agriculture departments.<br>
+            3. Its establishment marked the shift of agriculture from a 'transferred' subject back to a 'reserved' central subject under the dyarchy system.<br><br>
+            Which of the statements given above is/are correct?`,
+        options: [
+            "1 and 2 only",
+            "2 only",
+            "1 and 3 only",
+            "1, 2 and 3"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: 2 only (Option B).</strong><br><br>
+              <strong>Statement 1 is incorrect:</strong> ICAR (formed after the Linlithgow Commission) had absolutely no mandate or power to touch land tenure systems (Zamindari/Ryotwari) or enact land reforms.<br>
+              <strong>Statement 2 is correct:</strong> Under the Government of India Act 1919, Agriculture was a 'transferred' provincial subject. The center had no direct control. Therefore, ICAR was created purely as a central advisory, coordinating, and funding body to guide research, without infringing on provincial autonomy.<br>
+              <strong>Statement 3 is incorrect:</strong> Agriculture remained a provincial transferred subject; the establishment of ICAR did not change its constitutional status.`
+    },
+    {
+        q: `Analyze the development of communications under Lord Dalhousie. Which of the following statements reveals the hidden strategic and economic intent behind his Postal and Telegraph reforms?`,
+        options: [
+            "The introduction of the uniform half-anna postage was primarily designed to subsidize the political communication of early Indian nationalist organizations.",
+            "The telegraph system was deliberately constructed along the coastlines exclusively to monitor the movement of French and Portuguese merchant vessels.",
+            "The postal and telegraph networks were structurally aligned with the railway grids to integrate the vast Indian market and facilitate rapid military mobilization for internal security.",
+            "The postal system was completely privatized and handed over to British Managing Agencies to ensure profitability."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              Dalhousie is considered the maker of modern India (Railways, Telegraph, Postal system). While the uniform half-anna postage (1854) benefited the public, the overriding colonial objective for these sweeping communication reforms was to deeply integrate the Indian economy (allowing British mercantile interests in Calcutta/Bombay to instantly communicate with the hinterland) and to ensure rapid military mobilization. The telegraph famously "saved India" for the British during the 1857 Revolt by allowing commanders to coordinate troop movements instantly. Option A is absurd as the British actively tried to suppress nationalist communication.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Charter Act of 1853':<br><br>
+            1. It marked the definitive end of the Court of Directors' power of patronage by introducing the principle of open competitive examination for the Indian Civil Service.<br>
+            2. It expanded the Governor-General’s Council for legislative purposes, including, for the first time, local representation from the Presidencies.<br>
+            3. It explicitly stated that the East India Company's rule would be terminated precisely after 20 years, transferring power to the Crown in 1873.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The Act finally stripped the Court of Directors of their prized patronage (the right to appoint civil servants) and threw the ICS open to competition, leading to the Macaulay Committee of 1854.<br>
+              <strong>Statement 2 is correct:</strong> The Act added six new members to the Council specifically for legislative purposes. Crucially, four of these were appointed by the provincial governments of Madras, Bombay, Bengal, and Agra, marking the beginning of local (though European) representation in the central legislature.<br>
+              <strong>Statement 3 is incorrect:</strong> Unlike previous charters (1793, 1813, 1833), the 1853 Act did <strong>not</strong> specify a 20-year timeframe. It simply stated the Company would hold territories in trust for the Crown "until Parliament should otherwise provide," leaving the door open for the immediate takeover that happened in 1858.`
+    },
+    {
+        q: `With reference to the indigenous banking systems during British rule, the terms 'Hundis' and 'Shroffs' refer to a highly sophisticated financial network. How did the British colonial banking system interact with this indigenous network?`,
+        options: [
+            "The British completely outlawed the use of Hundis in 1861, forcing all domestic trade to be routed through the Presidency Banks.",
+            "The British Imperial banks operated in a separate, isolated sphere serving export trade, while relying entirely on indigenous Shroffs to finance the internal agricultural trade.",
+            "The indigenous bankers successfully merged with British Managing Agencies to form massive joint Indo-British industrial conglomerates.",
+            "The Reserve Bank of India aggressively integrated the Shroffs into the formal banking sector by providing them direct rediscounting facilities in 1935."
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              There was a sharp dichotomy in the Indian financial market. The formal European banking sector (Presidency Banks, Exchange Banks) dominated the ports, handling foreign exchange, export-import, and government finances. However, they had very little penetration into the vast rural hinterland. To move crops from the village to the ports, the entire internal trade of India relied on the indigenous bankers (Shroffs, Chettiars, Marwaris) and their traditional bills of exchange (Hundis). The British banks did not outlaw them; they pragmatically relied on this indigenous network to bring raw materials to the ports, though they kept them subordinate and isolated from the formal money market.`
+    },
+    {
+        q: `Consider the following statements regarding the 'All India Trade Union Congress' (AITUC) formed in 1920:<br><br>
+            1. Its immediate formation was triggered by the need to elect a representative for Indian labor at the newly formed International Labour Organization (ILO).<br>
+            2. Lala Lajpat Rai was elected as its first President.<br>
+            3. In its early phase, it adopted a militant Marxist ideology and explicitly rejected participation in the Indian National Congress's political movements.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 2 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The ILO was established in 1919 under the League of Nations. To send a delegate to the ILO representing Indian labor, a national coordinating body was required, which catalyzed the formation of AITUC in 1920.<br>
+              <strong>Statement 2 is correct:</strong> Lala Lajpat Rai (a prominent Congress leader) was its first President, showing the deep link between the early trade union movement and the nationalist struggle.<br>
+              <strong>Statement 3 is incorrect:</strong> In its early phase (1920s), AITUC was dominated by moderate nationalists and reformers (like N.M. Joshi) and heavily supported the Congress. It was not until the late 1920s that communists gained control, causing splits in the organization.`
+    },
+    {
+        q: `Analyze the concept of 'Imperial Preference'. Which of the following statements correctly identifies its long-term impact on the structure of Indian industries during the 1930s?`,
+        options: [
+            "It allowed Indian heavy industries to aggressively penetrate the British domestic market, causing a trade surplus for India.",
+            "It led to the rapid monopolization of the Indian market by Japanese and German manufactured goods.",
+            "It provided a captive market for declining British industries, particularly textiles, while artificially stifling the natural growth and diversification of Indian enterprise.",
+            "It forced the British to completely abolish all export duties on Indian raw materials."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              'Imperial Preference' (formalized at the Ottawa Agreement of 1932) meant that members of the British Empire charged lower import tariffs to each other than to non-Empire countries. Britain, whose industries (like textiles and iron) were losing out to cheaper, more efficient Japanese and American goods, used its political control over India to force India to grant preferential tariffs to British goods. This meant Indian consumers paid more for British goods, while Indian industries were denied cheaper capital goods from non-Empire countries, stunting India's industrial diversification.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the reduction of the maximum age limit for the ICS examination by Lord Lytton in 1878:<br><br>
+            <strong>Assertion (A):</strong> Lord Lytton reduced the maximum age limit for the Indian Civil Service examination from 21 to 19 years.<br>
+            <strong>Reason (R):</strong> The reduction was an administrative reform aimed at catching brilliant minds at a younger age to ensure longer tenures in the imperial bureaucracy.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C (A is true but R is false).</strong><br><br>
+              <strong>Assertion is true:</strong> Lord Lytton did reduce the maximum age limit for the ICS from 21 to 19.<br>
+              <strong>Reason is false:</strong> This was <strong>not</strong> an innocent administrative reform. It was a deliberate, racially motivated political move. The exam was held only in London, in English, with a syllabus heavily skewed towards Greek and Latin. It was already incredibly difficult for an Indian to cross the seas and pass. By lowering the age to 19, Lytton made it virtually impossible for an Indian student to graduate in India, travel to England, and master classical subjects before turning 19. It was a blatant attempt to keep Indians out of the covenanted service.`
+    },
+    {
+        q: `With reference to the development of Famine Policy, which famine is often described as the 'Great Famine', leading to the appointment of the Strachey Commission and marking a watershed in administrative famine relief?`,
+        options: [
+            "The Bengal Famine of 1770",
+            "The Orissa Famine of 1866",
+            "The Madras and Bombay Famine of 1876-78",
+            "The Bengal Famine of 1943"
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              The Famine of 1876-78 affected Madras, Bombay, UP, and Punjab, killing an estimated 5.5 million people. It coincided with Lord Lytton holding the lavish Imperial Durbar (1877) and exporting record amounts of wheat to England. The sheer scale of the administrative failure and subsequent public outrage forced the British government to appoint the <strong>Richard Strachey Commission (1880)</strong>. This commission's recommendations led to the creation of the first comprehensive 'Famine Code' in 1883, which officially established guidelines for relief, test works, and suspension of revenue.`
+    },
+    {
+        q: `Consider the following statements regarding the economic critique of colonialism by Dadabhai Naoroji:<br><br>
+            1. He argued that the 'Drain of Wealth' was not merely the loss of capital, but it also resulted in the loss of employment and industrial experience for Indians.<br>
+            2. He believed that the influx of foreign capital into Indian railways was beneficial as it brought modern technology, mitigating the effects of the drain.<br>
+            3. He categorized the salaries and pensions paid to British officials working in India as an internal administrative cost, excluding them from his calculation of the drain.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: Only one (Statement 1 is correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> Naoroji emphasized the "moral drain"—because Europeans held all top jobs, India was deprived of not just their salaries, but the administrative and technical experience they took back to England when they retired.<br>
+              <strong>Statement 2 is incorrect:</strong> Naoroji fiercely opposed foreign capital. He argued that because India's own capital was being drained, foreign capital rushed in to fill the void, leading to a vicious cycle of further exploitation and dividend repatriation.<br>
+              <strong>Statement 3 is incorrect:</strong> Salaries and pensions of British officials (especially those remitted to England as savings or 'Home Charges') were a central, explicit component of Naoroji’s calculation of the 'Drain'.`
+    },
+    {
+        q: `Examine the administrative policies of Lord Curzon. Which of the following acts passed during his tenure was explicitly designed to restrict the autonomy of local bodies and bring them under tighter bureaucratic control, contrary to Lord Ripon's vision?`,
+        options: [
+            "The Indian Universities Act, 1904",
+            "The Calcutta Corporation Act, 1899",
+            "The Official Secrets Act, 1904",
+            "The Ancient Monuments Preservation Act, 1904"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: B</strong><br><br>
+              Lord Curzon was a staunch imperialist who despised the idea of local self-government, viewing it as inefficient and a breeding ground for nationalist politics. To reverse Lord Ripon's democratic decentralization, he passed the <strong>Calcutta Corporation Act in 1899</strong>. This act drastically reduced the number of elected Indian members in the corporation and increased the number of nominated European members, effectively handing the control of the municipality back to the European mercantile community. The Indian members (including Surendranath Banerjee) resigned in mass protest.`
+    },
+    {
+        q: `Consider the following statements regarding the 'Indian Tariff Board' established in the 1920s:<br><br>
+            1. It was established following the recommendations of the First Fiscal Commission to investigate claims for protection by Indian industries.<br>
+            2. It operated autonomously and had the final statutory authority to implement tariffs without requiring the approval of the Viceroy’s Council.<br>
+            3. The Board successfully recommended and secured protection for the Tata Iron and Steel Company (TISCO) during the economic slump of the 1920s.<br><br>
+            How many of the above statements are correct?`,
+        options: [
+            "Only one",
+            "Only two",
+            "All three",
+            "None"
+        ],
+        answer: 1, // B
+        exp: `<strong>Answer: Only two (Statements 1 and 3 are correct).</strong><br><br>
+              <strong>Statement 1 is correct:</strong> The Fiscal Commission (1921-22) established the policy of 'Discriminating Protection' and recommended setting up a Tariff Board to evaluate which industries met the criteria.<br>
+              <strong>Statement 2 is incorrect:</strong> The Tariff Board was purely an <strong>advisory</strong> body. It had no statutory power to implement tariffs. Its recommendations could be (and often were) rejected or heavily modified by the Government of India in the interest of British manufacturers.<br>
+              <strong>Statement 3 is correct:</strong> One of the major successes of the Tariff Board was its investigation into the steel industry in 1924, which resulted in the Steel Industry (Protection) Act, saving TISCO from collapse against cheap Belgian and British steel.`
+    },
+    {
+        q: `With reference to the evolution of land revenue systems, the 'Talukdari System' is primarily associated with which region and what was the British policy towards it post-1857?`,
+        options: [
+            "Bengal; The British abolished the Talukdars and implemented a direct Ryotwari settlement.",
+            "Punjab; The British recognized the Talukdars as absolute owners but heavily taxed their agricultural income.",
+            "Awadh (Oudh); The British restored the estates of the Talukdars granting them absolute proprietary rights to create a loyal aristocratic buffer.",
+            "Madras; The British integrated the Talukdars into the civil service to function as subordinate judges."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              Before 1857, under the 'Summary Settlement' of 1856, the British tried to dispossess the traditional <strong>Talukdars of Awadh</strong> (powerful rural aristocrats) to settle revenue directly with the village communities. This massive dispossession led the Talukdars and their loyal peasants to join the Revolt of 1857 in massive numbers. Realizing their mistake, the British reversed their policy post-1857. Lord Canning issued Sanads (patents) that restored the Talukdars to their estates, giving them absolute ownership rights (ignoring the rights of the cultivators) to ensure their political loyalty as 'pillars of the empire'.`
+    },
+    {
+        q: `Consider the following Assertion and Reason regarding the financing of the British Indian Army:<br><br>
+            <strong>Assertion (A):</strong> Despite deploying the British Indian Army globally to fight wars in China, Africa, and the Middle East, the entire financial cost of maintaining this massive military apparatus was borne by the Indian taxpayer.<br>
+            <strong>Reason (R):</strong> The British Parliament explicitly barred the use of British exchequer funds for any military operations east of the Suez Canal, enforcing the doctrine that India must pay for its own subjugation and imperial expansion.<br><br>
+            Select the correct code:`,
+        options: [
+            "Both A and R are true and R is the correct explanation of A.",
+            "Both A and R are true but R is not the correct explanation of A.",
+            "A is true but R is false.",
+            "A is false but R is true."
+        ],
+        answer: 0, // A
+        exp: `<strong>Answer: A (Both are true and R explains A).</strong><br><br>
+              A major grievance of Indian nationalists was the massive military expenditure (often exceeding 50% of central revenues). The British Indian Army was not just for internal defense; it was the primary instrument of British imperial expansion across Asia and Africa. However, the financial burden of raising, training, and deploying these troops, as well as the pensions of British officers commanding them, fell entirely on the impoverished Indian taxpayer. The British government strictly adhered to the policy that India must be financially self-sustaining and pay for the "privilege" of imperial defense.`
+    },
+    {
+        q: `To consolidate their economic and administrative grasp over India, the British implemented the 'Government of India Act 1935'. Regarding its financial provisions, which of the following is conceptually accurate?`,
+        options: [
+            "It granted the newly formed provincial governments the power to independently borrow money from international financial markets without central approval.",
+            "It completely transferred the control of the Reserve Bank of India and currency management to the elected Federal Legislature.",
+            "It retained critical subjects like Defence and External Affairs under the exclusive control of the Viceroy, ensuring that the bulk of India’s budget remained non-votable and beyond democratic control.",
+            "It abolished the payment of 'Home Charges' to the Secretary of State, ending the formal economic drain from India."
+        ],
+        answer: 2, // C
+        exp: `<strong>Answer: C</strong><br><br>
+              <strong>Option C is correct:</strong> Under the 1935 Act, the proposed Federal government had a 'Dyarchy'. Crucial subjects like Defence, External Affairs, and Ecclesiastical affairs were 'reserved' for the Governor-General, acting in his discretion without answering to the legislature. Since Defence consumed the lion's share of the Indian budget, this meant that the vast majority of Indian financial resources remained completely 'non-votable' and immune to the control of elected Indian representatives.<br>
+              Option A is incorrect: Provinces needed central consent to borrow if they owed money to the center.<br>
+              Option B is incorrect: Currency and RBI were kept strictly under the Governor-General's special responsibilities.<br>
+              Option D is incorrect: Home Charges continued until independence.`
+    }
+
+
+
+];
+
+// ==========================================
+// EXAM STATE AND LOGIC
+// ==========================================
+let currentQ = 0;
+let timeRemaining = 7200; // 2 hours in seconds
+let timerInterval;
+
+// Status Enums: 
+// 0: Not Visited, 1: Not Answered, 2: Answered, 3: Marked, 4: Marked & Answered
+let userState = Array(questions.length).fill().map(() => ({
+    status: 0,
+    selectedOption: null
+}));
+
+// Initialize Examination
+function init() {
+    renderPaletteGrid();
+    loadQuestion(0);
+    startTimer();
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        if(timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            submitExam();
+            return;
+        }
+        
+        let hrs = Math.floor(timeRemaining / 3600);
+        let mins = Math.floor((timeRemaining % 3600) / 60);
+        let secs = timeRemaining % 60;
+        
+        document.getElementById('time-display').textContent = 
+            `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+// Render Palette
+function renderPaletteGrid() {
+    const grid = document.getElementById('palette-grid');
+    grid.innerHTML = '';
+    
+    for(let i=0; i<questions.length; i++) {
+        let btn = document.createElement('div');
+        btn.className = `q-btn ${getStatusClass(userState[i].status)}`;
+        btn.textContent = i + 1;
+        
+        // Highlight current question structurally
+        if(i === currentQ) {
+            btn.style.border = '2px solid #000';
+            btn.style.transform = 'scale(1.1)';
+        } else if (userState[i].status === 0) {
+            btn.style.border = '1px solid #cbd5e1';
+        }
+        
+        btn.onclick = () => jumpToQuestion(i);
+        grid.appendChild(btn);
+    }
+}
+
+function getStatusClass(status) {
+    switch(status) {
+        case 0: return 'status-not-visited';
+        case 1: return 'status-not-answered';
+        case 2: return 'status-answered';
+        case 3: return 'status-marked';
+        case 4: return 'status-marked-ans';
+        default: return 'status-not-visited';
+    }
+}
+
+// Load Question Data into DOM
+function loadQuestion(index) {
+    currentQ = index;
+    
+    // Update Not Visited to Not Answered if visiting for first time
+    if(userState[currentQ].status === 0) {
+        userState[currentQ].status = 1; 
+    }
+    
+    document.getElementById('q-number-header').textContent = `Question ${index + 1} of ${questions.length}`;
+    document.getElementById('question-text').innerHTML = questions[index].q;
+    
+    const optsContainer = document.getElementById('options-container');
+    optsContainer.innerHTML = '';
+    
+    questions[index].options.forEach((opt, i) => {
+        let optDiv = document.createElement('div');
+        optDiv.className = 'option';
+        optDiv.onclick = () => selectOption(i);
+        
+        let radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'q_option';
+        radio.checked = userState[currentQ].selectedOption === i;
+        
+        let label = document.createElement('span');
+        label.textContent = opt;
+        
+        optDiv.appendChild(radio);
+        optDiv.appendChild(label);
+        optsContainer.appendChild(optDiv);
+    });
+    
+    renderPaletteGrid(); // refresh palette highlights
+}
+
+function selectOption(optIndex) {
+    userState[currentQ].selectedOption = optIndex;
+    
+    // Visually update radios
+    const radios = document.getElementsByName('q_option');
+    radios.forEach((r, i) => {
+        r.checked = (i === optIndex);
+    });
+}
+
+// Navigation Actions
+function saveAndNext() {
+    if(userState[currentQ].selectedOption !== null) {
+        userState[currentQ].status = 2; // Answered
+    } else {
+        userState[currentQ].status = 1; // Not Answered
+    }
+    moveToNext();
+}
+
+function markForReviewAndNext() {
+    if(userState[currentQ].selectedOption !== null) {
+        userState[currentQ].status = 4; // Marked and Answered
+    } else {
+        userState[currentQ].status = 3; // Marked
+    }
+    moveToNext();
+}
+
+function prevQuestion() {
+    if(currentQ > 0) {
+        loadQuestion(currentQ - 1);
+    }
+}
+
+function moveToNext() {
+    if(currentQ < questions.length - 1) {
+        loadQuestion(currentQ + 1);
+    } else {
+        renderPaletteGrid(); // update final state
+    }
+}
+
+function jumpToQuestion(index) {
+    loadQuestion(index);
+}
+
+function submitExamConfirmation() {
+    if(confirm("Are you sure you want to submit the exam? You cannot change your answers after submission.")) {
+        submitExam();
+    }
+}
+
+// Calculate Score and Show Results
+function submitExam() {
+    clearInterval(timerInterval);
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('results-screen').style.display = 'block';
+    
+    let correct = 0;
+    let incorrect = 0;
+    let unattempted = 0;
+    
+    userState.forEach((state, index) => {
+        if(state.selectedOption !== null) {
+            if(state.selectedOption === questions[index].answer) {
+                correct++;
+            } else {
+                incorrect++;
+            }
+        } else {
+            unattempted++;
+        }
+    });
+    
+    // UPSC marking scheme: +2 for correct, -0.66 for incorrect
+    let totalScore = (correct * 2) - (incorrect * 0.66);
+    let accuracy = correct + incorrect > 0 ? ((correct / (correct + incorrect)) * 100).toFixed(1) : 0;
+    
+    document.getElementById('final-score').textContent = `Score: ${totalScore.toFixed(2)} / ${questions.length * 2}`;
+    document.getElementById('stat-total').textContent = questions.length;
+    document.getElementById('stat-correct').textContent = correct;
+    document.getElementById('stat-incorrect').textContent = incorrect;
+    document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
+    
+    renderExplanations();
+}
+
+function renderExplanations() {
+    const container = document.getElementById('explanations-container');
+    
+    questions.forEach((q, i) => {
+        let state = userState[i];
+        let isCorrect = state.selectedOption === q.answer;
+        let isUnattempted = state.selectedOption === null;
+        
+        let statusBadge = isUnattempted ? 
+            `<span style="color:#64748b;">[Unattempted]</span>` : 
+            (isCorrect ? `<span style="color:#166534;">[Correct (+2)]</span>` : `<span style="color:#dc2626;">[Incorrect (-0.66)]</span>`);
+            
+        let userPickedText = isUnattempted ? "None" : q.options[state.selectedOption];
+        
+        let html = `
+            <div class="explanation-item">
+                <div style="font-weight:bold; margin-bottom: 10px; font-size: 16px;">
+                    Q${i+1}. ${statusBadge}
+                </div>
+                <div style="margin-bottom: 15px;">${q.q}</div>
+                
+                <div style="font-size: 14px; color: #475569; margin-bottom: 5px;">Your Answer: <strong>${userPickedText}</strong></div>
+                <div style="font-size: 14px; color: #166534;">Correct Answer: <strong>${q.options[q.answer]}</strong></div>
+                
+                <div class="exp-text">
+                    ${q.exp}
+                </div>
+            </div>
+        `;
+        container.innerHTML += html;
+    });
+}
+
+// Boot up
+window.onload = init;
+
+</script>
+</body>
+</html>
